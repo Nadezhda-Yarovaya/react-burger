@@ -12,7 +12,10 @@ import currencyBig from '../../images/currency36x36.svg';
 const { container, sum } = totalSumStyles;
 
 function TotalSum(props) {
-  const { handleToggleIfMobile, isMobileOrdered, buttonSize, isMobile } = props;
+  const { handleToggleIfMobile, isMobileOrdered, buttonSize, isMobile, handlePerformOrder } = props;
+
+
+
   return (
     <div className={`pr-4 mt-10 ${container}`}>
       <div className={`${isMobile ? 'mr-3' : 'mr-10'} ${sum}`}>
@@ -29,7 +32,7 @@ function TotalSum(props) {
           <img src={currencyBig} alt='итого' />
         )}
       </div>
-      <Button type='primary' size={buttonSize} onClick={handleToggleIfMobile}>
+      <Button type='primary' size={buttonSize} onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}>
         {isMobile
           ? isMobileOrdered
             ? 'Оформить'

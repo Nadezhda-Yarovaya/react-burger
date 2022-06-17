@@ -4,9 +4,9 @@
   font-weight: 400;
   font-size: 22px;
   /*
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;*/
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;*/
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 272px));
   grid-column-gap: 24px;
@@ -56,6 +56,7 @@ flex-wrap: wrap;*/
   text-align: center;
   min-height: 48px;
 }
+
 .counter {
   position: absolute;
   top: 0;

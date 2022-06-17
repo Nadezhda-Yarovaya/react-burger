@@ -26,5 +26,5 @@
 }
 
 .element__pricing {
- composes: element__description;
+  composes: element__description;
 }

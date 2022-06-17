@@ -1,12 +1,26 @@
 import React from 'react';
 import {
-  Tab
+  Tab,
+  CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../MealList/MealList';
 import { burgerData } from '../../utils/data.js';
+import ModalWindow from '../ModalWindow/ModalWindow';
+import PropTypes from 'prop-types';
 
-const { title, list, tabs, ingredients } = ingredientsStyles;
+const {
+  title,
+  list,
+  tabs,
+  ingredients,
+  window__details,
+  window__button,
+  window__image,
+  window__text,
+  window__nutrients,
+  nutrient,
+} = ingredientsStyles;
 
 function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState('one');
@@ -33,6 +47,7 @@ function BurgerIngredients(props) {
   const [sauceArray, setSauceArray] = React.useState(sauceMenu);
   const [stuffingArray, setStuffingArray] = React.useState(stuffingMenu);
 
+  /*
   function changeChoice(items, cardId, setArray) {
     const newArray = items.map((item) => {
       if (item._id === cardId) {
@@ -45,7 +60,7 @@ function BurgerIngredients(props) {
       }
     });
     setArray(newArray);
-  }
+  }*/
 
   return (
     <>
@@ -90,8 +105,9 @@ function BurgerIngredients(props) {
             <MealList
               currentList={bunsArray}
               title='Булки'
-              changeChoice={changeChoice}
+              changeChoice={props.changeChoice}
               setWithChoice={setBunsArray}
+              selectedCard={props.selectedCard}
             />
           </section>
           <section>
@@ -99,7 +115,7 @@ function BurgerIngredients(props) {
             <MealList
               currentList={sauceArray}
               title='Соусы'
-              changeChoice={changeChoice}
+              changeChoice={props.changeChoice}
               setWithChoice={setSauceArray}
             />
           </section>
@@ -108,14 +124,84 @@ function BurgerIngredients(props) {
             <MealList
               currentList={stuffingArray}
               title='Начинки'
-              changeChoice={changeChoice}
+              changeChoice={props.changeChoice}
               setWithChoice={setStuffingArray}
             />
           </section>
         </div>
       </div>
+      {props.isIngredientsShown ? (
+        <div className='mr-3'>
+          <ModalWindow>
+            <div className={`${window__details}`}>
+              <p className='text text_type_main-medium'>Детали ингредиента</p>
+              <button
+                className={window__button}
+                onClick={props.closeModalWindow}
+              >
+                <CloseIcon type='primary' />
+              </button>
+            </div>
+            <img
+              className={window__image}
+              src={props.selectedCard.image}
+              alt={props.selectedCard.name}
+            />
+            <p className='text text_type_main-medium mt-4 mb-8'>
+              {props.selectedCard.name}
+            </p>
+            <ul className={`${window__nutrients}`}>
+              <li className={nutrient}>
+                {' '}
+                <p className={`text text_type_main-small ${window__text}`}>
+                  Калории, ккал
+                </p>
+                <p className={`text text_type_digits-default ${window__text}`}>
+                  {props.selectedCard.calories}
+                </p>
+              </li>
+              <li className={nutrient}>
+                {' '}
+                <p className={`text text_type_main-small ${window__text}`}>
+                  Белки, г
+                </p>
+                <p className={`text text_type_digits-default ${window__text}`}>
+                  {props.selectedCard.proteins}
+                </p>
+              </li>
+              <li className={nutrient}>
+                {' '}
+                <p className={`text text_type_main-small ${window__text}`}>
+                  Жиры, г
+                </p>
+                <p className={`text text_type_digits-default ${window__text}`}>
+                  {props.selectedCard.fat}
+                </p>
+              </li>
+              <li className={nutrient}>
+                {' '}
+                <p className={`text text_type_main-small ${window__text}`}>
+                  Углеводы, г
+                </p>
+                <p className={`text text_type_digits-default ${window__text}`}>
+                  {props.selectedCard.carbohydrates}
+                </p>
+              </li>
+            </ul>
+          </ModalWindow>
+        </div>
+      ) : (
+        ''
+      )}
     </>
   );
 }
+
+BurgerIngredients.propTypes = {
+  changeChoice: PropTypes.func,
+  selectedCard: PropTypes.object,
+  isIngredientsShown: PropTypes.bool.isRequired,
+  closeModalWindow: PropTypes.func,
+};
 
 export default BurgerIngredients;

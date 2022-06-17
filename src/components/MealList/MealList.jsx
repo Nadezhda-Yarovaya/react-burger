@@ -9,7 +9,7 @@ const { list, list__item, price, item__name, counter, list__choice } =
   mealListStyles;
 
 function MealList(props) {
-  const { currentList, title, changeChoice, setWithChoice } = props;
+  const { currentList, title, changeChoice } = props;
 
   return (
     <>
@@ -23,7 +23,8 @@ function MealList(props) {
           <li key={item._id} className={list__item}>
             <button
               onClick={() => {
-                changeChoice(currentList, item._id, setWithChoice);
+                /* changeChoice(currentList, item._id, setWithChoice);*/
+                changeChoice(item);
               }}
               className={list__choice}
             >
@@ -57,7 +58,6 @@ MealList.propTypes = {
   currentList: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   changeChoice: PropTypes.func.isRequired,
-  setWithChoice: PropTypes.func.isRequired,
 };
 
 export default MealList;

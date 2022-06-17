@@ -45,6 +45,31 @@
   background-color: black;
 }
 
+.window__button {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  top: 60px;
+  right: 40px;
+}
+
+.digits {
+  margin: 80px 0 0 0;
+}
+
+.window__text {
+  text-align: center;
+  width: 100%;
+}
+
+.window__extra {
+  color: var(--secondary-text);
+  text-align: center;
+  width: 100%;
+}
+
 @media screen and (max-width: 1260px) {
   .main {
     padding: 0 20px;
