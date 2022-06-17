@@ -8,10 +8,7 @@ function HeaderItem(props) {
       {props.icon ? (
         <div className={`${props.isMobile ? 'mr-2' : 'ml-1 mr-2'}`}>
           <props.icon type={`${props.secondary ? 'secondary' : 'primary'}`} />
-        </div>
-      ) : (
-        <></>
-      )}
+        </div>) : ( <></>  )}
       <p
         className={`mb-2 text text_type_main-default${
           props.secondary ? ' ' + headerItemStyles.menu__item_inactive : ''
