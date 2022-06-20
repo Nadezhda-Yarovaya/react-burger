@@ -1,15 +1,18 @@
 import React from 'react';
+import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import { useWindowSize } from '../../hooks/resize.js';
-import TotalSum from '../TotalSum/TotalSum';
-import ModalWindow from '../ModalWindow/ModalWindow';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import TotalSum from '../total-sum/total-sum';
+import Modal from '../modal/modal';
+import ModalOverlay from '../modal-overlay/modal-overlay';
+import OrderDetails from '../order-details/order-details';
 
-import doneSign from '../../images/done.png';
+import { useState, useEffect } from 'react';
 
+import getIngredients from '../../utils/api';
 import appStyles from './app.module.css';
 
 const {
@@ -19,23 +22,93 @@ const {
   constructor,
   constructor_displayed,
   constructor_notdisplayed,
-  window__button,
-  digits,
-  window__text,
-  window__extra,
 } = appStyles;
 
 function App() {
+  const [allIngredients, setAllIngredients] = useState([{ name: 'sdfsf' }]);
   const [width] = useWindowSize();
+  const [isMobileOrdered, setIsMobiledOrdered] = useState(false);
+  const [isPerformed, setIsPerformed] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [isIngredientsShown, setIsIngredientsShown] = useState(false);
+  const [totalSumOrder, setTotalSumOrder] = useState(0);
+  const [mainIngredients, setMainIngredients] = useState({
+    buns: [],
+    sauce: [],
+    main: [],
+  });
+  const [stuffingsList, setStuffingsList] = useState([]);
 
-  const [isMobileOrdered, setIsMobiledOrdered] = React.useState(false);
-  const [isPerformed, setIsPerformed] = React.useState(false);
+  useEffect(() => {
+    handleSetMobile();
+  }, [width]);
 
-  function handlePerformOrder() {
-    toggleIsPerformed();
+  useEffect(() => {
+    getIngredients()
+      .then((res) => {
+        setAllIngredients(res.data);
+        const arrayWithChosen = addChosenItems(res.data);
+        setMainIngredients({
+          buns: filterByType(arrayWithChosen, 'bun'),
+          sauce: filterByType(arrayWithChosen, 'sauce'),
+          main: filterByType(arrayWithChosen, 'main'),
+        });
+        defineStuffingsAndTotal(res.data);
+      })
+      .catch((err) => {
+        console.log('Ошибка при соединении с сервером: ', err);
+      });
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', closeByEsc);
+  }, []);
+
+  function closeByEsc(e) {
+    if (e.key === 'Escape') {
+      closeModalIngredientsShown();
+      closeIsPerformed();
+    }
   }
 
-  function toggleIsPerformed() {
+  function defineStuffingsAndTotal(allData) {
+    let allPrices = [];
+    const tempStuffings = allData.filter(
+      (item, index) => index > 3 && index < 10
+    );
+    setStuffingsList(tempStuffings);
+    tempStuffings.forEach((item, index) => {
+      allPrices[index] = item.price;
+    });
+    const finalNumber =
+      allPrices.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        1
+      ) + allData[0].price;
+    setTotalSumOrder(finalNumber);
+  }
+
+  function filterByType(arr, type) {
+    return arr.filter((item) => item.type === type);
+  }
+
+  function addChosenItems(arr) {
+    return arr.map((item, index) => {
+      if (index === 0 || index === 4 || index === 5) {
+        return {
+          ...item,
+          chosen: true,
+        };
+      } else {
+        return {
+          ...item,
+          chosen: false,
+        };
+      }
+    });
+  }
+
+  function handlePerformOrder() {
     setIsPerformed(!isPerformed);
   }
 
@@ -57,13 +130,6 @@ function App() {
     }
   };
 
-  React.useEffect(() => {
-    handleSetMobile();
-  }, [width]);
-
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isIngredientsShown, setIsIngredientsShown] = React.useState(false);
-
   function handleShowNutrients(currentItem) {
     setSelectedCard(currentItem);
     toggleModalIngredientsShown();
@@ -73,89 +139,94 @@ function App() {
     setIsIngredientsShown(!isIngredientsShown);
   }
 
-  function closeModalWindow() {
-    toggleModalIngredientsShown();
+  function closeModalIngredientsShown() {
+    setIsIngredientsShown(false);
   }
 
+  function closeIsPerformed() {
+    setIsPerformed(false);
+  }
+
+  const modalPerformed = (
+    <ModalOverlay closeModal={closeIsPerformed}>
+      <Modal closeModal={closeIsPerformed}>
+        <OrderDetails />
+      </Modal>
+    </ModalOverlay>
+  );
+
+  const modalIngredient = (
+    <ModalOverlay closeModal={closeModalIngredientsShown}>
+      <Modal closeModal={closeModalIngredientsShown}>
+        <IngredientDetails selectedCard={selectedCard} />
+      </Modal>
+    </ModalOverlay>
+  );
+
   return (
-    <div className={page}>
-      <AppHeader isMobile={isMobile} />
+    <>
+      <div className={page}>
+        <AppHeader isMobile={isMobile} />
 
-      <main className={`${main} mb-10`}>
-        <section
-          className={`mr-10 ${isMobile ? 'pb-10' : ''} ${ingredients} ${
-            isMobile ? (isMobileOrdered ? constructor_notdisplayed : '') : ''
-          }`}
-        >
-          <BurgerIngredients
-            changeChoice={handleShowNutrients}
-            selectedCard={selectedCard}
-            isIngredientsShown={isIngredientsShown}
-            closeModalWindow={closeModalWindow}
-          />
-        </section>
-        <section
-          className={`${constructor} ${
-            isMobile
-              ? isMobileOrdered
-                ? constructor_displayed
-                : constructor_notdisplayed
-              : ''
-          }`}
-        >
-          <BurgerConstructor
-            isMobileOrdered={isMobileOrdered}
-            handleToggleIfMobile={handleToggleIfMobile}
-            isMobile={isMobile}
-          />
+        <main className={`${main} mb-10`}>
+          <section
+            className={`mr-10 ${isMobile ? 'pb-10' : ''} ${ingredients} ${
+              isMobile ? (isMobileOrdered ? constructor_notdisplayed : '') : ''
+            }`}
+          >
+            <BurgerIngredients
+              mainIngredients={mainIngredients}
+              changeChoice={handleShowNutrients}
+              selectedCard={selectedCard}
+            />
+          </section>
+          <section
+            className={`${constructor} ${
+              isMobile
+                ? isMobileOrdered
+                  ? constructor_displayed
+                  : constructor_notdisplayed
+                : ''
+            }`}
+          >
+            <BurgerConstructor
+              isMobileOrdered={isMobileOrdered}
+              isMobile={isMobile}
+              allIngredients={allIngredients}
+              stuffingsList={stuffingsList}
+              setMobiledOrdered={setIsMobiledOrdered}
+            />
 
+            {isMobile ? (
+              <></>
+            ) : (
+              <TotalSum
+                handleToggleIfMobile={handleToggleIfMobile}
+                isMobileOrdered={isMobileOrdered}
+                buttonSize='large'
+                isMobile={isMobile}
+                handlePerformOrder={handlePerformOrder}
+                totalSumOrder={totalSumOrder}
+              />
+            )}
+          </section>
           {isMobile ? (
-            <></>
-          ) : (
             <TotalSum
               handleToggleIfMobile={handleToggleIfMobile}
               isMobileOrdered={isMobileOrdered}
-              buttonSize='large'
+              buttonSize='small'
               isMobile={isMobile}
               handlePerformOrder={handlePerformOrder}
+              totalSumOrder={totalSumOrder}
             />
+          ) : (
+            <></>
           )}
-        </section>
-        {isMobile ? (
-          <TotalSum
-            handleToggleIfMobile={handleToggleIfMobile}
-            isMobileOrdered={isMobileOrdered}
-            buttonSize='small'
-            isMobile={isMobile}
-            handlePerformOrder={handlePerformOrder}
-          />
-        ) : (
-          <></>
-        )}
-      </main>
-      {isPerformed ? (
-        <ModalWindow>
-          <button className={window__button} onClick={toggleIsPerformed}>
-            <CloseIcon type='primary' />
-          </button>
-          <p className={`text text_type_digits-large ${digits}`}>03456</p>
-          <p className={`text text_type_main-default mt-8 mb-15`}>
-            Идентификатор заказа
-          </p>
-          <img src={doneSign} alt='заказ совершен' />
-          <p
-            className={`text text_type_main-default mt-15 mt-8 ${window__text}`}
-          >
-            Заказ начали готовить
-          </p>
-          <p className={`text text_type_main-default  ${window__extra}`}>
-            Дождитесь готовности на орбитальной станции
-          </p>
-        </ModalWindow>
-      ) : (
-        <></>
-      )}
-    </div>
+        </main>
+      </div>{' '}
+      {isPerformed ? modalPerformed : <></>}
+      {isIngredientsShown ? modalIngredient : <></>}
+    </>
   );
 }
 

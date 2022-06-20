@@ -5,6 +5,8 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import mealListStyles from './meal-list.module.css';
 
+import { ingredientsPropTypes } from '../../utils/data';
+
 const { list, list__item, price, item__name, counter, list__choice } =
   mealListStyles;
 
@@ -55,7 +57,7 @@ function MealList(props) {
 }
 
 MealList.propTypes = {
-  currentList: PropTypes.array.isRequired,
+  currentList: PropTypes.arrayOf(ingredientsPropTypes).isRequired,
   title: PropTypes.string.isRequired,
   changeChoice: PropTypes.func.isRequired,
 };

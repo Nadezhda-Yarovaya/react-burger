@@ -7,7 +7,7 @@ import {
   MenuIcon,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import HeaderItem from '../HeaderItem/HeaderItem';
+import HeaderItem from '../header-item/header-item';
 
 import headerStyles from './app-header.module.css';
 

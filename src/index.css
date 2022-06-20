@@ -5,12 +5,7 @@
   --dashed-border: 2px dashed #4c4cff;
   --modal-bg: #1c1c21;
   --interface-bg: #131316;
-  --text-color: #F2F2F3;
-  --secondary-text: #8585AD;
-}
-
-@media screen and (max-width: 1040px) {
-.constructor-element {
-width: 100%;
-}
+  --text-color: #f2f2f3;
+  --secondary-text: #8585ad;
+  --accent: #4c4cff;
 }

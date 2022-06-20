@@ -5,9 +5,10 @@ import {
   DragIcon,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { burgerData } from '../../utils/data';
 import constructorStyles from './burger-constructor.module.css';
-import MobileConstructorElement from '../MobileConstructorElement/MobileConstructorElement';
+import MobileConstructorElement from '../mobile-constructor-element/mobile-constructor-element';
+
+import { ingredientsPropTypes } from '../../utils/data';
 
 const {
   constructor__item,
@@ -24,15 +25,23 @@ const {
 } = constructorStyles;
 
 function BurgerConstructor(props) {
-  const { isMobileOrdered, isMobile, handleToggleIfMobile } = props;
-  const tempList = burgerData.filter((item, index) => index > 3 && index < 10);
+  const {
+    isMobileOrdered,
+    isMobile,
+    allIngredients,
+    stuffingsList,
+    setMobiledOrdered,
+  } = props;
+
   return (
     <>
       {isMobile && isMobileOrdered ? (
         <div className={constructor__order}>
           <p className={constructor__title}>Заказ</p>
           <button
-            onClick={handleToggleIfMobile}
+            onClick={() => {
+              setMobiledOrdered(false);
+            }}
             className={constructor__button}
           >
             <CloseIcon type='primary' />
@@ -46,27 +55,27 @@ function BurgerConstructor(props) {
           <div className={`mb-4 ${constructor__item}`}>
             {isMobile ? (
               <MobileConstructorElement
-                text={`${burgerData[0].name} (верх)`}
-                price={burgerData[0].price}
-                thumbnail={burgerData[0].image}
+                text={`${allIngredients[0].name} (верх)`}
+                price={(parseInt(allIngredients[0].price) / 2).toString()}
+                thumbnail={allIngredients[0].image}
               />
             ) : (
               <ConstructorElement
                 type='top'
                 isLocked={true}
-                text={`${burgerData[0].name} (верх)`}
-                price={burgerData[0].price}
-                thumbnail={burgerData[0].image}
+                text={`${allIngredients[0].name} (верх)`}
+                price={allIngredients[0].price / 2}
+                thumbnail={allIngredients[0].image}
               />
             )}
           </div>
         </li>
         <li className={`${item_type_stuffing} pl-4`}>
           <ul className={stuffings}>
-            {tempList.map((item, index, arr) => (
+            {stuffingsList.map((item, index, arr) => (
               <li
                 className={`${
-                  index !== tempList.length - 1 ? 'mb-4 ' : ''
+                  index !== stuffingsList.length - 1 ? 'mb-4 ' : ''
                 }${stuffings__item} mr-2`}
                 key={item._id}
               >
@@ -74,7 +83,7 @@ function BurgerConstructor(props) {
                   {isMobile ? (
                     <MobileConstructorElement
                       text={`${item.name}`}
-                      price={item.price}
+                      price={item.price.toString()}
                       thumbnail={item.image}
                     />
                   ) : (
@@ -98,17 +107,17 @@ function BurgerConstructor(props) {
           <div className={`mt-4 ${constructor__item}`}>
             {isMobile ? (
               <MobileConstructorElement
-                text={`${burgerData[0].name} (верх)`}
-                price={burgerData[0].price}
-                thumbnail={burgerData[0].image}
+                text={`${allIngredients[0].name} (верх)`}
+                price={(parseInt(allIngredients[0].price) / 2).toString()}
+                thumbnail={allIngredients[0].image}
               />
             ) : (
               <ConstructorElement
                 type='bottom'
                 isLocked={true}
-                text={`${burgerData[0].name} (низ)`}
-                price={burgerData[0].price}
-                thumbnail={burgerData[0].image}
+                text={`${allIngredients[0].name} (низ)`}
+                price={allIngredients[0].price / 2}
+                thumbnail={allIngredients[0].image}
               />
             )}
           </div>
@@ -121,7 +130,9 @@ function BurgerConstructor(props) {
 BurgerConstructor.propTypes = {
   isMobileOrdered: PropTypes.bool,
   isMobile: PropTypes.bool,
-  handleToggleIfMobile: PropTypes.func,
+  allIngredients: PropTypes.arrayOf(ingredientsPropTypes),
+  stuffingsList: PropTypes.arrayOf(ingredientsPropTypes),
+  setMobiledOrdered: PropTypes.func,
 };
 
 export default BurgerConstructor;

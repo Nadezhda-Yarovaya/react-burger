@@ -1,0 +1,33 @@
+.text {
+  text-align: center;
+  width: 100%;
+}
+
+.image {
+  width: 480px;
+  height: 240px;
+  object-fit: contain;
+}
+
+.text {
+  text-align: center;
+  color: var(--secondary-text);
+}
+
+.nutrients {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 200px));
+  grid-column-gap: 20px;
+}
+
+.nutrient {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+}

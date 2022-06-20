@@ -12,9 +12,14 @@ import currencyBig from '../../images/currency36x36.svg';
 const { container, sum } = totalSumStyles;
 
 function TotalSum(props) {
-  const { handleToggleIfMobile, isMobileOrdered, buttonSize, isMobile, handlePerformOrder } = props;
-
-
+  const {
+    handleToggleIfMobile,
+    isMobileOrdered,
+    buttonSize,
+    isMobile,
+    handlePerformOrder,
+    totalSumOrder,
+  } = props;
 
   return (
     <div className={`pr-4 mt-10 ${container}`}>
@@ -24,7 +29,7 @@ function TotalSum(props) {
             isMobile ? 'text_type_digits-default' : 'text_type_digits-medium'
           }`}
         >
-          610
+          {totalSumOrder}
         </p>
         {isMobile ? (
           <CurrencyIcon type='primary' />
@@ -32,7 +37,11 @@ function TotalSum(props) {
           <img src={currencyBig} alt='итого' />
         )}
       </div>
-      <Button type='primary' size={buttonSize} onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}>
+      <Button
+        type='primary'
+        size={buttonSize}
+        onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}
+      >
         {isMobile
           ? isMobileOrdered
             ? 'Оформить'
@@ -46,8 +55,10 @@ function TotalSum(props) {
 TotalSum.propTypes = {
   handleToggleIfMobile: PropTypes.func.isRequired,
   isMobileOrdered: PropTypes.bool.isRequired,
-  isMobile: PropTypes.bool.isRequired,
   buttonSize: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  handlePerformOrder: PropTypes.func,
+  totalSumOrder: PropTypes.number,
 };
 
 export default TotalSum;
