@@ -29,6 +29,14 @@ function BurgerIngredients(props) {
     setArray(newArray);
   }*/
 
+  const bunsRef = React.useRef();
+  const sauceRef = React.useRef();
+  const stuffingRef = React.useRef();
+
+  function handleTabClick(currentRef) {
+    currentRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
   return (
     <>
       <h1 className={`mt-10 mb-5 ml-1 ${title}`}>Соберите бургер</h1>
@@ -42,7 +50,7 @@ function BurgerIngredients(props) {
               active={current === 'one'}
               onClick={() => {
                 setCurrent('one');
-                window.location.href = '#buns';
+                handleTabClick(bunsRef);
               }}
             >
               Булки
@@ -52,7 +60,7 @@ function BurgerIngredients(props) {
               active={current === 'two'}
               onClick={() => {
                 setCurrent('two');
-                window.location.href = '#sauces';
+                handleTabClick(sauceRef);
               }}
             >
               Соусы
@@ -62,7 +70,7 @@ function BurgerIngredients(props) {
               active={current === 'three'}
               onClick={() => {
                 setCurrent('three');
-                window.location.href = '#stuffing';
+                handleTabClick(stuffingRef);
               }}
             >
               Начинки
@@ -70,8 +78,7 @@ function BurgerIngredients(props) {
           </div>
 
           <div className={`mt-10 ${list}`}>
-            <section>
-              <a name='buns'></a>
+            <section ref={bunsRef}>
               <MealList
                 currentList={mainIngredients.buns}
                 title='Булки'
@@ -79,16 +86,14 @@ function BurgerIngredients(props) {
                 selectedCard={selectedCard}
               />
             </section>
-            <section>
-              <a name='sauces'></a>
+            <section ref={sauceRef}>
               <MealList
                 currentList={mainIngredients.sauce}
                 title='Соусы'
                 changeChoice={changeChoice}
               />
             </section>
-            <section>
-              <a name='stuffing'></a>
+            <section ref={stuffingRef}>
               <MealList
                 currentList={mainIngredients.main}
                 title='Начинки'

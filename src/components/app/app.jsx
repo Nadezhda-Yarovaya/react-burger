@@ -63,11 +63,9 @@ function App() {
       });
   }, []);
 
-  function closeByEsc(e) {
-    if (e.key === 'Escape') {
-      closeModalIngredientsShown();
-      closeIsPerformed();
-    }
+  function closeAllPopups() {
+    closeModalIngredientsShown();
+    closeIsPerformed();
   }
 
   function defineStuffingsAndTotal(allData) {
@@ -149,11 +147,12 @@ function App() {
   const modalPerformed = (
     <Modal
       closeModal={closeIsPerformed}
-      closeByEsc={closeByEsc}
+      closeAllPopups={closeAllPopups}
       windowWidth={width}
       windowHeight={height}
       isMobile={isMobile}
       type='orderPerformed'
+      isOpen={true}
     >
       <OrderDetails />
     </Modal>
@@ -162,10 +161,11 @@ function App() {
   const modalIngredient = (
     <Modal
       closeModal={closeModalIngredientsShown}
-      closeByEsc={closeByEsc}
+      closeAllPopups={closeAllPopups}
       windowWidth={width}
       windowHeight={height}
       isMobile={isMobile}
+      isOpen={true}
     >
       <IngredientDetails selectedCard={selectedCard} />
     </Modal>
