@@ -32,9 +32,8 @@ function Modal(props) {
     <>
       <ModalOverlay closeModal={props.closeModal} />
       <div
-        style={{ top: topPosition, left: leftPosition }}
         className={`pl-10 pr-10 pb-15 pt-10  ${modal}`}
-        onClick={(e) => e.stopPropagation()}
+        style={{ top: topPosition, left: leftPosition }}
       >
         <div className={`${container}`}>
           <button className={modal__button} onClick={props.closeModal}>
