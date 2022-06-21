@@ -56,14 +56,14 @@ function AppHeader(props) {
         <div className={header__desktop}>
           <nav className={menu}>
             <a href='#' className={`mr-6 ${menu__item}`}>
-              <HeaderItem icon={BurgerIcon} text='Конструктор' />
+              <HeaderItem text='Конструктор' isMobile={props.isMobile} />
             </a>
             <a href='#' className={`ml-5 ${menu__item}`}>
               {' '}
               <HeaderItem
-                icon={ListIcon}
                 text='Лента заказов'
                 secondary={true}
+                isMobile={props.isMobile}
               />
             </a>
           </nav>
@@ -75,9 +75,9 @@ function AppHeader(props) {
           <a href='#' className={`${menu__item}`}>
             {' '}
             <HeaderItem
-              icon={ProfileIcon}
               text='Личный кабинет'
               secondary={true}
+              isMobile={props.isMobile}
             />{' '}
           </a>
         </div>
@@ -103,11 +103,7 @@ function AppHeader(props) {
         </div>
         <div className={mobilemenu__list}>
           <button className={`${menu__item}`} onClick={toggleSubMenu}>
-            <HeaderItem
-              icon={ProfileIcon}
-              text='Личный кабинет'
-              isMobile={props.isMobile}
-            />
+            <HeaderItem text='Личный кабинет' isMobile={props.isMobile} />
             <img
               src={isSubMenuOpened ? closeSubmIcon : openSubmIcon}
               className={menu__image}
@@ -155,7 +151,7 @@ function AppHeader(props) {
 }
 
 AppHeader.propTypes = {
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default AppHeader;

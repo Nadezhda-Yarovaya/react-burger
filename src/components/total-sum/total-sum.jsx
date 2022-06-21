@@ -57,8 +57,8 @@ TotalSum.propTypes = {
   isMobileOrdered: PropTypes.bool.isRequired,
   buttonSize: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
-  handlePerformOrder: PropTypes.func,
-  totalSumOrder: PropTypes.number,
+  handlePerformOrder: PropTypes.func.isRequired,
+  totalSumOrder: PropTypes.number.isRequired,
 };
 
 export default TotalSum;

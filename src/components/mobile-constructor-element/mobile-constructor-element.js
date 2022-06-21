@@ -39,8 +39,8 @@ function MobileConstructorElement(props) {
 
 MobileConstructorElement.propTypes = {
   text: PropTypes.string.isRequired,
-  price: PropTypes.string,
-  thumbnail: PropTypes.string,
+  price: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string.isRequired,
 };
 
 export default MobileConstructorElement;

@@ -7,7 +7,6 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useWindowSize } from '../../hooks/resize.js';
 import TotalSum from '../total-sum/total-sum';
 import Modal from '../modal/modal';
-import ModalOverlay from '../modal-overlay/modal-overlay';
 import OrderDetails from '../order-details/order-details';
 
 import { useState, useEffect } from 'react';
@@ -26,12 +25,13 @@ const {
 
 function App() {
   const [allIngredients, setAllIngredients] = useState([{ name: 'sdfsf' }]);
-  const [width] = useWindowSize();
+  const [width, height] = useWindowSize();
   const [isMobileOrdered, setIsMobiledOrdered] = useState(false);
   const [isPerformed, setIsPerformed] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isIngredientsShown, setIsIngredientsShown] = useState(false);
   const [totalSumOrder, setTotalSumOrder] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [mainIngredients, setMainIngredients] = useState({
     buns: [],
     sauce: [],
@@ -44,6 +44,7 @@ function App() {
   }, [width]);
 
   useEffect(() => {
+    setIsLoading(true);
     getIngredients()
       .then((res) => {
         setAllIngredients(res.data);
@@ -54,14 +55,12 @@ function App() {
           main: filterByType(arrayWithChosen, 'main'),
         });
         defineStuffingsAndTotal(res.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log('Ошибка при соединении с сервером: ', err);
+        setIsLoading(false);
       });
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener('keydown', closeByEsc);
   }, []);
 
   function closeByEsc(e) {
@@ -148,15 +147,28 @@ function App() {
   }
 
   const modalPerformed = (
-      <Modal closeModal={closeIsPerformed}>
-        <OrderDetails />
-      </Modal>
+    <Modal
+      closeModal={closeIsPerformed}
+      closeByEsc={closeByEsc}
+      windowWidth={width}
+      windowHeight={height}
+      isMobile={isMobile}
+      type='orderPerformed'
+    >
+      <OrderDetails />
+    </Modal>
   );
 
   const modalIngredient = (
-      <Modal closeModal={closeModalIngredientsShown}>
-        <IngredientDetails selectedCard={selectedCard} />
-      </Modal>
+    <Modal
+      closeModal={closeModalIngredientsShown}
+      closeByEsc={closeByEsc}
+      windowWidth={width}
+      windowHeight={height}
+      isMobile={isMobile}
+    >
+      <IngredientDetails selectedCard={selectedCard} />
+    </Modal>
   );
 
   return (
@@ -174,6 +186,7 @@ function App() {
               mainIngredients={mainIngredients}
               changeChoice={handleShowNutrients}
               selectedCard={selectedCard}
+              isLoading={isLoading}
             />
           </section>
           <section
@@ -191,9 +204,12 @@ function App() {
               allIngredients={allIngredients}
               stuffingsList={stuffingsList}
               setMobiledOrdered={setIsMobiledOrdered}
+              isLoading={isLoading}
             />
 
             {isMobile ? (
+              <></>
+            ) : isLoading ? (
               <></>
             ) : (
               <TotalSum
@@ -207,14 +223,18 @@ function App() {
             )}
           </section>
           {isMobile ? (
-            <TotalSum
-              handleToggleIfMobile={handleToggleIfMobile}
-              isMobileOrdered={isMobileOrdered}
-              buttonSize='small'
-              isMobile={isMobile}
-              handlePerformOrder={handlePerformOrder}
-              totalSumOrder={totalSumOrder}
-            />
+            isLoading ? (
+              <></>
+            ) : (
+              <TotalSum
+                handleToggleIfMobile={handleToggleIfMobile}
+                isMobileOrdered={isMobileOrdered}
+                buttonSize='large'
+                isMobile={isMobile}
+                handlePerformOrder={handlePerformOrder}
+                totalSumOrder={totalSumOrder}
+              />
+            )
           ) : (
             <></>
           )}
