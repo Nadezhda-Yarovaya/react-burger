@@ -148,19 +148,15 @@ function App() {
   }
 
   const modalPerformed = (
-    <ModalOverlay closeModal={closeIsPerformed}>
       <Modal closeModal={closeIsPerformed}>
         <OrderDetails />
       </Modal>
-    </ModalOverlay>
   );
 
   const modalIngredient = (
-    <ModalOverlay closeModal={closeModalIngredientsShown}>
       <Modal closeModal={closeModalIngredientsShown}>
         <IngredientDetails selectedCard={selectedCard} />
       </Modal>
-    </ModalOverlay>
   );
 
   return (
