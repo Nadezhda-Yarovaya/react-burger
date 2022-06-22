@@ -1,0 +1,11 @@
+@import url('./vendor/normalize.css');
+@import url('./fonts/fonts.css');
+:root {
+  --container-width: 1240px;
+  --dashed-border: 2px dashed #4c4cff;
+  --modal-bg: #1c1c21;
+  --interface-bg: #131316;
+  --text-color: #f2f2f3;
+  --secondary-text: #8585ad;
+  --accent: #4c4cff;
+}

@@ -1,0 +1,74 @@
+.title {
+  font-family: 'JetBrains Mono', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.list {
+  width: 100%;
+  max-height: 664px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  outline: 0;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.window__details {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.window__button {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .tabs {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .tabs {
+    flex-direction: column;
+  }
+  .list {
+    max-height: 2000px;
+    padding: 0 20px;
+  }
+  .title {
+    text-align: center;
+    font-size: 28px;
+  }
+}

@@ -1,0 +1,160 @@
+.header {
+  width: 100%;
+  background-color: var(--modal-bg);
+  display: flex;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__container {
+  width: 100%;
+  max-width: var(--container-width);
+  background-color: var(--modal-bg);
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.menu {
+  display: flex;
+}
+
+.menu__item {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  box-sizing: border-box;
+  line-height: 24px;
+  background-color: transparent;
+  border: 0;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 12px 0;
+  position: relative;
+  text-decoration: none;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: calc((((1260 - 289.15) / 2) / 1260) * 100%);
+}
+
+.header__desktop {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.header__mobile {
+  display: none;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.header__mobilebutton {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.menu__image {
+  width: 12px;
+  height: 6px;
+  object-fit: contain;
+  position: absolute;
+  top: 47%;
+  right: 16px;
+}
+
+.mobilemenu {
+  box-sizing: border-box;
+  display: none;
+  flex-direction: column;
+  background-color: var(--modal-bg);
+  color: var(--text-color);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  z-index: 2;
+}
+
+.mobilemenu__top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobilemenu_state_opened {
+  display: flex;
+}
+
+.mobilemenu__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submenu_state_opened {
+  display: flex;
+}
+
+.submenu__item {
+  padding: 10px 0;
+}
+
+@media screen and (max-width: 1260px) {
+  .header {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 1090px) {
+  .header__desktop {
+    flex-direction: column;
+  }
+  .menu {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .logo {
+    position: static;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .header__desktop {
+    display: none;
+  }
+  .header__mobile {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .menu {
+    justify-content: center;
+    flex-direction: column;
+  }
+}
