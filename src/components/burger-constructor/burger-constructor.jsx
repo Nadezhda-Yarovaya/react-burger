@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
@@ -9,6 +9,8 @@ import constructorStyles from './burger-constructor.module.css';
 import MobileConstructorElement from '../mobile-constructor-element/mobile-constructor-element';
 
 import { ingredientType } from '../../utils/types';
+
+import { IngredientsContext } from '../../contexts/appContexts';
 
 const {
   constructor__item,
@@ -28,11 +30,17 @@ function BurgerConstructor(props) {
   const {
     isMobileOrdered,
     isMobile,
-    allIngredients,
-    stuffingsList,
     setMobiledOrdered,
     isLoading,
+    bunSelected,
   } = props;
+
+  const ingredientsFromContext = useContext(IngredientsContext);
+  const stuffingsList = ingredientsFromContext.stuffingsList;
+
+  const text = bunSelected.name;
+  const price = parseInt(bunSelected.price).toString();
+  const thumbnail = bunSelected.image;
 
   return (
     <>
@@ -62,17 +70,17 @@ function BurgerConstructor(props) {
               <div className={`mb-4 ${constructor__item}`}>
                 {isMobile ? (
                   <MobileConstructorElement
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={(parseInt(allIngredients[0].price) / 2).toString()}
-                    thumbnail={allIngredients[0].image}
+                    text={`${text} (верх)`}
+                    price={price}
+                    thumbnail={thumbnail}
                   />
                 ) : (
                   <ConstructorElement
                     type='top'
                     isLocked={true}
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={allIngredients[0].price / 2}
-                    thumbnail={allIngredients[0].image}
+                    text={`${text} (верх)`}
+                    price={price}
+                    thumbnail={thumbnail}
                   />
                 )}
               </div>
@@ -114,17 +122,17 @@ function BurgerConstructor(props) {
               <div className={`mt-4 ${constructor__item}`}>
                 {isMobile ? (
                   <MobileConstructorElement
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={(parseInt(allIngredients[0].price) / 2).toString()}
-                    thumbnail={allIngredients[0].image}
+                    text={`${text} (низ)`}
+                    price={price}
+                    thumbnail={thumbnail}
                   />
                 ) : (
                   <ConstructorElement
                     type='bottom'
                     isLocked={true}
-                    text={`${allIngredients[0].name} (низ)`}
-                    price={allIngredients[0].price / 2}
-                    thumbnail={allIngredients[0].image}
+                    text={`${text} (низ)`}
+                    price={price}
+                    thumbnail={thumbnail}
                   />
                 )}
               </div>
@@ -139,10 +147,9 @@ function BurgerConstructor(props) {
 BurgerConstructor.propTypes = {
   isMobileOrdered: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
-  allIngredients: PropTypes.arrayOf(ingredientType).isRequired,
-  stuffingsList: PropTypes.arrayOf(ingredientType).isRequired,
   setMobiledOrdered: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  bunSelected: ingredientType.isRequired,
 };
 
 export default BurgerConstructor;

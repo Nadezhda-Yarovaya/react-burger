@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useState, useContext, useEffect, useReducer } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-
+import {
+  IngredientsContext,
+  TotalSumContext,
+} from '../../contexts/appContexts';
 import { useWindowSize } from '../../hooks/resize.js';
 import TotalSum from '../total-sum/total-sum';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-
-import { useState, useEffect } from 'react';
-
-import getIngredients from '../../utils/api';
+import api from '../../utils/api';
 import appStyles from './app.module.css';
+const initialSum = { totalSum: 0 };
+const initialItem = {
+  name: 'Выберите булку',
+  image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
+  price: 0,
+  _id: '60d3b41abdacab0026a733c7',
+};
+
+function totalSumReducer(state, action) {
+  switch (action.type) {
+    case 'set':
+      return { totalSum: action.payload };
+    default:
+      throw new Error(`Такого типа экшна нет: ${action.type}`);
+  }
+}
 
 const {
   page,
@@ -24,20 +40,26 @@ const {
 } = appStyles;
 
 function App() {
-  const [allIngredients, setAllIngredients] = useState([{ name: 'sdfsf' }]);
+  const [allIngredients, setAllIngredients] = useState([{ name: 'тест' }]);
   const [width, height] = useWindowSize();
   const [isMobileOrdered, setIsMobiledOrdered] = useState(false);
   const [isPerformed, setIsPerformed] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isIngredientsShown, setIsIngredientsShown] = useState(false);
-  const [totalSumOrder, setTotalSumOrder] = useState(0);
+  const [bunSelected, setBunSelected] = useState(initialItem);
+  const [totalSumOrder, setTotalSumOrder] = useReducer(
+    totalSumReducer,
+    initialSum,
+    undefined
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [mainIngredients, setMainIngredients] = useState({
-    buns: [],
-    sauce: [],
-    main: [],
+    buns: [initialItem],
+    sauce: [initialItem],
+    main: [initialItem],
   });
   const [stuffingsList, setStuffingsList] = useState([]);
+  const [orderNumber, setOrderNumber] = useState(0);
 
   useEffect(() => {
     handleSetMobile();
@@ -45,7 +67,8 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    getIngredients()
+    api
+      .getIngredients()
       .then((res) => {
         setAllIngredients(res.data);
         const arrayWithChosen = addChosenItems(res.data);
@@ -54,6 +77,7 @@ function App() {
           sauce: filterByType(arrayWithChosen, 'sauce'),
           main: filterByType(arrayWithChosen, 'main'),
         });
+        setBunSelected(res.data[0]); //later I'll write down the chosen bun here
         defineStuffingsAndTotal(res.data);
         setIsLoading(false);
       })
@@ -71,7 +95,7 @@ function App() {
   function defineStuffingsAndTotal(allData) {
     let allPrices = [];
     const tempStuffings = allData.filter(
-      (item, index) => index > 3 && index < 10
+      (item, index) => index > 2 && index < 9
     );
     setStuffingsList(tempStuffings);
     tempStuffings.forEach((item, index) => {
@@ -81,8 +105,10 @@ function App() {
       allPrices.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
         1
-      ) + allData[0].price;
-    setTotalSumOrder(finalNumber);
+      ) +
+      bunSelected.price * 2;
+
+    setTotalSumOrder({ type: 'set', payload: finalNumber });
   }
 
   function filterByType(arr, type) {
@@ -106,7 +132,19 @@ function App() {
   }
 
   function handlePerformOrder() {
-    setIsPerformed(!isPerformed);
+    const ingredientsFormed = [];
+    ingredientsFormed.push(allIngredients[0]._id);
+    stuffingsList.forEach((item) => {
+      ingredientsFormed.push(item._id);
+    });
+
+    api
+      .makeOrder({ ingredients: ingredientsFormed })
+      .then((res) => {
+        setIsPerformed(!isPerformed);
+        setOrderNumber(res.order.number);
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleToggleIfMobile() {
@@ -173,75 +211,81 @@ function App() {
 
   return (
     <>
-      <div className={page}>
-        <AppHeader isMobile={isMobile} />
+      <TotalSumContext.Provider value={{ totalSumOrder }}>
+        <IngredientsContext.Provider
+          value={{ mainIngredients, stuffingsList, orderNumber }}
+        >
+          <div className={page}>
+            <AppHeader isMobile={isMobile} />
 
-        <main className={`${main} mb-10`}>
-          <section
-            className={`mr-10 ${isMobile ? 'pb-10' : ''} ${ingredients} ${
-              isMobile ? (isMobileOrdered ? constructor_notdisplayed : '') : ''
-            }`}
-          >
-            <BurgerIngredients
-              mainIngredients={mainIngredients}
-              changeChoice={handleShowNutrients}
-              selectedCard={selectedCard}
-              isLoading={isLoading}
-            />
-          </section>
-          <section
-            className={`${constructor} ${
-              isMobile
-                ? isMobileOrdered
-                  ? constructor_displayed
-                  : constructor_notdisplayed
-                : ''
-            }`}
-          >
-            <BurgerConstructor
-              isMobileOrdered={isMobileOrdered}
-              isMobile={isMobile}
-              allIngredients={allIngredients}
-              stuffingsList={stuffingsList}
-              setMobiledOrdered={setIsMobiledOrdered}
-              isLoading={isLoading}
-            />
+            <main className={`${main} mb-10`}>
+              <section
+                className={`mr-10 ${isMobile ? 'pb-10' : ''} ${ingredients} ${
+                  isMobile
+                    ? isMobileOrdered
+                      ? constructor_notdisplayed
+                      : ''
+                    : ''
+                }`}
+              >
+                <BurgerIngredients
+                  changeChoice={handleShowNutrients}
+                  selectedCard={selectedCard}
+                  isLoading={isLoading}
+                />
+              </section>
+              <section
+                className={`${constructor} ${
+                  isMobile
+                    ? isMobileOrdered
+                      ? constructor_displayed
+                      : constructor_notdisplayed
+                    : ''
+                }`}
+              >
+                <BurgerConstructor
+                  isMobileOrdered={isMobileOrdered}
+                  isMobile={isMobile}
+                  setMobiledOrdered={setIsMobiledOrdered}
+                  isLoading={isLoading}
+                  bunSelected={bunSelected}
+                />
 
-            {isMobile ? (
-              <></>
-            ) : isLoading ? (
-              <></>
-            ) : (
-              <TotalSum
-                handleToggleIfMobile={handleToggleIfMobile}
-                isMobileOrdered={isMobileOrdered}
-                buttonSize='large'
-                isMobile={isMobile}
-                handlePerformOrder={handlePerformOrder}
-                totalSumOrder={totalSumOrder}
-              />
-            )}
-          </section>
-          {isMobile ? (
-            isLoading ? (
-              <></>
-            ) : (
-              <TotalSum
-                handleToggleIfMobile={handleToggleIfMobile}
-                isMobileOrdered={isMobileOrdered}
-                buttonSize='large'
-                isMobile={isMobile}
-                handlePerformOrder={handlePerformOrder}
-                totalSumOrder={totalSumOrder}
-              />
-            )
-          ) : (
-            <></>
-          )}
-        </main>
-      </div>{' '}
-      {isPerformed ? modalPerformed : <></>}
-      {isIngredientsShown ? modalIngredient : <></>}
+                {isMobile ? (
+                  <></>
+                ) : isLoading ? (
+                  <></>
+                ) : (
+                  <TotalSum
+                    handleToggleIfMobile={handleToggleIfMobile}
+                    isMobileOrdered={isMobileOrdered}
+                    buttonSize='large'
+                    isMobile={isMobile}
+                    handlePerformOrder={handlePerformOrder}
+                  />
+                )}
+              </section>
+              {isMobile ? (
+                isLoading ? (
+                  <></>
+                ) : (
+                  <TotalSum
+                    handleToggleIfMobile={handleToggleIfMobile}
+                    isMobileOrdered={isMobileOrdered}
+                    buttonSize='large'
+                    isMobile={isMobile}
+                    handlePerformOrder={handlePerformOrder}
+                  />
+                )
+              ) : (
+                <></>
+              )}
+            </main>
+          </div>{' '}
+          {isPerformed ? modalPerformed : <></>}
+          {isIngredientsShown ? modalIngredient : <></>}
+        </IngredientsContext.Provider>
+      </TotalSumContext.Provider>
     </>
   );
 }

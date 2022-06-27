@@ -10,25 +10,22 @@ const { modal, modal__button, container } = modalStyles;
 const modalRoot = document.getElementById('modal');
 
 function Modal(props) {
-const [isOpened, setIsOpened] = React.useState(props.isOpen);
-
+  const [isOpened, setIsOpened] = React.useState(props.isOpen);
 
   React.useEffect(() => {
     function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
+      if (evt.key === 'Escape') {
         props.closeAllPopups();
         setIsOpened(false);
       }
     }
-    if(isOpened) {
+    if (isOpened) {
       document.addEventListener('keydown', closeByEscape);
       return () => {
         document.removeEventListener('keydown', closeByEscape);
-      }
+      };
     }
-    
-  }, [isOpened]) 
-
+  }, [isOpened]);
 
   const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
 

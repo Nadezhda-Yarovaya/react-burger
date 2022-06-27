@@ -1,18 +1,21 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import PropTypes from 'prop-types';
+import { IngredientsContext } from '../../contexts/appContexts';
 
 import { ingredientType } from '../../utils/types';
 
 const { title, list, tabs, ingredients } = ingredientsStyles;
 
 function BurgerIngredients(props) {
-  const { mainIngredients, changeChoice, selectedCard, isLoading } = props;
+  const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
+  const ingredientsFromContext = useContext(IngredientsContext);
+  const mainIngredients = ingredientsFromContext.mainIngredients;
 
   /*
   function changeChoice(items, cardId, setArray) {
@@ -108,11 +111,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  mainIngredients: PropTypes.shape({
-    buns: PropTypes.arrayOf(ingredientType),
-    sauce: PropTypes.arrayOf(ingredientType),
-    bunmains: PropTypes.arrayOf(ingredientType),
-  }).isRequired,
   changeChoice: PropTypes.func.isRequired,
   selectedCard: ingredientType.isRequired,
   isLoading: PropTypes.bool.isRequired,

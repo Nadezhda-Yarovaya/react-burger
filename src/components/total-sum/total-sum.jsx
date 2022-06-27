@@ -9,6 +9,8 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
+import { TotalSumContext } from '../../contexts/appContexts';
+
 const { container, sum } = totalSumStyles;
 
 function TotalSum(props) {
@@ -18,8 +20,9 @@ function TotalSum(props) {
     buttonSize,
     isMobile,
     handlePerformOrder,
-    totalSumOrder,
   } = props;
+
+  const { totalSumOrder } = React.useContext(TotalSumContext);
 
   return (
     <div className={`pr-4 mt-10 ${container}`}>
@@ -29,7 +32,7 @@ function TotalSum(props) {
             isMobile ? 'text_type_digits-default' : 'text_type_digits-medium'
           }`}
         >
-          {totalSumOrder}
+          {totalSumOrder.totalSum}
         </p>
         {isMobile ? (
           <CurrencyIcon type='primary' />
@@ -58,7 +61,7 @@ TotalSum.propTypes = {
   buttonSize: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
   handlePerformOrder: PropTypes.func.isRequired,
-  totalSumOrder: PropTypes.number.isRequired,
+  //totalSumOrder: PropTypes.number.isRequired,
 };
 
 export default TotalSum;
