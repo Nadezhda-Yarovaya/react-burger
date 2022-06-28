@@ -6,7 +6,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import {
   IngredientsContext,
   TotalSumContext,
-} from '../../contexts/appContexts';
+} from '../../services/appContexts';
 import { useWindowSize } from '../../hooks/resize.js';
 import TotalSum from '../total-sum/total-sum';
 import Modal from '../modal/modal';
@@ -24,9 +24,8 @@ const initialItem = {
 function totalSumReducer(state, action) {
   switch (action.type) {
     case 'set':
-      return { totalSum: action.payload };
-    default:
-      throw new Error(`Такого типа экшна нет: ${action.type}`);
+      return { ...state, totalSum: action.payload };
+    default: return state;
   }
 }
 
@@ -35,12 +34,12 @@ const {
   main,
   ingredients,
   constructor,
-  constructor_displayed,
-  constructor_notdisplayed,
+  section_notdisplayed,
+  section_flex
 } = appStyles;
 
 function App() {
-  const [allIngredients, setAllIngredients] = useState([{ name: 'тест' }]);
+  const [allIngredients, setAllIngredients] = useState(null);
   const [width, height] = useWindowSize();
   const [isMobileOrdered, setIsMobiledOrdered] = useState(false);
   const [isPerformed, setIsPerformed] = useState(false);
@@ -95,7 +94,7 @@ function App() {
   function defineStuffingsAndTotal(allData) {
     let allPrices = [];
     const tempStuffings = allData.filter(
-      (item, index) => index > 2 && index < 9
+      (item, index) => index > 2 && index < 11
     );
     setStuffingsList(tempStuffings);
     tempStuffings.forEach((item, index) => {
@@ -137,7 +136,8 @@ function App() {
     stuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
-
+    ingredientsFormed.push(allIngredients[0]._id);
+    console.log('both sides of bun: ', ingredientsFormed);
     api
       .makeOrder({ ingredients: ingredientsFormed })
       .then((res) => {
@@ -182,32 +182,6 @@ function App() {
     setIsPerformed(false);
   }
 
-  const modalPerformed = (
-    <Modal
-      closeModal={closeIsPerformed}
-      closeAllPopups={closeAllPopups}
-      windowWidth={width}
-      windowHeight={height}
-      isMobile={isMobile}
-      type='orderPerformed'
-      isOpen={true}
-    >
-      <OrderDetails />
-    </Modal>
-  );
-
-  const modalIngredient = (
-    <Modal
-      closeModal={closeModalIngredientsShown}
-      closeAllPopups={closeAllPopups}
-      windowWidth={width}
-      windowHeight={height}
-      isMobile={isMobile}
-      isOpen={true}
-    >
-      <IngredientDetails selectedCard={selectedCard} />
-    </Modal>
-  );
 
   return (
     <>
@@ -220,12 +194,12 @@ function App() {
 
             <main className={`${main} mb-10`}>
               <section
-                className={`mr-10 ${isMobile ? 'pb-10' : ''} ${ingredients} ${
+                className={`mr-10} ${ingredients} ${
                   isMobile
                     ? isMobileOrdered
-                      ? constructor_notdisplayed
-                      : ''
-                    : ''
+                      ? section_notdisplayed
+                      : section_flex
+                    : (`${section_flex}`)
                 }`}
               >
                 <BurgerIngredients
@@ -235,13 +209,7 @@ function App() {
                 />
               </section>
               <section
-                className={`${constructor} ${
-                  isMobile
-                    ? isMobileOrdered
-                      ? constructor_displayed
-                      : constructor_notdisplayed
-                    : ''
-                }`}
+                className={`${constructor} `}
               >
                 <BurgerConstructor
                   isMobileOrdered={isMobileOrdered}
@@ -251,39 +219,56 @@ function App() {
                   bunSelected={bunSelected}
                 />
 
-                {isMobile ? (
-                  <></>
-                ) : isLoading ? (
+{isLoading ? (
                   <></>
                 ) : (
                   <TotalSum
                     handleToggleIfMobile={handleToggleIfMobile}
                     isMobileOrdered={isMobileOrdered}
-                    buttonSize='large'
                     isMobile={isMobile}
                     handlePerformOrder={handlePerformOrder}
                   />
-                )}
+                )}             
+                
               </section>
-              {isMobile ? (
+          
+              {/*isMobile ? (
                 isLoading ? (
                   <></>
                 ) : (
                   <TotalSum
                     handleToggleIfMobile={handleToggleIfMobile}
                     isMobileOrdered={isMobileOrdered}
-                    buttonSize='large'
                     isMobile={isMobile}
                     handlePerformOrder={handlePerformOrder}
                   />
                 )
               ) : (
                 <></>
-              )}
+              )*/}
             </main>
           </div>{' '}
-          {isPerformed ? modalPerformed : <></>}
-          {isIngredientsShown ? modalIngredient : <></>}
+          {isPerformed ?    <Modal
+      closeModal={closeIsPerformed}
+      closeAllPopups={closeAllPopups}
+      windowWidth={width}
+      windowHeight={height}
+      isMobile={isMobile}
+      type='orderPerformed'
+      isOpen={true}
+    >
+      <OrderDetails />
+    </Modal> : <></>}
+     {isIngredientsShown ?  <Modal
+      closeModal={closeModalIngredientsShown}
+      closeAllPopups={closeAllPopups}
+      windowWidth={width}
+      windowHeight={height}
+      isMobile={isMobile}
+      isOpen={true}
+    >
+      <IngredientDetails selectedCard={selectedCard} />
+    </Modal> : <></>}
         </IngredientsContext.Provider>
       </TotalSumContext.Provider>
     </>

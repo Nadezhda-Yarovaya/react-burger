@@ -20,9 +20,16 @@
 .page__section {
   width: 100%;
   max-width: calc(((1260 - 80) / 2) * 100%);
-  display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+.section_notdisplayed {
+  display: none;
+}
+
+.section_flex {
+  display: flex;
 }
 
 .ingredients {
@@ -32,17 +39,6 @@
 .constructor {
   composes: page__section;
   padding: 0 0 52px 0;
-}
-
-.constructor_notdisplayed {
-  display: none;
-}
-
-.constructor_displayed {
-  position: absolute;
-  top: 0;
-  z-index: 3;
-  background-color: black;
 }
 
 @media screen and (max-width: 1260px) {

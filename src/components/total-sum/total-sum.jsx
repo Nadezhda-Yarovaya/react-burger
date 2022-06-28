@@ -9,7 +9,7 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
-import { TotalSumContext } from '../../contexts/appContexts';
+import { TotalSumContext } from '../../services/appContexts';
 
 const { container, sum } = totalSumStyles;
 
@@ -17,7 +17,6 @@ function TotalSum(props) {
   const {
     handleToggleIfMobile,
     isMobileOrdered,
-    buttonSize,
     isMobile,
     handlePerformOrder,
   } = props;
@@ -42,7 +41,7 @@ function TotalSum(props) {
       </div>
       <Button
         type='primary'
-        size={buttonSize}
+        size={isMobile ? 'small' : 'large'}
         onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}
       >
         {isMobile
@@ -58,7 +57,6 @@ function TotalSum(props) {
 TotalSum.propTypes = {
   handleToggleIfMobile: PropTypes.func.isRequired,
   isMobileOrdered: PropTypes.bool.isRequired,
-  buttonSize: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
   handlePerformOrder: PropTypes.func.isRequired,
   //totalSumOrder: PropTypes.number.isRequired,

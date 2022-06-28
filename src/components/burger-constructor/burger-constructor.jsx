@@ -10,7 +10,8 @@ import MobileConstructorElement from '../mobile-constructor-element/mobile-const
 
 import { ingredientType } from '../../utils/types';
 
-import { IngredientsContext } from '../../contexts/appContexts';
+import { IngredientsContext } from '../../services/appContexts';
+import { listenerCount } from 'events';
 
 const {
   constructor__item,
@@ -24,6 +25,10 @@ const {
   constructor__button,
   stuffings__item,
   icon,
+  list_displayed, 
+  list_notdisplayed,
+  list_flex,
+  container
 } = constructorStyles;
 
 function BurgerConstructor(props) {
@@ -33,17 +38,24 @@ function BurgerConstructor(props) {
     setMobiledOrdered,
     isLoading,
     bunSelected,
+    
   } = props;
 
-  const ingredientsFromContext = useContext(IngredientsContext);
-  const stuffingsList = ingredientsFromContext.stuffingsList;
+  const {stuffingsList} = useContext(IngredientsContext);
 
   const text = bunSelected.name;
   const price = parseInt(bunSelected.price).toString();
   const thumbnail = bunSelected.image;
 
   return (
-    <>
+    
+    <div className={`${container} ${
+      isMobile
+        ? (isMobileOrdered
+          ? list_displayed
+          : list_notdisplayed)
+        : (`${list_flex}`)
+    }`}>
       {isMobile && isMobileOrdered ? (
         <div className={constructor__order}>
           <p className={constructor__title}>Заказ</p>
@@ -59,7 +71,7 @@ function BurgerConstructor(props) {
       ) : (
         <></>
       )}
-      <ul className={`${list}`}>
+      <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
           <li style={{ alignSelf: 'flex-start' }}>
             <p className='text text_type_main-small'>Загрузка...</p>
@@ -139,8 +151,8 @@ function BurgerConstructor(props) {
             </li>
           </>
         )}
-      </ul>
-    </>
+      </ul></div>
+    
   );
 }
 
