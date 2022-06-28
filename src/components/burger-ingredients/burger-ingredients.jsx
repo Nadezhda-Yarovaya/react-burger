@@ -1,20 +1,62 @@
 import React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import PropTypes from 'prop-types';
-import { IngredientsContext } from '../../services/appContexts';
+import { IngredientsContext } from '../../services/app-contexts';
 
 import { ingredientType } from '../../utils/types';
 
 const { title, list, tabs, ingredients } = ingredientsStyles;
+const initialItem = {
+  name: 'Выберите булку',
+  image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
+  price: 0,
+  _id: '60d3b41abdacab0026a733c7',
+};
 
 function BurgerIngredients(props) {
   const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
-  const { mainIngredients } = useContext(IngredientsContext);
+  const { allIngredients } = useContext(IngredientsContext);
+  const [mainIngredients, setMainIngredients] = useState({
+    buns: [initialItem],
+    sauce: [initialItem],
+    main: [initialItem],
+  });
+
+  useEffect(() => {
+    if (allIngredients) {
+      const arrayWithChosen = addChosenItems(allIngredients);
+      setMainIngredients({
+        buns: filterByType(arrayWithChosen, 'bun'),
+        sauce: filterByType(arrayWithChosen, 'sauce'),
+        main: filterByType(arrayWithChosen, 'main'),
+      });
+    }
+  }, [allIngredients]);
+
+  function filterByType(arr, type) {
+    return arr.filter((item) => item.type === type);
+  }
+
+  function addChosenItems(arr) {
+    return arr.map((item, index) => {
+      if (index === 0 || index === 4 || index === 5) {
+        return {
+          ...item,
+          chosen: true,
+        };
+      } else {
+        return {
+          ...item,
+          chosen: false,
+        };
+      }
+    });
+  }
 
   /*
   function changeChoice(items, cardId, setArray) {
@@ -46,7 +88,7 @@ function BurgerIngredients(props) {
         <p className='text text_type_main-small'>Загрузка...</p>
       ) : (
         <div className={ingredients}>
-          <div className={`ml-1 ${tabs}`}>
+          <div className={`${tabs}`}>
             <Tab
               value='one'
               active={current === 'one'}

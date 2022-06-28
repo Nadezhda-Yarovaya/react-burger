@@ -2,7 +2,7 @@ import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 
 import doneSign from '../../images/done.svg';
-import { IngredientsContext } from '../../services/appContexts';
+import { IngredientsContext } from '../../services/app-contexts';
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 

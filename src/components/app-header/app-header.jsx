@@ -1,9 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
+
 import {
-  BurgerIcon,
-  ListIcon,
   Logo,
-  ProfileIcon,
   MenuIcon,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -12,12 +11,9 @@ import HeaderItem from '../header-item/header-item';
 import headerStyles from './app-header.module.css';
 
 import logoMobile from '../../images/logomobile.svg';
-import { useState } from 'react';
 
 import openSubmIcon from '../../images/openSubmenu.svg';
 import closeSubmIcon from '../../images/closeSubmenu.svg';
-
-import PropTypes from 'prop-types';
 
 const {
   header,
@@ -56,15 +52,11 @@ function AppHeader(props) {
         <div className={header__desktop}>
           <nav className={menu}>
             <a href='#' className={`mr-6 ${menu__item}`}>
-              <HeaderItem text='Конструктор' isMobile={props.isMobile} />
+              <HeaderItem text='Конструктор' />
             </a>
             <a href='#' className={`ml-5 ${menu__item}`}>
               {' '}
-              <HeaderItem
-                text='Лента заказов'
-                secondary={true}
-                isMobile={props.isMobile}
-              />
+              <HeaderItem text='Лента заказов' secondary={true} />
             </a>
           </nav>
           <div className={logo}>
@@ -74,11 +66,7 @@ function AppHeader(props) {
           </div>
           <a href='#' className={`${menu__item}`}>
             {' '}
-            <HeaderItem
-              text='Личный кабинет'
-              secondary={true}
-              isMobile={props.isMobile}
-            />{' '}
+            <HeaderItem text='Личный кабинет' secondary={true} />{' '}
           </a>
         </div>
 
@@ -103,7 +91,7 @@ function AppHeader(props) {
         </div>
         <div className={mobilemenu__list}>
           <button className={`${menu__item}`} onClick={toggleSubMenu}>
-            <HeaderItem text='Личный кабинет' isMobile={props.isMobile} />
+            <HeaderItem text='Личный кабинет' />
             <img
               src={isSubMenuOpened ? closeSubmIcon : openSubmIcon}
               className={menu__image}
@@ -117,41 +105,29 @@ function AppHeader(props) {
           >
             <a href='#' className={`${menu__item} ${submenu__item}`}>
               {' '}
-              <HeaderItem text='Профиль' isMobile={props.isMobile} />
+              <HeaderItem text='Профиль' />
             </a>
             <a href='#' className={`${menu__item} ${submenu__item}`}>
               {' '}
-              <HeaderItem text='История заказов' isMobile={props.isMobile} />
+              <HeaderItem text='История заказов' />
             </a>
             <a href='#' className={`${menu__item} ${submenu__item}`}>
               {' '}
-              <HeaderItem text='Выход' isMobile={props.isMobile} />
+              <HeaderItem text='Выход' />
             </a>
           </div>
           <a href='#' className={`pt-3 pb-3 pl-0 ${menu__item}`}>
             {' '}
-            <HeaderItem
-              icon={BurgerIcon}
-              text={'Конструктор'}
-              isMobile={props.isMobile}
-            />
+            <HeaderItem text={'Конструктор'} />
           </a>
           <a href='#' className={`pt-3 pb-3 ${menu__item}`}>
             {' '}
-            <HeaderItem
-              icon={ListIcon}
-              text='Лента заказов'
-              isMobile={props.isMobile}
-            />
+            <HeaderItem text='Лента заказов' />
           </a>
         </div>
       </div>
     </header>
   );
 }
-
-AppHeader.propTypes = {
-  isMobile: PropTypes.bool.isRequired,
-};
 
 export default AppHeader;
