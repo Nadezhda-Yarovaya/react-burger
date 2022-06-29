@@ -30,7 +30,9 @@
 .tabs {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  /*flex-direction: row;*/
+
+  justify-content: space-between;
 }
 
 .ingredients {
@@ -53,16 +55,13 @@
   border: 0;
 }
 
-@media screen and (max-width: 1200px) {
-  .tabs {
-    flex-direction: column;
+@media screen and (max-width: 960px) {
+  .list {
+    max-height: 2500px;
   }
 }
 
 @media screen and (max-width: 790px) {
-  .tabs {
-    flex-direction: column;
-  }
   .list {
     max-height: 2000px;
     padding: 0 20px;
@@ -70,5 +69,8 @@
   .title {
     text-align: center;
     font-size: 28px;
+  }
+  .list::-webkit-scrollbar {
+    width: 0;
   }
 }

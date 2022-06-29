@@ -63,16 +63,24 @@
   right: -4px;
 }
 
-@media screen and (max-width: 1040px) {
+@media screen and (max-width: 1150px) {
   .list {
-    grid-template-columns: repeat(3, minmax(280px, 520px));
-    grid-column-gap: 30px;
+    grid-template-columns: repeat(2, minmax(180px, 310px));
+    grid-column-gap: 40px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(120px, 220px));
+    grid-column-gap: 10px;
   }
 }
 
 @media screen and (max-width: 790px) {
   .list {
     grid-template-columns: repeat(2, minmax(200px, 380px));
+    padding: 0 0 60px 0;
   }
 }
 

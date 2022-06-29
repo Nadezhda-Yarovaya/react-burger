@@ -1,6 +1,11 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import headerItemStyles from './header-item.module.css';
+
+import { useContext } from 'react';
+
+import { IfMobileContext } from '../../services/app-contexts';
 
 import {
   BurgerIcon,
@@ -13,6 +18,8 @@ const icons = [BurgerIcon, ListIcon, ProfileIcon];
 let Icon = icons[0];
 
 function HeaderItem(props) {
+  const { isMobile } = useContext(IfMobileContext);
+
   texts.forEach((item, ind) => {
     if (item === props.text) {
       Icon = icons[ind];
@@ -21,10 +28,10 @@ function HeaderItem(props) {
 
   return (
     <>
-      {props.isMobile ? (
+      {isMobile ? (
         <></>
       ) : (
-        <div className={`${props.isMobile ? 'mr-2' : 'ml-1 mr-2'}`}>
+        <div className={`${headerItemStyles.icon} ml-1 mr-2`}>
           <Icon type={`${props.secondary ? 'secondary' : 'primary'}`} />
         </div>
       )}
@@ -40,7 +47,6 @@ function HeaderItem(props) {
 }
 
 HeaderItem.propTypes = {
-  isMobile: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   secondary: PropTypes.bool,
 };

@@ -1,148 +1,175 @@
-import React from 'react';
+import React, { useState, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ConstructorElement,
-  DragIcon,
-  CloseIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
-import MobileConstructorElement from '../mobile-constructor-element/mobile-constructor-element';
+import ConstructorList from '../constructor-list/constructor-list';
 
-import { ingredientType } from '../../utils/types';
+import { TotalSumContext } from '../../services/app-contexts';
+import api from '../../utils/api';
+
+import {
+  IngredientsContext,
+  IfMobileContext,
+} from '../../services/app-contexts';
+import TotalSum from '../total-sum/total-sum';
+const initialSum = { totalSum: 0 };
+
+function totalSumReducer(state, action) {
+  switch (action.type) {
+    case 'set':
+      return { ...state, totalSum: action.payload };
+    default:
+      return state;
+  }
+}
+
+const initialItem = {
+  name: 'ТЕСТ Выберите булку',
+  image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
+  price: 0,
+  _id: '60d3b41abdacab0026a733c7',
+};
 
 const {
-  constructor__item,
-  stuffings,
-  item,
-  item_type_bun,
-  item_type_stuffing,
-  list,
   constructor__title,
   constructor__order,
   constructor__button,
-  stuffings__item,
-  icon,
+  list_displayed,
+  list_notdisplayed,
+  list_flex,
+  container,
 } = constructorStyles;
 
 function BurgerConstructor(props) {
+  const [totalSumOrder, setTotalSumOrder] = useReducer(
+    totalSumReducer,
+    initialSum,
+    undefined
+  );
+  const [stuffingsList, setStuffingsList] = useState([]);
+
+  const { isMobile } = useContext(IfMobileContext);
+
   const {
     isMobileOrdered,
-    isMobile,
-    allIngredients,
-    stuffingsList,
     setMobiledOrdered,
     isLoading,
+    isPerformed,
+    setIsPerformed,
+    setOrderNumber,
   } = props;
+
+  const { allIngredients } = useContext(IngredientsContext);
+  const [bunSelected, setBunSelected] = useState(initialItem);
+
+  useEffect(() => {
+    if (allIngredients) {
+      const stuffings = defineStuffings(allIngredients);
+      setStuffingsList(stuffings);
+      calculateAllPrices(stuffings);
+      setBunSelected(allIngredients[0]);
+    }
+  }, [allIngredients]);
+
+  function defineStuffings(allData) {
+    return allData.filter((item, index) => index > 4 && index < 11);
+  }
+
+  function calculateAllPrices(stuffings) {
+    let allPrices = [];
+    stuffings.forEach((item, index) => {
+      allPrices[index] = item.price;
+    });
+    const finalNumber =
+      allPrices.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        1
+      ) +
+      bunSelected.price * 2;
+
+    setTotalSumOrder({ type: 'set', payload: finalNumber });
+  }
+
+  function handlePerformOrder() {
+    const ingredientsFormed = [];
+    ingredientsFormed.push(allIngredients[0]._id);
+
+    stuffingsList.forEach((item) => {
+      ingredientsFormed.push(item._id);
+    });
+
+    ingredientsFormed.push(allIngredients[0]._id); //вторая сторона булки тоже добавлена
+    placeOrder(ingredientsFormed);
+  }
+
+  function placeOrder(ingredientsInOrder) {
+    api
+      .makeOrder({ ingredients: ingredientsInOrder })
+      .then((res) => {
+        setIsPerformed(!isPerformed);
+        setOrderNumber(res.order.number);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleToggleIfMobile() {
+    if (isMobileOrdered) {
+      handlePerformOrder();
+    }
+    setMobiledOrdered(!isMobileOrdered);
+  }
+
+  const mobileListStyle = isMobileOrdered ? list_displayed : list_notdisplayed;
 
   return (
     <>
-      {isMobile && isMobileOrdered ? (
-        <div className={constructor__order}>
-          <p className={constructor__title}>Заказ</p>
-          <button
-            onClick={() => {
-              setMobiledOrdered(false);
-            }}
-            className={constructor__button}
-          >
-            <CloseIcon type='primary' />
-          </button>
+      <TotalSumContext.Provider value={{ totalSumOrder }}>
+        <div
+          className={`${container}
+    ${isMobile ? mobileListStyle : list_flex}`}
+        >
+          {isMobile && isMobileOrdered ? (
+            <div className={constructor__order}>
+              <p className={constructor__title}>Заказ</p>
+              <button
+                onClick={() => {
+                  setMobiledOrdered(false);
+                }}
+                className={constructor__button}
+              >
+                <CloseIcon type='primary' />
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+          <ConstructorList
+            stuffingsList={stuffingsList}
+            isLoading={isLoading}
+            bunSelected={bunSelected}
+          />
         </div>
-      ) : (
-        <></>
-      )}
-      <ul className={`${list}`}>
         {isLoading ? (
-          <li style={{ alignSelf: 'flex-start' }}>
-            <p className='text text_type_main-small'>Загрузка...</p>
-          </li>
+          <></>
         ) : (
-          <>
-            <li className={`${item} ${item_type_bun} pr-4 pl-4`}>
-              <div className={`mb-4 ${constructor__item}`}>
-                {isMobile ? (
-                  <MobileConstructorElement
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={(parseInt(allIngredients[0].price) / 2).toString()}
-                    thumbnail={allIngredients[0].image}
-                  />
-                ) : (
-                  <ConstructorElement
-                    type='top'
-                    isLocked={true}
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={allIngredients[0].price / 2}
-                    thumbnail={allIngredients[0].image}
-                  />
-                )}
-              </div>
-            </li>
-            <li className={`${item_type_stuffing} pl-4`}>
-              <ul className={stuffings}>
-                {stuffingsList.map((item, index, arr) => (
-                  <li
-                    className={`${
-                      index !== stuffingsList.length - 1 ? 'mb-4 ' : ''
-                    }${stuffings__item} mr-2`}
-                    key={item._id}
-                  >
-                    <div className={`${constructor__item}`}>
-                      {isMobile ? (
-                        <MobileConstructorElement
-                          text={`${item.name}`}
-                          price={item.price.toString()}
-                          thumbnail={item.image}
-                        />
-                      ) : (
-                        <>
-                          <button className={`mr-2 ${icon}`}>
-                            <DragIcon type='primary' />
-                          </button>
-                          <ConstructorElement
-                            text={item.name}
-                            price={item.price}
-                            thumbnail={item.image}
-                          />
-                        </>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </li>
-            <li className={`${item} ${item_type_bun} pr-4 pl-4`}>
-              <div className={`mt-4 ${constructor__item}`}>
-                {isMobile ? (
-                  <MobileConstructorElement
-                    text={`${allIngredients[0].name} (верх)`}
-                    price={(parseInt(allIngredients[0].price) / 2).toString()}
-                    thumbnail={allIngredients[0].image}
-                  />
-                ) : (
-                  <ConstructorElement
-                    type='bottom'
-                    isLocked={true}
-                    text={`${allIngredients[0].name} (низ)`}
-                    price={allIngredients[0].price / 2}
-                    thumbnail={allIngredients[0].image}
-                  />
-                )}
-              </div>
-            </li>
-          </>
+          <TotalSum
+            handleToggleIfMobile={handleToggleIfMobile}
+            isMobileOrdered={isMobileOrdered}
+            handlePerformOrder={handlePerformOrder}
+          />
         )}
-      </ul>
+      </TotalSumContext.Provider>
     </>
   );
 }
 
 BurgerConstructor.propTypes = {
   isMobileOrdered: PropTypes.bool.isRequired,
-  isMobile: PropTypes.bool.isRequired,
-  allIngredients: PropTypes.arrayOf(ingredientType).isRequired,
-  stuffingsList: PropTypes.arrayOf(ingredientType).isRequired,
   setMobiledOrdered: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isPerformed: PropTypes.bool.isRequired,
+  setIsPerformed: PropTypes.func.isRequired,
+  setOrderNumber: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

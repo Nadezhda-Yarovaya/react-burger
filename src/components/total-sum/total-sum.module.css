@@ -13,9 +13,20 @@
   max-width: 200px;
 }
 
+@media screen and (max-width: 1150px) {
+  .container {
+    margin: 20px 0 0 0;
+  }
+
+  .sum {
+    margin: 0 16px 0 0;
+  }
+}
+
 @media screen and (max-width: 790px) {
   .container {
     position: fixed;
+    width: 100%;
     background-color: var(--modal-bg);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

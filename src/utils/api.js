@@ -1,18 +1,39 @@
-const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients';
+class Api {
+  constructor(apiData) {
+    this._baseUrl = apiData.BASE_URL;
+    this._headers = apiData.headers;
+  }
 
-function getIngredients() {
-  return fetch(BASE_URL, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => {
+  _getResponse(res) {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Ошибка соединения: ${res.status}`);
+      console.log(res);
+      return Promise.reject(`Ошибка при соединении: ${res.status}`);
     }
-  });
-}
+  }
 
-export default getIngredients;
+  getIngredients() {
+    return fetch(`${this._baseUrl}/ingredients`, {
+      method: 'GET',
+      headers: this._headers,
+    }).then(this._getResponse);
+  }
+
+  makeOrder(ingredients) {
+    return fetch(`${this._baseUrl}/orders`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify(ingredients),
+    }).then(this._getResponse);
+  }
+}
+const api = new Api({
+  BASE_URL: 'https://norma.nomoreparties.space/api',
+  headers: {
+    "Content-Type": "application/json",
+    
+  },
+});
+
+export default api;

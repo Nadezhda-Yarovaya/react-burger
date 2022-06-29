@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import { IfMobileContext } from '../../services/app-contexts';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
 const { modal, modal__button, container } = modalStyles;
@@ -10,25 +11,24 @@ const { modal, modal__button, container } = modalStyles;
 const modalRoot = document.getElementById('modal');
 
 function Modal(props) {
-const [isOpened, setIsOpened] = React.useState(props.isOpen);
+  const [isOpened, setIsOpened] = React.useState(props.isOpen);
 
+  const { isMobile } = useContext(IfMobileContext);
 
   React.useEffect(() => {
     function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
+      if (evt.key === 'Escape') {
         props.closeAllPopups();
         setIsOpened(false);
       }
     }
-    if(isOpened) {
+    if (isOpened) {
       document.addEventListener('keydown', closeByEscape);
       return () => {
         document.removeEventListener('keydown', closeByEscape);
-      }
+      };
     }
-    
-  }, [isOpened]) 
-
+  }, [isOpened]);
 
   const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
 
@@ -37,7 +37,7 @@ const [isOpened, setIsOpened] = React.useState(props.isOpen);
   const leftPosition =
     (
       (props.windowWidth -
-        (props.isMobile ? (props.windowWidth < 480 ? 290 : 420) : 720)) /
+        (isMobile ? (props.windowWidth < 480 ? 290 : 420) : 720)) /
       2
     ).toString() + 'px';
 
@@ -69,7 +69,8 @@ Modal.propTypes = {
   ]).isRequired,
   windowHeight: PropTypes.number.isRequired,
   windowWidth: PropTypes.number.isRequired,
-  isMobile: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  type: PropTypes.string,
 };
 
 export default Modal;

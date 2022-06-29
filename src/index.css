@@ -9,3 +9,110 @@
   --secondary-text: #8585ad;
   --accent: #4c4cff;
 }
+
+.constructor-element__action {
+  display: inline-flex !important;
+}
+
+.tab_tab__ffQSK {
+  width: 100% !important;
+  max-width: 260px;
+}
+
+@media screen and (max-width: 1210px) {
+  .tab_tab__ffQSK {
+    min-width: 100px !important;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .tab_tab__ffQSK {
+    min-width: 60px !important;
+    max-width: 180px;
+    padding: 16px 8px !important;
+  }
+
+  .constructor-element {
+    max-width: 450px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .constructor-element__image {
+    margin-right: 0 !important;
+    width: 68px !important;
+    height: 32px !important;
+  }
+
+  .constructor-element {
+    max-width: 360px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+
+  .constructor-element__price {
+    font-size: 24px !important;
+  }
+
+  .tab_tab__ffQSK {
+    min-width: 30px !important;
+    max-width: 140px;
+    padding: 16px 4px !important;
+  }
+
+  .constructor-element_pos_top {
+    margin: 0 0 20px 0 !important;
+  }
+
+  .text_type_digits-medium{
+    font-size: 38px!important;
+  }
+
+  
+}
+
+@media screen and (max-width: 790px) {
+  .constructor-element {
+    background: none !important;
+    width: 100% !important;
+    max-width: 720px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid rgba(242, 242, 243, 0.2);
+    border-radius: 0 !important;
+  }
+
+  .constructor-element__row {
+    width: 100% !important;
+  }
+
+  .constructor-element__image {
+    margin-right: 0 !important;
+  }
+
+  .constructor-element_pos_top {
+    border-radius: 0 !important;
+  }
+
+  .constructor-element__action {
+    display: none !important;
+  }
+
+  .constructor-element__price {
+    padding: 0 8px 0 0;
+  }
+  .tab_tab__ffQSK {
+    min-width: 30px !important;
+    max-width: 230px;
+    padding: 16px 16px !important;
+  }
+
+  .button_button__gss3G {
+    padding: 10px 32px!important;
+  }
+
+}

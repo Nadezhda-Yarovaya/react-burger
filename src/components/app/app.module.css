@@ -20,8 +20,8 @@
 .page__section {
   width: 100%;
   max-width: calc(((1260 - 80) / 2) * 100%);
-  display: flex;
   flex-direction: column;
+  display: flex;
   box-sizing: border-box;
 }
 
@@ -31,18 +31,16 @@
 
 .constructor {
   composes: page__section;
-  padding: 0 0 52px 0;
+  padding: 0;
+  justify-content: space-between;
 }
 
-.constructor_notdisplayed {
+.section_notdisplayed {
   display: none;
 }
 
-.constructor_displayed {
-  position: absolute;
-  top: 0;
-  z-index: 3;
-  background-color: black;
+.section_flex {
+  display: flex;
 }
 
 @media screen and (max-width: 1260px) {
@@ -51,21 +49,19 @@
   }
 }
 
-@media screen and (max-width: 1200px) {
-  .ingredients {
-    margin: 0 24px 40px 0;
-  }
-}
-
-@media screen and (max-width: 1040px) {
-  .main {
-    flex-direction: column;
+@media screen and (max-width: 960px) {
+  .constructor {
+    justify-content: flex-start;
   }
 }
 
 @media screen and (max-width: 790px) {
   .main {
     padding: 0;
+    flex-direction: column;
+  }
+  .constructor {
+    justify-content: space-between;
   }
 }
 

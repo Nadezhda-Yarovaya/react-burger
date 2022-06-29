@@ -1,13 +1,18 @@
+import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 
 import doneSign from '../../images/done.svg';
+import { IngredientsContext } from '../../services/app-contexts';
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 
 function OrderDetails() {
+  const ingredientsFromContext = React.useContext(IngredientsContext);
+  const orderNumber = ingredientsFromContext.orderNumber;
+
   return (
     <>
-      <p className={`text text_type_digits-large ${digits}`}>03456</p>
+      <p className={`text text_type_digits-large ${digits}`}>{orderNumber}</p>
       <p className={`text text_type_main-default mt-8 mb-15`}>
         Идентификатор заказа
       </p>
