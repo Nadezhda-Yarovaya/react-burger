@@ -101,7 +101,7 @@ function App() {
                   isLoading={isLoading}
                 />
               </section>
-              <section className={`${constructor} `}>
+              <section className={`${constructor}`}>
                 <BurgerConstructor
                   isMobileOrdered={isMobileOrdered}
                   setMobiledOrdered={setIsMobiledOrdered}

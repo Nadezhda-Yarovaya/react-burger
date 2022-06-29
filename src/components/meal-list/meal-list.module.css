@@ -80,6 +80,7 @@
 @media screen and (max-width: 790px) {
   .list {
     grid-template-columns: repeat(2, minmax(200px, 380px));
+    padding: 0 0 60px 0;
   }
 }
 

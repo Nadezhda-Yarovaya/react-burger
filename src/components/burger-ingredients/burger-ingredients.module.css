@@ -55,6 +55,12 @@
   border: 0;
 }
 
+@media screen and (max-width: 960px) {
+  .list {
+    max-height: 2500px;
+  }
+}
+
 @media screen and (max-width: 790px) {
   .list {
     max-height: 2000px;
@@ -63,5 +69,8 @@
   .title {
     text-align: center;
     font-size: 28px;
+  }
+  .list::-webkit-scrollbar {
+    width: 0;
   }
 }

@@ -53,13 +53,15 @@
   .constructor__item {
     justify-content: flex-start;
     padding: 0;
+    margin: 0;
   }
 }
 
 @media screen and (max-width: 460px) {
+  /*
   .constructor__item {
     max-width: 350px;
     margin: 0;
     padding: 0;
-  }
+  }*/
 }

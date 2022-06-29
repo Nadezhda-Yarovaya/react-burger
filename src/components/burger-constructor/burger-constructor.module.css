@@ -14,6 +14,11 @@
   display: none;
 }
 
+.list_flex {
+  display: flex;
+  width: 100%;
+}
+
 .list_displayed {
   position: absolute;
   top: 0;

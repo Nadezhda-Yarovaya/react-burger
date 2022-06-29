@@ -17,6 +17,8 @@ const {
   list_flex,
 } = constructorListStyles;
 
+/* will perform later delete by swipe on mobile */
+
 function ConstructorList(props) {
   const { bunSelected, stuffingsList, isLoading } = props;
   const { isMobile } = useContext(IfMobileContext);

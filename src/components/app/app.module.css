@@ -21,6 +21,7 @@
   width: 100%;
   max-width: calc(((1260 - 80) / 2) * 100%);
   flex-direction: column;
+  display: flex;
   box-sizing: border-box;
 }
 
@@ -30,7 +31,8 @@
 
 .constructor {
   composes: page__section;
-  padding: 0 0 52px 0;
+  padding: 0;
+  justify-content: space-between;
 }
 
 .section_notdisplayed {
@@ -47,10 +49,19 @@
   }
 }
 
+@media screen and (max-width: 960px) {
+  .constructor {
+    justify-content: flex-start;
+  }
+}
+
 @media screen and (max-width: 790px) {
   .main {
     padding: 0;
     flex-direction: column;
+  }
+  .constructor {
+    justify-content: space-between;
   }
 }
 

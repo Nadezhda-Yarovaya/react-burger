@@ -22,7 +22,7 @@ function TotalSum(props) {
   const { isMobile } = useContext(IfMobileContext);
 
   return (
-    <div className={`pr-4 mt-10 ${container}`}>
+    <div className={`pr-4 ${container}`}>
       <div className={`${isMobile ? 'mr-3' : 'mr-10'} ${sum}`}>
         <p
           className={`mr-2 text ${
