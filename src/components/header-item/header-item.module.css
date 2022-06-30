@@ -1,0 +1,9 @@
+.menu__item_inactive {
+  color: var(--secondary-text);
+}
+
+@media screen and (max-width: 790px) {
+  .icon {
+    margin: 0 16px 0 0;
+  }
+}

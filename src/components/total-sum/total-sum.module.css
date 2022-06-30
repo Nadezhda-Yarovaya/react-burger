@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sum {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 200px;
+}
+
+@media screen and (max-width: 1150px) {
+  .container {
+    margin: 20px 0 0 0;
+  }
+
+  .sum {
+    margin: 0 16px 0 0;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .container {
+    position: fixed;
+    width: 100%;
+    background-color: var(--modal-bg);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    bottom: 0;
+    left: 0;
+    padding: 16px 8px;
+    visibility: visible;
+    z-index: 4;
+  }
+}
