@@ -1,11 +1,14 @@
 import ingredientStyles from './ingredient-details.module.css';
 
 import { ingredientType } from '../../utils/types';
+import { useSelector } from 'react-redux';
 
 const { text, details, image, nutrients, nutrient } = ingredientStyles;
 
 function IngredientDetails(props) {
-  const { selectedCard } = props;
+  //const { selectedCard } = props;
+
+  const selectedCard = useSelector((store) => store.currentIngredient);
   return (
     <>
       <div className={details}>

@@ -62,11 +62,15 @@
   top: 0;
   right: -4px;
 }
-
+@media screen and (max-width: 1250px) {
+  .list {
+     grid-template-columns: repeat(2, minmax(100px, 220px));
+  grid-column-gap: 35px;
+  }
+}
 @media screen and (max-width: 1150px) {
   .list {
-    grid-template-columns: repeat(2, minmax(180px, 310px));
-    grid-column-gap: 40px;
+    grid-column-gap: 30px;
   }
 }
 

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { IngredientsContext } from '../../services/app-contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTS } from '../../services/actions';
+import { useDrag } from 'react-dnd';
 
 import { ingredientType } from '../../utils/types';
 
@@ -23,7 +24,7 @@ function BurgerIngredients(props) {
   const dispatch = useDispatch();
   const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
-  const { allIngredients } = useContext(IngredientsContext);
+  //const { allIngredients } = useContext(IngredientsContext);
   /* const [mainIngredients, setMainIngredients] = useState({
     buns: [initialItem],
     sauce: [initialItem],
@@ -31,46 +32,33 @@ function BurgerIngredients(props) {
   }); */
 
   const burgerIngredients = useSelector((store) => {
-    //console.log('store itself:', store);
-    return store.ingredients;
+    //console.log('store in burger ingred:', store);
+    return store.ingredientsByCategory;
   });
 
-  console.log('final ingred from redux: ', burgerIngredients);
+  const allIngredients = useSelector((store) => {
+    return store.listOfIngredients;
+  });
+
+  //console.log('final ingred from redux: ', burgerIngredients);
 
   useEffect(() => {
     if (allIngredients) {
-      const arrayWithChosen = addChosenItems(allIngredients);
       const formedIngredients = {
-        buns: filterByType(arrayWithChosen, 'bun'),
-        sauce: filterByType(arrayWithChosen, 'sauce'),
-        main: filterByType(arrayWithChosen, 'main'),
+        buns: filterByType(allIngredients, 'bun'),
+        sauce: filterByType(allIngredients, 'sauce'),
+        main: filterByType(allIngredients, 'main'),
       };
       //setMainIngredients(newIngredients);
       dispatch({
         type: SET_INGREDIENTS,
-        ingredients: formedIngredients,
+        ingredientsByCategory: formedIngredients,
       });
     }
   }, [allIngredients]);
 
   function filterByType(arr, type) {
     return arr.filter((item) => item.type === type);
-  }
-
-  function addChosenItems(arr) {
-    return arr.map((item, index) => {
-      if (index === 0 || index === 4 || index === 5) {
-        return {
-          ...item,
-          chosen: true,
-        };
-      } else {
-        return {
-          ...item,
-          chosen: false,
-        };
-      }
-    });
   }
 
   /*

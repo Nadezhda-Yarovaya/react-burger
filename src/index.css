@@ -1,13 +1,119 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('./vendor/normalize.css');
+@import url('./fonts/fonts.css');
+:root {
+  --container-width: 1240px;
+  --dashed-border: 2px dashed #4c4cff;
+  --modal-bg: #1c1c21;
+  --interface-bg: #131316;
+  --text-color: #f2f2f3;
+  --secondary-text: #8585ad;
+  --accent: #4c4cff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.constructor-element__action {
+  display: inline-flex !important;
+}
+
+.tab_tab__yqakw {
+  width: 100% !important;
+  max-width: 260px;
+}
+
+@media screen and (max-width: 1250px) {
+  .tab_tab__yqakw {
+    min-width: 50px !important;
+    max-width: 120px;
+    padding: 16px 8px !important;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .tab_tab__yqakw {
+    padding: 16px 8px !important;
+  }
+
+  .constructor-element {
+    max-width: 450px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .constructor-element__image {
+    margin-right: 0 !important;
+    width: 68px !important;
+    height: 32px !important;
+  }
+
+  .constructor-element {
+    max-width: 360px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+
+  .constructor-element__price {
+    font-size: 24px !important;
+  }
+
+  .tab_tab__yqakw {
+    min-width: 30px !important;
+    max-width: 140px;
+    padding: 16px 4px !important;
+  }
+
+  .constructor-element_pos_top {
+    margin: 0 0 20px 0 !important;
+  }
+
+  .text_type_digits-medium{
+    font-size: 38px!important;
+  }
+
+  
+}
+
+@media screen and (max-width: 790px) {
+  .constructor-element {
+    background: none !important;
+    width: 100% !important;
+    max-width: 720px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid rgba(242, 242, 243, 0.2);
+    border-radius: 0 !important;
+  }
+
+  .constructor-element__row {
+    width: 100% !important;
+  }
+
+  .constructor-element__image {
+    margin-right: 0 !important;
+  }
+
+  .constructor-element_pos_top {
+    border-radius: 0 !important;
+  }
+
+  .constructor-element__action {
+    display: none !important;
+  }
+
+  .constructor-element__price {
+    padding: 0 8px 0 0;
+  }
+  
+  .tab_tab__yqakw {
+    min-width: 30px !important;
+    max-width: 230px;
+    padding: 16px 16px !important;
+  }
+
+  .button_button__gss3G {
+    padding: 10px 32px!important;
+  }
+
 }

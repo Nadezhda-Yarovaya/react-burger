@@ -6,11 +6,16 @@ import ConstructorList from '../constructor-list/constructor-list';
 
 import { TotalSumContext } from '../../services/app-contexts';
 import api from '../../utils/api';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  IngredientsContext,
-  IfMobileContext,
-} from '../../services/app-contexts';
+  SET_ORDERDATA,
+  UPDATE_COUNTER,
+  INCREASE_DROPPEDELEMENT,
+} from '../../services/actions';
+import { useDrop } from 'react-dnd';
+
+import { IfMobileContext } from '../../services/app-contexts';
 import TotalSum from '../total-sum/total-sum';
 const initialSum = { totalSum: 0 };
 
@@ -38,9 +43,15 @@ const {
   list_notdisplayed,
   list_flex,
   container,
+  tempDropCont,
 } = constructorStyles;
 
 function BurgerConstructor(props) {
+  const dispatch = useDispatch();
+  const listOfIngredients = useSelector((store) => {
+    console.log('allStore: ', store);
+    return store.listOfIngredients;
+  });
   const [totalSumOrder, setTotalSumOrder] = useReducer(
     totalSumReducer,
     initialSum,
@@ -48,7 +59,8 @@ function BurgerConstructor(props) {
   );
   const [stuffingsList, setStuffingsList] = useState([]);
 
-  const { isMobile } = useContext(IfMobileContext);
+  //const { isMobile } = useContext(IfMobileContext);
+  const isMobile = useSelector((store) => store.isMobile);
 
   const {
     isMobileOrdered,
@@ -56,23 +68,23 @@ function BurgerConstructor(props) {
     isLoading,
     isPerformed,
     setIsPerformed,
-    setOrderNumber,
   } = props;
 
-  const { allIngredients } = useContext(IngredientsContext);
+  //  console.log('constructor ingred: ', listOfIngredients);
+
   const [bunSelected, setBunSelected] = useState(initialItem);
 
   useEffect(() => {
-    if (allIngredients) {
-      const stuffings = defineStuffings(allIngredients);
+    if (listOfIngredients) {
+      const stuffings = defineStuffings(listOfIngredients);
       setStuffingsList(stuffings);
       calculateAllPrices(stuffings);
-      setBunSelected(allIngredients[0]);
+      setBunSelected(listOfIngredients[0]);
     }
-  }, [allIngredients]);
+  }, [listOfIngredients]);
 
   function defineStuffings(allData) {
-    return allData.filter((item, index) => index > 4 && index < 11);
+    return allData.filter((item, index) => index > 4 && index < 7);
   }
 
   function calculateAllPrices(stuffings) {
@@ -92,13 +104,13 @@ function BurgerConstructor(props) {
 
   function handlePerformOrder() {
     const ingredientsFormed = [];
-    ingredientsFormed.push(allIngredients[0]._id);
+    ingredientsFormed.push(listOfIngredients[0]._id);
 
     stuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 
-    ingredientsFormed.push(allIngredients[0]._id); //вторая сторона булки тоже добавлена
+    ingredientsFormed.push(listOfIngredients[0]._id); //вторая сторона булки тоже добавлена
     placeOrder(ingredientsFormed);
   }
 
@@ -106,8 +118,16 @@ function BurgerConstructor(props) {
     api
       .makeOrder({ ingredients: ingredientsInOrder })
       .then((res) => {
+        console.log('res in placeing: ', res.order.number);
         setIsPerformed(!isPerformed);
-        setOrderNumber(res.order.number);
+        dispatch({
+          type: SET_ORDERDATA,
+          createdOrder: {
+            number: res.order.number,
+            positions: ingredientsInOrder,
+          },
+        });
+        //setOrderNumber(res.order.number);
       })
       .catch((err) => console.log(err));
   }
@@ -149,6 +169,9 @@ function BurgerConstructor(props) {
             bunSelected={bunSelected}
           />
         </div>
+        <div className={tempDropCont}>
+          <p>Dragging droping here</p>
+        </div>
         {isLoading ? (
           <></>
         ) : (
@@ -164,12 +187,12 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  isMobileOrdered: PropTypes.bool.isRequired,
+  /*  isMobileOrdered: PropTypes.bool.isRequired,
   setMobiledOrdered: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isPerformed: PropTypes.bool.isRequired,
   setIsPerformed: PropTypes.func.isRequired,
-  setOrderNumber: PropTypes.func.isRequired,
+  setOrderNumber: PropTypes.func.isRequired,*/
 };
 
 export default BurgerConstructor;

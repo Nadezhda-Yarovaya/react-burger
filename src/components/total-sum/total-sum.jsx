@@ -9,9 +9,11 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
-import { TotalSumContext } from '../../services/app-contexts';
+//import { TotalSumContext } from '../../services/app-contexts';
+/* посмотреть, как тотал сам теперь высчитывать "динамически" */
 
-import { IfMobileContext } from '../../services/app-contexts';
+//import { IfMobileContext } from '../../services/app-contexts';
+import { useSelector } from 'react-redux';
 
 const { container, sum } = totalSumStyles;
 
@@ -19,7 +21,7 @@ function TotalSum(props) {
   const { handleToggleIfMobile, isMobileOrdered, handlePerformOrder } = props;
 
   const { totalSumOrder } = useContext(TotalSumContext);
-  const { isMobile } = useContext(IfMobileContext);
+  const isMobile = useSelector((store) => store.isMobile);
 
   return (
     <div className={`pr-4 ${container}`}>
