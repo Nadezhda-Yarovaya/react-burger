@@ -69,7 +69,7 @@ function CustomConstructorElement(props) {
 
   return (
     <>
- <div className={`${stuffings__item} mr-2`} ref={draggedWithinConstructorRef}>
+ <div className={`${stuffings__item} mr-2`} ref={draggedWithinConstructorRef} onTouchStart={props.touch2}>
       <div className={`mb-4 ${constructor__item}`}>
         {type ? (
           <></>

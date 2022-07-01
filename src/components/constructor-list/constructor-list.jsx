@@ -2,7 +2,8 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import constructorListStyles from './constructor-list.module.css';
 
 import PropTypes from 'prop-types';
-import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
+import CustomConstructorElement 
+from '../custom-constructor-element/custom-constructor-element';
 
 import { ingredientType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,6 +30,7 @@ const {
   empty,
   candrop__style,
   cantdrop__style,
+  buttonswipestyle
 } = constructorListStyles;
 
 /* will perform later delete by swipe on mobile */
@@ -189,9 +191,32 @@ function ConstructorList(props) {
   //{span.constructor-element__action}
 
   const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
+  
+  const [tempShow, setTempshow] =useState('');
+  const [target1, setTarget1] = useState({});
+  
+  useEffect(() => {
+      document.getElementById('buttonswipe').addEventListener('touchstart', (e) => {
+          setTempshow('swiped');
+      });
+  },[]);
+  
+  const onTouch1 = (e)=> {
+      console.log(e.nativeEvent.touches[0].clientX);
+      setTarget1(e.target);
+      
+      e.target.addEventListener('touchstart', (e) => {
+          setTempshow('swiped li');
+      });
+      }
+  
+  
 
   return (
     <>
+    <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
+    <p>{tempShow}</p>
+    <p> show obj etarget: {Object.keys(target1)}</p>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
           <li style={{ alignSelf: 'flex-start' }}>
@@ -219,7 +244,7 @@ function ConstructorList(props) {
                 thumbnail={currentBun.image}
               />
             </li>
-            <li className={`${item_type_stuffing}`} ref={thisRef}>
+            <li className={`${item_type_stuffing}`} ref={thisRef} >
               <div
                 className={`${stuffings} ${
                   stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
@@ -245,6 +270,7 @@ function ConstructorList(props) {
                     thumbnail={item.image}
                     item={item}
                     key={item.uniqueId}
+                    touch2={onTouch1}
                   />
                 ))}
               </div>
