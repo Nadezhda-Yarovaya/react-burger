@@ -5,6 +5,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { IfMobileContext } from '../../services/app-contexts';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import { useSelector } from 'react-redux';
 
 const { modal, modal__button, container } = modalStyles;
 
@@ -13,7 +14,7 @@ const modalRoot = document.getElementById('modal');
 function Modal(props) {
   const [isOpened, setIsOpened] = React.useState(props.isOpen);
 
-  const { isMobile } = useContext(IfMobileContext);
+  const isMobile = useSelector((store) => store.isMobile);
 
   React.useEffect(() => {
     function closeByEscape(evt) {

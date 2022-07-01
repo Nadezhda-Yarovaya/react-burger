@@ -13,7 +13,6 @@
   background-color: var(--interface-bg);
   min-height: 70vh;
   display: flex;
-  justify-content: space-between;
   box-sizing: border-box;
 }
 

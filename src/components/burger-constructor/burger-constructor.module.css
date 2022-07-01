@@ -41,6 +41,12 @@
   padding: 0;
 }
 
+.tempDropCont {
+  background-color: black;
+  width: 100%;
+  min-height: 250px;
+}
+
 .constructor__title {
   font-size: 28px;
   font-family: 'JetBrains Mono', sans-serif;

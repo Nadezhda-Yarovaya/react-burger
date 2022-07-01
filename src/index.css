@@ -14,21 +14,21 @@
   display: inline-flex !important;
 }
 
-.tab_tab__ffQSK {
+.tab_tab__yqakw {
   width: 100% !important;
   max-width: 260px;
 }
 
-@media screen and (max-width: 1210px) {
-  .tab_tab__ffQSK {
-    min-width: 100px !important;
+@media screen and (max-width: 1250px) {
+  .tab_tab__yqakw {
+    min-width: 50px !important;
+    max-width: 120px;
+    padding: 16px 8px !important;
   }
 }
 
 @media screen and (max-width: 1150px) {
-  .tab_tab__ffQSK {
-    min-width: 60px !important;
-    max-width: 180px;
+  .tab_tab__yqakw {
     padding: 16px 8px !important;
   }
 
@@ -56,7 +56,7 @@
     font-size: 24px !important;
   }
 
-  .tab_tab__ffQSK {
+  .tab_tab__yqakw {
     min-width: 30px !important;
     max-width: 140px;
     padding: 16px 4px !important;
@@ -105,7 +105,8 @@
   .constructor-element__price {
     padding: 0 8px 0 0;
   }
-  .tab_tab__ffQSK {
+  
+  .tab_tab__yqakw {
     min-width: 30px !important;
     max-width: 230px;
     padding: 16px 16px !important;

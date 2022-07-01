@@ -6,6 +6,9 @@ import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import PropTypes from 'prop-types';
 import { IngredientsContext } from '../../services/app-contexts';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_INGREDIENTS } from '../../services/actions';
+import { useDrag } from 'react-dnd';
 
 import { ingredientType } from '../../utils/types';
 
@@ -18,44 +21,44 @@ const initialItem = {
 };
 
 function BurgerIngredients(props) {
+  const dispatch = useDispatch();
   const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
-  const { allIngredients } = useContext(IngredientsContext);
-  const [mainIngredients, setMainIngredients] = useState({
+  //const { allIngredients } = useContext(IngredientsContext);
+  /* const [mainIngredients, setMainIngredients] = useState({
     buns: [initialItem],
     sauce: [initialItem],
     main: [initialItem],
+  }); */
+
+  const burgerIngredients = useSelector((store) => {
+    //console.log('store in burger ingred:', store);
+    return store.ingredientsByCategory;
   });
+
+  const allIngredients = useSelector((store) => {
+    return store.listOfIngredients;
+  });
+
+  //console.log('final ingred from redux: ', burgerIngredients);
 
   useEffect(() => {
     if (allIngredients) {
-      const arrayWithChosen = addChosenItems(allIngredients);
-      setMainIngredients({
-        buns: filterByType(arrayWithChosen, 'bun'),
-        sauce: filterByType(arrayWithChosen, 'sauce'),
-        main: filterByType(arrayWithChosen, 'main'),
+      const formedIngredients = {
+        buns: filterByType(allIngredients, 'bun'),
+        sauce: filterByType(allIngredients, 'sauce'),
+        main: filterByType(allIngredients, 'main'),
+      };
+      //setMainIngredients(newIngredients);
+      dispatch({
+        type: SET_INGREDIENTS,
+        ingredientsByCategory: formedIngredients,
       });
     }
   }, [allIngredients]);
 
   function filterByType(arr, type) {
     return arr.filter((item) => item.type === type);
-  }
-
-  function addChosenItems(arr) {
-    return arr.map((item, index) => {
-      if (index === 0 || index === 4 || index === 5) {
-        return {
-          ...item,
-          chosen: true,
-        };
-      } else {
-        return {
-          ...item,
-          chosen: false,
-        };
-      }
-    });
   }
 
   /*
@@ -124,7 +127,7 @@ function BurgerIngredients(props) {
           <div className={`mt-10 ${list}`}>
             <section ref={bunsRef}>
               <MealList
-                currentList={mainIngredients.buns}
+                currentList={burgerIngredients.buns}
                 title='Булки'
                 changeChoice={changeChoice}
                 selectedCard={selectedCard}
@@ -132,14 +135,14 @@ function BurgerIngredients(props) {
             </section>
             <section ref={sauceRef}>
               <MealList
-                currentList={mainIngredients.sauce}
+                currentList={burgerIngredients.sauce}
                 title='Соусы'
                 changeChoice={changeChoice}
               />
             </section>
             <section ref={stuffingRef}>
               <MealList
-                currentList={mainIngredients.main}
+                currentList={burgerIngredients.main}
                 title='Начинки'
                 changeChoice={changeChoice}
               />
