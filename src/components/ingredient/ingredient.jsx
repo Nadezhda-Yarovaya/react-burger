@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 
 import mealListStyles from '../meal-list/meal-list.module.css';
+
+import ingredientStyles from './ingredient.module.css';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +10,7 @@ import {
   SET_ORDERDATA,
   UPDATE_COUNTER,
   INCREASE_DROPPEDELEMENT,
+  REPLACE_BUN
 } from '../../services/actions';
 
 import {
@@ -17,9 +20,10 @@ import {
 
 function Ingredient(props) {
     const dispatch = useDispatch();
-  const { list, list__item, price, item__name, counter, list__choice, item__mobilebutton } =
-    mealListStyles;
 
+    const { price, item__name, counter, list__choice, item__mobilebutton, list__item} = ingredientStyles;
+
+    
   const { item, changeChoice } = props;
   /*
     const ingredientCount = useSelector(store=>{
@@ -29,6 +33,16 @@ function Ingredient(props) {
       });
       return totalCount;
     })*/
+    const bunCount = useSelector((store) => {
+      let totalCount = 0;
+      if (store.bun._id === item._id) {totalCount++;}
+      return totalCount;
+    });
+    /*
+
+    const bunCount = bunCount1 === item._id ? 1 : 0;*/
+     console.log('bunCount1: ', bunCount, ' item id: ', item._id);
+    //console.log('buncount', bunCount);
 
   const ingredientCount = useSelector((store) => {
     let totalCount = 0;
@@ -53,14 +67,20 @@ function Ingredient(props) {
           opacity: monitor.isDragging() ? 0.5 : 1
         })*/
   });
-  const [tempshow, setTempshow] = useState('nothibg');
+
+  const [, draggedBun] = useDrag({
+    type: 'bun',
+    item: { item },
+    /*  collect: monitor => ({
+          opacity: monitor.isDragging() ? 0.5 : 1
+        })*/
+  });
   
   
 const currentTimeInSeconds = Math.floor(Date.now() / 10);
 
   const handleDrop = (currentItem) => {
     // updating counter for main ingredient
-    setTempshow(currentItem.id);
     dispatch({
       type: UPDATE_COUNTER,
       currentElementId: currentItem._id,
@@ -82,9 +102,25 @@ const currentTimeInSeconds = Math.floor(Date.now() / 10);
   };
 
   
+  const handleBunDrop = (currentItem) => {
+    console.log('indrop mobile', currentItem._id);
+    dispatch({
+      type: REPLACE_BUN,
+      bun: currentItem,
+    });
+    dispatch({
+      type: UPDATE_COUNTER,
+      currentElementId: currentItem._id,
+    });
+  }
+
+  const currentCounter = (item.type === 'bun') ? bunCount : ingredientCount;
+
+
 
   return (
-    <li key={item._id} className={list__item} ref={draggedIngredientRef}>
+    <li ref={item.type === 'bun' ? draggedBun : draggedIngredientRef}>
+      <div className={list__item} >
       <button
         onClick={() => {
           /* changeChoice(currentList, item._id, setWithChoice);*/
@@ -102,9 +138,9 @@ const currentTimeInSeconds = Math.floor(Date.now() / 10);
           {item.name}
         </p>
         
-        {ingredientCount > 0 ? (
-          <div className={counter}>
-            <Counter count={ingredientCount} size='default' />
+        {currentCounter > 0 ? (
+          <div className={`${counter}`}>
+            <Counter count={currentCounter} size='default' />
           </div>
         ) : (
           <></>
@@ -113,9 +149,12 @@ const currentTimeInSeconds = Math.floor(Date.now() / 10);
       {isMobile ? (
         <button className={item__mobilebutton} onClick={(e) =>  {
         e.preventDefault();
-            handleDrop(item);
+        if (item.type === 'bun') {
+          handleBunDrop(item);
+        } else {
+            handleDrop(item);}
         }}>Добавить</button>) : (<></>)}
-        <p>{tempshow}</p>
+        </div>
     </li>
   );
 }

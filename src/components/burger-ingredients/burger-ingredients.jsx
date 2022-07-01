@@ -5,10 +5,10 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import PropTypes from 'prop-types';
-import { IngredientsContext } from '../../services/app-contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTS } from '../../services/actions';
 import { useDrag } from 'react-dnd';
+import { useInView } from 'react-intersection-observer';
 
 import { ingredientType } from '../../utils/types';
 
@@ -83,6 +83,12 @@ function BurgerIngredients(props) {
   function handleTabClick(currentRef) {
     currentRef.current.scrollIntoView({ behavior: 'smooth' });
   }
+
+  /*
+  const TrackVisible = () => {
+    const { ref, entry } = useInView({ trackVisibility: true, delay: 100 });
+    return <div ref={ref}>{entry?.isVisible}</div>;
+  }; */
 
   return (
     <>

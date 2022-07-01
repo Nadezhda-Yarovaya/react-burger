@@ -13,6 +13,7 @@ const { list, list__item, price, item__name, counter, list__choice } =
 
 function MealList(props) {
   const { currentList, title, changeChoice } = props;
+  //console.log(currentList);
 
   return (
     <>

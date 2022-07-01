@@ -1,9 +1,7 @@
 import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 
-import doneSign from '../../images/done.svg';
-import { IngredientsContext } from '../../services/app-contexts';
-import { useSelector } from 'react-redux';
+import doneSign from '../../images/done.svg';import { useSelector } from 'react-redux';
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 

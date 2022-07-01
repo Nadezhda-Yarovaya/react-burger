@@ -3,10 +3,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import {
-  IngredientsContext,
-  IfMobileContext,
-} from '../../services/app-contexts';
+
 import { useWindowSize } from '../../hooks/resize.js';
 import api from '../../utils/api';
 import { DndProvider } from 'react-dnd';
@@ -70,6 +67,7 @@ function App() {
         console.log('Ошибка при соединении с сервером: ', err);
         setIsLoading(false);
       });
+
   }, []);
 
   /* chosen functionality delete totally */

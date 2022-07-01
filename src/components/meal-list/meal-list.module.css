@@ -28,44 +28,14 @@
   align-items: center;
 }
 
-.list__choice {
-  width: 100%;
-  min-height: 208px;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  border: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  background-color: transparent;
-  color: var(--text-color);
-  cursor: pointer;
-}
-
 .burgerItem:nth-of-type(even) {
   margin: 0;
 }
 
-.price {
-  display: flex;
-}
-
-.item__name {
-  text-align: center;
-  min-height: 48px;
-}
-
-.counter {
-  position: absolute;
-  top: 0;
-  right: -4px;
-}
 @media screen and (max-width: 1250px) {
   .list {
-     grid-template-columns: repeat(2, minmax(100px, 220px));
-  grid-column-gap: 35px;
+    grid-template-columns: repeat(2, minmax(100px, 220px));
+    grid-column-gap: 35px;
   }
 }
 @media screen and (max-width: 1150px) {

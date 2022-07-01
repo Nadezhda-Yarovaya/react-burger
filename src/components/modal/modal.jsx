@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { IfMobileContext } from '../../services/app-contexts';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { useSelector } from 'react-redux';
 

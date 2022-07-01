@@ -9,8 +9,6 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
-import { TotalSumContext } from '../../services/app-contexts';
-
 /* посмотреть, как тотал сам теперь высчитывать "динамически" */
 
 //import { IfMobileContext } from '../../services/app-contexts';
@@ -21,11 +19,17 @@ const { container, sum } = totalSumStyles;
 function TotalSum(props) {
   const { handleToggleIfMobile, isMobileOrdered, handlePerformOrder } = props;
 
-//  const { totalSumOrder } = useContext(TotalSumContext);
+  //  const { totalSumOrder } = useContext(TotalSumContext);
 
+  const totalSumOrder = useSelector((store) => {
+    //console.log('store:', store);
+    return store.totalSum;
+  });
+
+  /*
 const totalSumOrder ={
 totalSum: 2300,
-};
+};*/
 
   const isMobile = useSelector((store) => store.isMobile);
 
@@ -37,7 +41,7 @@ totalSum: 2300,
             isMobile ? 'text_type_digits-default' : 'text_type_digits-medium'
           }`}
         >
-          {totalSumOrder.totalSum}
+          {totalSumOrder}
         </p>
         {isMobile ? (
           <CurrencyIcon type='primary' />
