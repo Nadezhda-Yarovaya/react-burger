@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState} from 'react';
 import CustomConstructorStyles from './custom-constructor-element.module.css';
 import constructorListStyles from '../constructor-list/constructor-list.module.css';
 
@@ -36,7 +36,7 @@ const {
 
 
 function CustomConstructorElement(props) {
-  const { text, price, thumbnail, isLocked, type, item } = props;
+  const { text, price, thumbnail, isLocked, type, item, setTempshow, setTarget1, initialX, finalX, setFinalX, setInitialX} = props;
 
   const dispatch= useDispatch();
 
@@ -66,11 +66,58 @@ function CustomConstructorElement(props) {
     })
   }
 
+const [currentTouchedItem, setCurrentTouchItem] = useState({uniqueId: 0});
+  
+  
+const handleTouchStart = (e)=> {
+      const initial = e.nativeEvent.touches[0].clientX;
+      setInitialX(initial);
+      console.log('init: ', initial);
+      //setCurrentTouchItem(item);
+      
+      
+      e.target.addEventListener('touchstart', (e) => {
+          setTempshow('swiped li');
+          setCurrentTouchItem(item);
+      });
+      }
+  
+const handleTouchMove =(e) => {
+ const final = e.nativeEvent.touches[0].clientX;
+      setFinalX(final);
+      console.log(' final x:', final);
+
+      e.target.addEventListener('touchmove', (e) => {
+          setTempshow('swiped li move');
+      });
+}
+
+
+ const handleTouchEnd = (e)=> {
+      const differ = finalX-initialX;
+      console.log('differ: ',differ);
+      e.target.addEventListener('touchend', (e) => {
+          setTempshow('swiped li end became');
+          setCurrentTouchItem({});
+         
+      });
+      }
+
+const diff1 = finalX-initialX;
+
+console.log('cur it id: ', currentTouchedItem.uniqueId, '   item id: ', item.uniqueId);
+
+
+
 
   return (
     <>
- <div className={`${stuffings__item} mr-2`} ref={draggedWithinConstructorRef} onTouchStart={props.touch2}>
-      <div className={`mb-4 ${constructor__item}`}>
+ <div className={`${stuffings__item} mr-2`} 
+style={{backgroundColor: (finalX > initialX) ? 'pink' : 'lime', 
+transform : (currentTouchedItem.uniqueId === item.uniqueId) ? `translate(${diff1 + 'px'}, 0px)` : 'translate(10px,0px)'}} ref={draggedWithinConstructorRef} onTouchStart={handleTouchStart}
+ onTouchMove={handleTouchMove}
+ onTouchEnd={handleTouchEnd}>
+      <div className={`${constructor__item} mb-4`}>
         {type ? (
           <></>
         ) : (

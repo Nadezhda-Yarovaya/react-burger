@@ -58,7 +58,7 @@ const {
 function ConstructorList(props) {
   const dispatch = useDispatch();
   const { isMobile } = useSelector((store) => {
-    console.log('mobile? ', store.isMobile);
+   // console.log('mobile? ', store.isMobile);
     return store.isMobile;
   });
   //const droppedElements = useSelector(store => store.droppedElements);
@@ -76,7 +76,7 @@ function ConstructorList(props) {
 
   const thisRef = useRef();
 
-  const currentTimeInSeconds = Math.floor(Date.now() / 10);
+  const currentTimeInSeconds = Math.floor(Date.now() / 2);
 
   const handleBunDrop = (currentItem) => {
     console.log('indrop', currentItem);
@@ -184,16 +184,18 @@ function ConstructorList(props) {
     }),
   });
 
+const [target1, setTarget1] = useState({});
+
   const emptyText = isMobile
     ? 'Пока нет начинки. Добавляйте на странице ингредиентов'
     : 'Пока нет начинки. Перетяните с поля слева';
-  console.log('ismob:', isMobile, 'empty:', emptyText);
+ // console.log('ismob:', isMobile, 'empty:', emptyText);
   //{span.constructor-element__action}
 
   const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
   
   const [tempShow, setTempshow] =useState('');
-  const [target1, setTarget1] = useState({});
+  
   
   useEffect(() => {
       document.getElementById('buttonswipe').addEventListener('touchstart', (e) => {
@@ -201,14 +203,8 @@ function ConstructorList(props) {
       });
   },[]);
   
-  const onTouch1 = (e)=> {
-      console.log(e.nativeEvent.touches[0].clientX);
-      setTarget1(e.target);
-      
-      e.target.addEventListener('touchstart', (e) => {
-          setTempshow('swiped li');
-      });
-      }
+  const [initialX, setInitialX] = useState(0);
+   const [finalX, setFinalX] = useState(0);
   
   
 
@@ -216,6 +212,8 @@ function ConstructorList(props) {
     <>
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
+    <p>initial: {initialX} final: {finalX}</p>
+    <p> diff: {finalX- initialX}</p>
     <p> show obj etarget: {Object.keys(target1)}</p>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
@@ -270,7 +268,12 @@ function ConstructorList(props) {
                     thumbnail={item.image}
                     item={item}
                     key={item.uniqueId}
-                    touch2={onTouch1}
+                    setTempshow={setTempshow}
+setTarget1={setTarget1}
+                    finalX={finalX}
+                    initialX={initialX}
+                    setFinalX={setFinalX}
+                    setInitialX={setInitialX}
                   />
                 ))}
               </div>
