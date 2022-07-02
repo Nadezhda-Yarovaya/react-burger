@@ -87,16 +87,18 @@ function CustomConstructorElement(props) {
   
 const handleTouchStart = (e)=> {
       const initialx1 = e.nativeEvent.touches[0].clientX;
-      const initialy1 = e.nativeEvent.touches[0].clientY;
+     const initialy1 = e.nativeEvent.touches[0].clientY;
       setInitialX(initialx1);
-      setInitialY(initialy1);
-      console.log('init: x ', initialx1, ' init y: ', initialy1);
+   setInitialY(initialy1);
+      console.log('init: y', initialy1);
       //setCurrentTouchItem(item);
       
-       e.target.addEventListener('touchstart', (e) => {
+setCurrentTouchItem(item);
+      
+     /*  e.target.addEventListener('touchstart', (e) => {
           setTempshow('swiped y li');
           setCurrentTouchItem(item);
-      });
+      });*/
       }
   
 const handleTouchMove =(e) => {
@@ -106,21 +108,26 @@ const handleTouchMove =(e) => {
       setFinalY(finaly1);
       console.log(' final x:', finalx1, ' final y: ', finaly1);
 
-      e.target.addEventListener('touchmove', (e) => {
+    /*  e.target.addEventListener('touchmove', (e) => {
           setTempshow('swiped li move');
-      });
+      });*/
 }
 
  const handleTouchEnd = (e)=> {
       const differx = finalX-initialX;
       console.log('differ x: ',differx);
-      e.target.addEventListener('touchend', (e) => {
-          setTempshow('swiped li end became');
-          setCurrentTouchItem({});     
-          if (differx > 49)     {
+setCurrentTouchItem({});     
+setFinalX(0);
+setInitialX(0);
+          if (differx < -80)     {
             handleDeleting();
           }
-      });
+          /*
+      
+      e.target.addEventListener('touchend', (e) => {
+          setTempshow('swiped li end became');
+          
+      });*/
       }
 
 const diffx = finalX-initialX;
@@ -139,12 +146,21 @@ transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId))
   <div className={`${stuffings__item} mr-2`} style={{}} ref={draggedWithinConstructorRef}>
  */
 
+
+/*   <div 
+ onTouchStart={handleTouchStart}
+ onTouchMove={handleTouchMove}
+ onTouchEnd={handleTouchEnd}>
+ */
+ 
   return (
     <>
       <div className={`${stuffings__item} mr-2`} 
 style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? 
-`translate(${diffx + 'px'}, 0px)` : 'translate(10px,0px)', margin: (diffy > 20) ? '0 0 30px 0' : ((diffy < -20) ? '30px 0 0 0' : '0')}} >
-      <div className={`${constructor__item} mb-4`}>
+`translate(${diffx + 'px'}, 0px)` : 'translate(10px,0px)', boxSizing: 'border-box', border: '1px solid purple', backgroundColor: (diffx < 0) ? 'red' : 'blue'}} 
+>
+
+      <div className={`${constructor__item} mb-4`} style={{backgroundColor: 'black'}}>
         {(type) ? (
           <></>
         ) : (
@@ -152,8 +168,7 @@ style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.un
             <DragIcon type='primary' />
           </div>
         )}
-        <div 
- onTouchStart={handleTouchStart}
+        <div onTouchStart={handleTouchStart}
  onTouchMove={handleTouchMove}
  onTouchEnd={handleTouchEnd}>
         <ConstructorElement
@@ -164,9 +179,14 @@ style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.un
           thumbnail={thumbnail}
           handleClose={()=>{handleDeleting();}}
         />
-        </div>
+    </div>
+    {/*(diffx < 0) ? (<div style={{backgroundColor: 'red', width: `${-diff
+    x}px`, height: 'auto', display: 'block'}}></div>) : (<></>)*/
+    }
       </div>
       </div>
+      { (diffx < 0) ? (<div style={{backgroundColor: 'red', width: `${-diffx}px`, height: '70px', display: 'block', position: 'absolute', right: '0', top:`${Math.floor(initialY)}px`}}></div>) : (<></>)
+      }
     </>
   );
 }

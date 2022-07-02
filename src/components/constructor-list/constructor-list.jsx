@@ -222,12 +222,14 @@ const [target1, setTarget1] = useState({});
 
   return (
     <>
+    <div style={{ minHeight: '200px', boxSizing : 'border-box', border: '2px solid blue'}}>
             
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
     <p>initial: {Math.floor(initialX)} final: {Math.floor(finalX)}</p>
     <p> diff: {finalX- initialX}</p>
     <p> show obj etarget: {Object.keys(target1)}</p>
+    </div>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
           <li style={{ alignSelf: 'flex-start' }}>
@@ -265,6 +267,7 @@ const [target1, setTarget1] = useState({});
                   minHeight: isHover ? heightOfCont : '80px',
                   backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
                   border: isHover ? '1px dashed white' : '0',
+                  position: 'relative'
                 }}
                 ref={dropContainerRef}
               >

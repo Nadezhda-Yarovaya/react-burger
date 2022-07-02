@@ -48,10 +48,6 @@ const HTML5toTouch = {
     backend: TouchBackend,
     options: {
       enableMouseEvents: true,
-      scrollAngleRanges: [
-        { start: 30, end: 150 },
-        { start: 210, end: 330 }
-      ]
     },
     preview: true,
     transition: TouchTransition
