@@ -41,7 +41,7 @@ function Ingredient(props) {
     /*
 
     const bunCount = bunCount1 === item._id ? 1 : 0;*/
-     console.log('bunCount1: ', bunCount, ' item id: ', item._id);
+    //console.log('bunCount1: ', bunCount, ' item id: ', item._id);
     //console.log('buncount', bunCount);
 
   const ingredientCount = useSelector((store) => {
@@ -77,7 +77,7 @@ function Ingredient(props) {
   });
   
   
-const currentTimeInSeconds = Math.floor(Date.now() / 10);
+const currentTimeInSeconds = Math.floor(Date.now() / 2);
 
   const handleDrop = (currentItem) => {
     // updating counter for main ingredient

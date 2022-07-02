@@ -38,13 +38,16 @@ const {
 function CustomConstructorElement(props) {
   const { text, price, thumbnail, isLocked, type, item, setTempshow, setTarget1, initialX, finalX, setFinalX, setInitialX} = props;
 
+  const [currentTouchedItem, setCurrentTouchItem] = useState({uniqueId: 0});
+
   const dispatch= useDispatch();
 
-  const [{initialIngredientOffset}, draggedWithinConstructorRef] = useDrag({
+  const [{initialIngredientOffset, isItemDragging}, draggedWithinConstructorRef] = useDrag({
     type: 'ingredient',
     item: {item},
     collect: monitor => ({
-      initialIngredientOffset: monitor.getInitialClientOffset()
+      initialIngredientOffset: monitor.getInitialClientOffset(),
+      isItemDragging: monitor.isDragging(),
     })
 
   });
@@ -66,7 +69,7 @@ function CustomConstructorElement(props) {
     })
   }
 
-const [currentTouchedItem, setCurrentTouchItem] = useState({uniqueId: 0});
+
   
   
 const handleTouchStart = (e)=> {
@@ -98,23 +101,21 @@ const handleTouchMove =(e) => {
       console.log('differ: ',differ);
       e.target.addEventListener('touchend', (e) => {
           setTempshow('swiped li end became');
-          setCurrentTouchItem({});
-         
+          setCurrentTouchItem({});     
+          if (differ > 300)     {
+            handleDeleting();
+          }
       });
       }
 
 const diff1 = finalX-initialX;
-
-console.log('cur it id: ', currentTouchedItem.uniqueId, '   item id: ', item.uniqueId);
-
-
-
+/*console.log('cur it id: ', currentTouchedItem.uniqueId, '   item id: ', item.uniqueId);*/
 
   return (
     <>
  <div className={`${stuffings__item} mr-2`} 
 style={{backgroundColor: (finalX > initialX) ? 'pink' : 'lime', 
-transform : (currentTouchedItem.uniqueId === item.uniqueId) ? `translate(${diff1 + 'px'}, 0px)` : 'translate(10px,0px)'}} ref={draggedWithinConstructorRef} onTouchStart={handleTouchStart}
+transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? `translate(${diff1 + 'px'}, 0px)` : `${isItemDragging ? 'rotate(2deg)' : 'translate(10px,0px)'}`}} ref={draggedWithinConstructorRef} onTouchStart={handleTouchStart}
  onTouchMove={handleTouchMove}
  onTouchEnd={handleTouchEnd}>
       <div className={`${constructor__item} mb-4`}>

@@ -4,9 +4,12 @@ import constructorListStyles from './constructor-list.module.css';
 import PropTypes from 'prop-types';
 import CustomConstructorElement 
 from '../custom-constructor-element/custom-constructor-element';
+import { DndProvider } from 'react-dnd';
 
 import { ingredientType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { TouchBackend } from 'react-dnd-touch-backend';
 
 import {
   SET_ORDERDATA,
@@ -210,6 +213,7 @@ const [target1, setTarget1] = useState({});
 
   return (
     <>
+            <DndProvider backend={TouchBackend}>
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
     <p>initial: {initialX} final: {finalX}</p>
@@ -240,6 +244,7 @@ const [target1, setTarget1] = useState({});
                 }`}
                 price={currentBun.price}
                 thumbnail={currentBun.image}
+                item={currentBun}
               />
             </li>
             <li className={`${item_type_stuffing}`} ref={thisRef} >
@@ -296,11 +301,13 @@ setTarget1={setTarget1}
                 }`}
                 price={currentBun.price}
                 thumbnail={currentBun.image}
+                item={currentBun}
               />
             </li>
           </>
         )}
       </ul>
+      </DndProvider>
     </>
   );
 }
