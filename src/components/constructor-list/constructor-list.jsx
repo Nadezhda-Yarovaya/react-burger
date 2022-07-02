@@ -21,6 +21,11 @@ import {
 } from '../../services/actions';
 import { useDrag, useDrop } from 'react-dnd';
 
+const opts= {
+    enableMouseEvents: true
+
+};
+
 const {
   stuffings,
   item,
@@ -213,7 +218,7 @@ const [target1, setTarget1] = useState({});
 
   return (
     <>
-            <DndProvider backend={TouchBackend}>
+            <DndProvider backend={TouchBackend} options={opts}>
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
     <p>initial: {initialX} final: {finalX}</p>
