@@ -216,6 +216,8 @@ const [target1, setTarget1] = useState({});
   const [initialX, setInitialX] = useState(0);
    const [finalX, setFinalX] = useState(0);
   
+   const [initialY, setInitialY] = useState(0);
+   const [finalY, setFinalY] = useState(0);
   
 
   return (
@@ -223,7 +225,7 @@ const [target1, setTarget1] = useState({});
             
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
-    <p>initial: {initialX} final: {finalX}</p>
+    <p>initial: {Math.floor(initialX)} final: {Math.floor(finalX)}</p>
     <p> diff: {finalX- initialX}</p>
     <p> show obj etarget: {Object.keys(target1)}</p>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
@@ -286,6 +288,10 @@ setTarget1={setTarget1}
                     initialX={initialX}
                     setFinalX={setFinalX}
                     setInitialX={setInitialX}
+                    finalY={finalY}
+                    initialY={initialY}
+                    setFinalY={setFinalY}
+                    setInitialY={setInitialY}
                   />
                 ))}
               </div>

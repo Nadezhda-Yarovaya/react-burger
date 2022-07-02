@@ -86,13 +86,13 @@ function BurgerConstructor(props) {
         0
       ) +
       bunSelected.price * 2;
-    console.log(
+   /* console.log(
       'попадаем сюда или что',
       'stuffings: ',
       stuffings,
       'total nubm: ',
       finalNumber
-    );
+    );*/
 
     dispatch({ type: SET_TOTALSUM, totalSum: finalNumber });
   }

@@ -12,7 +12,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { ingredientType } from '../../utils/types';
 
-const { title, list, tabs, ingredients } = ingredientsStyles;
+const { title, list, tabs, ingredients, tab1 } = ingredientsStyles;
 const initialItem = {
   name: 'Выберите булку',
   image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
@@ -98,6 +98,7 @@ function BurgerIngredients(props) {
       ) : (
         <div className={ingredients}>
           <div className={`${tabs}`}>
+            <div className={tab1}>
             <Tab
               value='one'
               active={current === 'one'}
@@ -108,6 +109,8 @@ function BurgerIngredients(props) {
             >
               Булки
             </Tab>
+            </div>
+            <div className={tab1}>
             <Tab
               value='two'
               active={current === 'two'}
@@ -118,6 +121,8 @@ function BurgerIngredients(props) {
             >
               Соусы
             </Tab>
+            </div>
+            <div className={tab1}>
             <Tab
               value='three'
               active={current === 'three'}
@@ -128,6 +133,7 @@ function BurgerIngredients(props) {
             >
               Начинки
             </Tab>
+            </div>
           </div>
 
           <div className={`mt-10 ${list}`}>

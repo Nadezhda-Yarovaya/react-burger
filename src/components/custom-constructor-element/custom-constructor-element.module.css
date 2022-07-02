@@ -41,6 +41,8 @@
 .icon {
   display: block;
   cursor: pointer;
+  border: 1px solid lime;
+  padding: 3px 10px;
 }
 
 @media screen and (max-width: 1310px) {

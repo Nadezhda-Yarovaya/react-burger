@@ -36,22 +36,25 @@ const {
 
 
 function CustomConstructorElement(props) {
-  const { text, price, thumbnail, isLocked, type, item, setTempshow, setTarget1, initialX, finalX, setFinalX, setInitialX} = props;
+  const { text, price, thumbnail, isLocked, type, item, setTempshow, setTarget1, initialX, finalX, setFinalX, setInitialX,
+    initialY, finalY, setFinalY, setInitialY} = props;
 
   const [currentTouchedItem, setCurrentTouchItem] = useState({uniqueId: 0});
 
   const dispatch= useDispatch();
 
-  const [{initialIngredientOffset, isItemDragging}, draggedWithinConstructorRef] = useDrag({
+  const [{initialIngredientOffset, isItemDragging, thisItem}, draggedWithinConstructorRef] = useDrag({
     type: 'ingredient',
     item: {item},
     collect: monitor => ({
       initialIngredientOffset: monitor.getInitialClientOffset(),
       isItemDragging: monitor.isDragging(),
+      thisItem: monitor.getItem(),
     })
 
   });
 
+  console.log('is item: ', thisItem);
 
   const [{initialIngredientOffsetM, isItemDraggingM}, draggedMobile] = useDrag({
     type: 'ingredient',
@@ -83,42 +86,45 @@ function CustomConstructorElement(props) {
   
   
 const handleTouchStart = (e)=> {
-      const initial = e.nativeEvent.touches[0].clientX;
-      setInitialX(initial);
-      console.log('init: ', initial);
+      const initialx1 = e.nativeEvent.touches[0].clientX;
+      const initialy1 = e.nativeEvent.touches[0].clientY;
+      setInitialX(initialx1);
+      setInitialY(initialy1);
+      console.log('init: x ', initialx1, ' init y: ', initialy1);
       //setCurrentTouchItem(item);
       
-      
-      e.target.addEventListener('touchstart', (e) => {
-          setTempshow('swiped li');
+       e.target.addEventListener('touchstart', (e) => {
+          setTempshow('swiped y li');
           setCurrentTouchItem(item);
       });
       }
   
 const handleTouchMove =(e) => {
- const final = e.nativeEvent.touches[0].clientX;
-      setFinalX(final);
-      console.log(' final x:', final);
+ const finalx1 = e.nativeEvent.touches[0].clientX;
+ const finaly1 = e.nativeEvent.touches[0].clientY;
+      setFinalX(finalx1);
+      setFinalY(finaly1);
+      console.log(' final x:', finalx1, ' final y: ', finaly1);
 
       e.target.addEventListener('touchmove', (e) => {
           setTempshow('swiped li move');
       });
 }
 
-
  const handleTouchEnd = (e)=> {
-      const differ = finalX-initialX;
-      console.log('differ: ',differ);
+      const differx = finalX-initialX;
+      console.log('differ x: ',differx);
       e.target.addEventListener('touchend', (e) => {
           setTempshow('swiped li end became');
           setCurrentTouchItem({});     
-          if (differ > 200)     {
+          if (differx > 49)     {
             handleDeleting();
           }
       });
       }
 
-const diff1 = finalX-initialX;
+const diffx = finalX-initialX;
+const diffy = finalY-initialY;
 /*console.log('cur it id: ', currentTouchedItem.uniqueId, '   item id: ', item.uniqueId);*/
 
 /* delete container
@@ -136,21 +142,20 @@ transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId))
   return (
     <>
       <div className={`${stuffings__item} mr-2`} 
-style={{backgroundColor: (finalX > initialX) ? 'pink' : 'lime', 
-transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? 
-`translate(${diff1 + 'px'}, 0px)` : `${isItemDraggingM ? 'rotate(2deg)' : 'translate(10px,0px)'}`}} 
-
- onTouchStart={(e) => {console.log('start'); handleTouchStart(e);}}
- onTouchMove={handleTouchMove}
- onTouchEnd={handleTouchEnd}>
+style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? 
+`translate(${diffx + 'px'}, 0px)` : 'translate(10px,0px)', margin: (diffy > 20) ? '0 0 30px 0' : ((diffy < -20) ? '30px 0 0 0' : '0')}} >
       <div className={`${constructor__item} mb-4`}>
-        {type ? (
+        {(type) ? (
           <></>
         ) : (
           <div className={`${icon} mr-2`} ref={draggedWithinConstructorRef}>
             <DragIcon type='primary' />
           </div>
         )}
+        <div 
+ onTouchStart={handleTouchStart}
+ onTouchMove={handleTouchMove}
+ onTouchEnd={handleTouchEnd}>
         <ConstructorElement
           type={type}
           isLocked={isLocked}
@@ -159,6 +164,7 @@ transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId))
           thumbnail={thumbnail}
           handleClose={()=>{handleDeleting();}}
         />
+        </div>
       </div>
       </div>
     </>

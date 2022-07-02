@@ -28,7 +28,7 @@ import {
 } from '../../services/actions';
 
 const opts= {
-    enableMouseEvents: true,
+    enableMouseEvents: false,
     scrollAngleRanges: [
     { start: 30, end: 150 },
     { start: 210, end: 330 }

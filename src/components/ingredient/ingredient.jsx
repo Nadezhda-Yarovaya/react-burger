@@ -77,7 +77,8 @@ function Ingredient(props) {
   });
   
   
-const currentTimeInSeconds = Math.floor(Date.now() / 2);
+const currentTimeInSeconds = Math.floor(Date.now());
+//console.log('uniq id: ', currentTimeInSeconds);
 
   const handleDrop = (currentItem) => {
     // updating counter for main ingredient

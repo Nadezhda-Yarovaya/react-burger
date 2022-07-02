@@ -35,6 +35,12 @@
   justify-content: space-between;
 }
 
+.tab1 {
+border: 1px solid grey;
+padding: 16px 32px;
+box-sizing: border-box;
+}
+
 .ingredients {
   display: flex;
   flex-direction: column;
@@ -72,5 +78,9 @@
   }
   .list::-webkit-scrollbar {
     width: 0;
+  }
+
+  .tab1 {
+    padding: 16px 8px;
   }
 }

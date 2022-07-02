@@ -167,7 +167,7 @@ arraymove(state.droppedElements, state.droppedElements.indexOf(action.element), 
 */
 
 function arraymove(arr, fromIndex, dropDirection) {
-  console.log('arr', arr, 'DIRECTION: ', dropDirection);
+  //console.log('arr', arr, 'DIRECTION: ', dropDirection);
   let element = arr[fromIndex];
   let toIndex = 0;
   if (dropDirection === 'bottom') {
@@ -177,7 +177,7 @@ function arraymove(arr, fromIndex, dropDirection) {
   }
   arr.splice(fromIndex, 1);
   arr.splice(toIndex, 0, element);
-  console.log('arr final', arr);
+  //console.log('arr final', arr);
   /* fromIndex=3;
   toIndex=2;*/
   /*arr.map((item,index,arr) => {
