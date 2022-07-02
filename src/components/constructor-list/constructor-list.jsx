@@ -178,6 +178,8 @@ function ConstructorList(props) {
       const currentPosition = goesToBottom ? 'bottom' : 'top';
       //console.log(' CUR position: ', currentPosition);
       setDirection(currentPosition);
+
+      
       /*  dispatch({
         type: SET_DROPDIRECTION,        
         dropDirection: currentPosition

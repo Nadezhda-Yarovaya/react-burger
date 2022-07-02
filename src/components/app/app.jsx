@@ -7,9 +7,13 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useWindowSize } from '../../hooks/resize.js';
 import api from '../../utils/api';
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import {HTML5Backend } from 'react-dnd-html5-backend';
+import {TouchBackend} from 'react-dnd-touch-backend';
+import MultiBackend, { TouchTransition, MouseTransition } from 'react-dnd-multi-backend';
 
-import { TouchBackend } from 'react-dnd-touch-backend';
+//import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'; // or any other pipeline
+
+
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
@@ -29,6 +33,29 @@ const opts= {
     { start: 30, end: 150 },
     { start: 210, end: 330 }
   ]
+};
+
+/*
+scrollAngleRanges: [
+        { start: 30, end: 150 },
+        { start: 210, end: 330 }*/
+
+const HTML5toTouch = {
+  backends: [{
+    backend: HTML5Backend,
+    transition: MouseTransition
+  }, {
+    backend: TouchBackend,
+    options: {
+      enableMouseEvents: true,
+      scrollAngleRanges: [
+        { start: 30, end: 150 },
+        { start: 210, end: 330 }
+      ]
+    },
+    preview: true,
+    transition: TouchTransition
+  }]
 };
 
 
@@ -149,7 +176,7 @@ function App() {
       <div className={page}>
         <AppHeader />
 
-<DndProvider backend={isMobile ? TouchBackend : HTML5Backend} options={opts}>
+        <DndProvider backend={MultiBackend} options={HTML5toTouch}>
           <main className={`${main} mb-10`}>
             <section
               className={`mr-10} ${ingredients} ${

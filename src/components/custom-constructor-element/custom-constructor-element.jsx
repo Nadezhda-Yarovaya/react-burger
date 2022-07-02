@@ -52,6 +52,16 @@ function CustomConstructorElement(props) {
 
   });
 
+
+  const [{initialIngredientOffsetM, isItemDraggingM}, draggedMobile] = useDrag({
+    type: 'ingredient',
+    item: {item},
+    collect: monitor => ({
+      initialIngredientOffsetM: monitor.getInitialClientOffset(),
+      isItemDraggingM: monitor.isDragging(),
+    })
+
+  });
   useEffect(()=>{
     dispatch({
       type: SET_DRAGGEDCONSTRUCTOR,
@@ -119,15 +129,25 @@ transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId))
  onTouchEnd={handleTouchEnd}>
  */
 
+ /* no swipe 
+  <div className={`${stuffings__item} mr-2`} style={{}} ref={draggedWithinConstructorRef}>
+ */
+
   return (
     <>
- <div className={`${stuffings__item} mr-2`} 
-style={{}} ref={draggedWithinConstructorRef}>
+      <div className={`${stuffings__item} mr-2`} 
+style={{backgroundColor: (finalX > initialX) ? 'pink' : 'lime', 
+transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? 
+`translate(${diff1 + 'px'}, 0px)` : `${isItemDraggingM ? 'rotate(2deg)' : 'translate(10px,0px)'}`}} 
+
+ onTouchStart={(e) => {console.log('start'); handleTouchStart(e);}}
+ onTouchMove={handleTouchMove}
+ onTouchEnd={handleTouchEnd}>
       <div className={`${constructor__item} mb-4`}>
         {type ? (
           <></>
         ) : (
-          <div className={`${icon} mr-2`}>
+          <div className={`${icon} mr-2`} ref={draggedWithinConstructorRef}>
             <DragIcon type='primary' />
           </div>
         )}
