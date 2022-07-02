@@ -102,7 +102,7 @@ const handleTouchMove =(e) => {
       e.target.addEventListener('touchend', (e) => {
           setTempshow('swiped li end became');
           setCurrentTouchItem({});     
-          if (differ > 300)     {
+          if (differ > 200)     {
             handleDeleting();
           }
       });
@@ -111,13 +111,18 @@ const handleTouchMove =(e) => {
 const diff1 = finalX-initialX;
 /*console.log('cur it id: ', currentTouchedItem.uniqueId, '   item id: ', item.uniqueId);*/
 
-  return (
-    <>
+/* delete container
  <div className={`${stuffings__item} mr-2`} 
 style={{backgroundColor: (finalX > initialX) ? 'pink' : 'lime', 
 transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId)) ? `translate(${diff1 + 'px'}, 0px)` : `${isItemDragging ? 'rotate(2deg)' : 'translate(10px,0px)'}`}} ref={draggedWithinConstructorRef} onTouchStart={handleTouchStart}
  onTouchMove={handleTouchMove}
  onTouchEnd={handleTouchEnd}>
+ */
+
+  return (
+    <>
+ <div className={`${stuffings__item} mr-2`} 
+style={{}} ref={draggedWithinConstructorRef}>
       <div className={`${constructor__item} mb-4`}>
         {type ? (
           <></>

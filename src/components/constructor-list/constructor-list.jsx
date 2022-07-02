@@ -218,7 +218,7 @@ const [target1, setTarget1] = useState({});
 
   return (
     <>
-            <DndProvider backend={TouchBackend} options={opts}>
+            
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
     <p>initial: {initialX} final: {finalX}</p>
@@ -312,7 +312,7 @@ setTarget1={setTarget1}
           </>
         )}
       </ul>
-      </DndProvider>
+     
     </>
   );
 }

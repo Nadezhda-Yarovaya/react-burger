@@ -9,6 +9,7 @@ import api from '../../utils/api';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { TouchBackend } from 'react-dnd-touch-backend';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
@@ -21,6 +22,15 @@ import {
   SET_IFMOBILE,
   REMOVE_CURRENT,
 } from '../../services/actions';
+
+const opts= {
+    enableMouseEvents: true,
+    scrollAngleRanges: [
+    { start: 30, end: 150 },
+    { start: 210, end: 330 }
+  ]
+};
+
 
 const {
   page,
@@ -139,7 +149,7 @@ function App() {
       <div className={page}>
         <AppHeader />
 
-        <DndProvider backend={HTML5Backend}>
+<DndProvider backend={isMobile ? TouchBackend : HTML5Backend} options={opts}>
           <main className={`${main} mb-10`}>
             <section
               className={`mr-10} ${ingredients} ${
@@ -164,7 +174,8 @@ function App() {
               />
             </section>
           </main>
-        </DndProvider>
+          </DndProvider>
+    
       </div>{' '}
       {isPerformed && (
         <Modal
