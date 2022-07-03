@@ -8,7 +8,7 @@ const { text, details, image, nutrients, nutrient } = ingredientStyles;
 function IngredientDetails(props) {
   //const { selectedCard } = props;
 
-  const selectedCard = useSelector((store) => store.currentIngredient);
+  const selectedCard = useSelector((store) => store.other.currentIngredient);
   return (
     <>
       <div className={details}>

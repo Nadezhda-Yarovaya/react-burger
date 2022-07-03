@@ -9,7 +9,7 @@ function OrderDetails() {
   //const ingredientsFromContext = React.useContext(IngredientsContext);
   const orderNumber = useSelector((store) => {
     console.log('order-details: ', store);
-    return store.createdOrder.number;
+    return store.order.createdOrder.number;
   });
 
   return (

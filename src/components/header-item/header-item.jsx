@@ -11,13 +11,14 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ifItsMobile } from '../../services/selectors';
 
 const texts = ['Конструктор', 'Лента заказов', 'Личный кабинет'];
 const icons = [BurgerIcon, ListIcon, ProfileIcon];
 let Icon = icons[0];
 
 function HeaderItem(props) {
-  const isMobile = useSelector((store) => store.isMobile);
+  const isMobile = useSelector(ifItsMobile);
 
   texts.forEach((item, ind) => {
     if (item === props.text) {

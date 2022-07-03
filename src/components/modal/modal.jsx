@@ -18,7 +18,7 @@ function Modal(props) {
   React.useEffect(() => {
     function closeByEscape(evt) {
       if (evt.key === 'Escape') {
-        props.closeAllPopups();
+        props.closeModal();
         setIsOpened(false);
       }
     }

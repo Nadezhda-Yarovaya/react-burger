@@ -13,6 +13,7 @@ import currencyBig from '../../images/currency36x36.svg';
 
 //import { IfMobileContext } from '../../services/app-contexts';
 import { useSelector } from 'react-redux';
+import { ifItsMobile } from '../../services/selectors';
 
 const { container, sum } = totalSumStyles;
 
@@ -23,7 +24,7 @@ function TotalSum(props) {
 
   const totalSumOrder = useSelector((store) => {
     //console.log('store:', store);
-    return store.totalSum;
+    return store.order.totalSum;
   });
 
   /*
@@ -31,7 +32,7 @@ const totalSumOrder ={
 totalSum: 2300,
 };*/
 
-  const isMobile = useSelector((store) => store.isMobile);
+  const isMobile = useSelector(ifItsMobile);
 
   return (
     <div className={`pr-4 ${container}`}>

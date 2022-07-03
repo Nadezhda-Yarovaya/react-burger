@@ -17,6 +17,7 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ifItsMobile } from '../../services/selectors';
 
 function Ingredient(props) {
     const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function Ingredient(props) {
     })*/
     const bunCount = useSelector((store) => {
       let totalCount = 0;
-      if (store.bun._id === item._id) {totalCount++;}
+      if (store.ingredients.bun._id === item._id) {totalCount++;}
       return totalCount;
     });
     /*
@@ -46,16 +47,14 @@ function Ingredient(props) {
 
   const ingredientCount = useSelector((store) => {
     let totalCount = 0;
-    store.droppedElements.forEach((curItem) => {
+    store.other.droppedElements.forEach((curItem) => {
       if (curItem._id === item._id) {
         totalCount++;
       }
     });
     return totalCount;
   });
-  const isMobile =useSelector((store)=> {
-      return store.isMobile;
-  })
+  const isMobile =useSelector(ifItsMobile);
 
   const { _id } = item;
   //console.log('item itself:', item);
@@ -120,7 +119,7 @@ const currentTimeInSeconds = Math.floor(Date.now());
 
 
   return (
-    <li ref={item.type === 'bun' ? draggedBun : draggedIngredientRef}>
+    <li ref={isMobile ? (null) : (item.type === 'bun' ? draggedBun : draggedIngredientRef)}>
       <div className={list__item} >
       <button
         onClick={() => {

@@ -11,6 +11,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 
+import trashIconMobile from '../../images/trash.svg';
+
 
 
 import {
@@ -31,6 +33,7 @@ const {
   list,
   stuffings__item,
   list_flex,
+  delete_mobile
 } = constructorListStyles;
 
 
@@ -54,7 +57,7 @@ function CustomConstructorElement(props) {
 
   });
 
-  console.log('is item: ', thisItem);
+  // console.log('is item: ', thisItem);
 
   const [{initialIngredientOffsetM, isItemDraggingM}, draggedMobile] = useDrag({
     type: 'ingredient',
@@ -183,9 +186,11 @@ style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.un
     {/*(diffx < 0) ? (<div style={{backgroundColor: 'red', width: `${-diff
     x}px`, height: 'auto', display: 'block'}}></div>) : (<></>)*/
     }
+    {/* ${Math.floor(initialY)}px*/}
       </div>
       </div>
-      { (diffx < 0) ? (<div style={{backgroundColor: 'red', width: `${-diffx}px`, height: '70px', display: 'block', position: 'absolute', right: '0', top:`${Math.floor(initialY)}px`}}></div>) : (<></>)
+      {(diffx < 0) ? (<div className={delete_mobile} style={{ width: `${-diffx}px`, top: '30px'}}>
+      <img src={trashIconMobile} alt="иконка удалить элемент" /></div>) : (<></>)
       }
     </>
   );

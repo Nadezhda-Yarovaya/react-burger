@@ -6,19 +6,13 @@ import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_INGREDIENTS } from '../../services/actions';
+import { SET_INGREDIENTSBYCAT } from '../../services/actions';
 import { useDrag } from 'react-dnd';
 import { useInView } from 'react-intersection-observer';
 
 import { ingredientType } from '../../utils/types';
 
 const { title, list, tabs, ingredients, tab1 } = ingredientsStyles;
-const initialItem = {
-  name: 'Выберите булку',
-  image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
-  price: 0,
-  _id: '60d3b41abdacab0026a733c7',
-};
 
 function BurgerIngredients(props) {
   const dispatch = useDispatch();
@@ -31,28 +25,27 @@ function BurgerIngredients(props) {
     main: [initialItem],
   }); */
 
-  const burgerIngredients = useSelector((store) => {
-    //console.log('store in burger ingred:', store);
-    return store.ingredientsByCategory;
-  });
-
   const allIngredients = useSelector((store) => {
-    return store.listOfIngredients;
+//    console.log('all: ', store);
+    return store.ingredients.listOfIngredients;
   });
 
   //console.log('final ingred from redux: ', burgerIngredients);
 
   useEffect(() => {
     if (allIngredients) {
+      //console.log('wer here');
       const formedIngredients = {
-        buns: filterByType(allIngredients, 'bun'),
+        bun: filterByType(allIngredients, 'bun'),
         sauce: filterByType(allIngredients, 'sauce'),
         main: filterByType(allIngredients, 'main'),
       };
       //setMainIngredients(newIngredients);
+
+      //console.log('formed categories: ', formedIngredients);
       dispatch({
-        type: SET_INGREDIENTS,
-        ingredientsByCategory: formedIngredients,
+        type: SET_INGREDIENTSBYCAT,
+      payload: formedIngredients,
       });
     }
   }, [allIngredients]);
@@ -139,24 +132,27 @@ function BurgerIngredients(props) {
           <div className={`mt-10 ${list}`}>
             <section ref={bunsRef}>
               <MealList
-                currentList={burgerIngredients.buns}
                 title='Булки'
                 changeChoice={changeChoice}
                 selectedCard={selectedCard}
+                type='bun'
               />
             </section>
             <section ref={sauceRef}>
               <MealList
-                currentList={burgerIngredients.sauce}
+                
                 title='Соусы'
                 changeChoice={changeChoice}
+                type='sauce'
               />
             </section>
             <section ref={stuffingRef}>
               <MealList
-                currentList={burgerIngredients.main}
+                
                 title='Начинки'
                 changeChoice={changeChoice}
+                type='main'
+                
               />
             </section>
           </div>

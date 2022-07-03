@@ -12,10 +12,13 @@ import {
   UPDATE_COUNTER,
   INCREASE_DROPPEDELEMENT,
   SET_TOTALSUM,
+  SET_IFMOBILEORDERED
 } from '../../services/actions';
 import { useDrop } from 'react-dnd';
 
 import TotalSum from '../total-sum/total-sum';
+import { ifItsMobile } from '../../services/selectors';
+import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
 const initialSum = { totalSum: 0 };
 
 const initialItem = {
@@ -40,22 +43,18 @@ function BurgerConstructor(props) {
   const dispatch = useDispatch();
   const listOfIngredients = useSelector((store) => {
     //   console.log('allStore: ', store);
-    return store.listOfIngredients;
+    return store.ingredients.listOfIngredients;
   });
 
-  const createdStuffingsList = useSelector((store) => store.droppedElements);
+  const createdStuffingsList = useSelector((store) => store.other.droppedElements);
 
   const [stuffingsList, setStuffingsList] = useState([]);
 
   //const { isMobile } = useContext(IfMobileContext);
-  const isMobile = useSelector((store) => store.isMobile);
-
+  const isMobile = useSelector(ifItsMobile);
+  const isMobileOrdered = useSelector(store=>store.mobile.isMobileOrdered);
   const {
-    isMobileOrdered,
-    setMobiledOrdered,
     isLoading,
-    isPerformed,
-    setIsPerformed,
   } = props;
 
   //  console.log('constructor ingred: ', listOfIngredients);
@@ -97,41 +96,34 @@ function BurgerConstructor(props) {
     dispatch({ type: SET_TOTALSUM, totalSum: finalNumber });
   }
 
-  function handlePerformOrder() {
+  function makeListOfOrder() {
     const ingredientsFormed = [];
     ingredientsFormed.push(listOfIngredients[0]._id);
 
-    stuffingsList.forEach((item) => {
+    createdStuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 
     ingredientsFormed.push(listOfIngredients[0]._id); //вторая сторона булки тоже добавлена
-    placeOrder(ingredientsFormed);
+    return ingredientsFormed;
   }
 
-  function placeOrder(ingredientsInOrder) {
-    api
-      .makeOrder({ ingredients: ingredientsInOrder })
-      .then((res) => {
-        console.log('res in placeing: ', res.order.number);
-        setIsPerformed(!isPerformed);
-        dispatch({
-          type: SET_ORDERDATA,
-          createdOrder: {
-            number: res.order.number,
-            positions: ingredientsInOrder,
-          },
-        });
-        //setOrderNumber(res.order.number);
-      })
-      .catch((err) => console.log(err));
+  function handlePerformOrder() {
+    
+    const thisOrderList = makeListOfOrder();
+    console.log('am i here? ', thisOrderList);
+    dispatch(fetchOrderNumber(thisOrderList));
   }
 
   function handleToggleIfMobile() {
     if (isMobileOrdered) {
       handlePerformOrder();
     }
-    setMobiledOrdered(!isMobileOrdered);
+    dispatch({
+      type: SET_IFMOBILEORDERED,
+      payload: !isMobileOrdered
+    })
+    //setMobiledOrdered(!isMobileOrdered);
   }
 
   const mobileListStyle = isMobileOrdered ? list_displayed : list_notdisplayed;
@@ -147,7 +139,10 @@ function BurgerConstructor(props) {
             <p className={constructor__title}>Заказ</p>
             <button
               onClick={() => {
-                setMobiledOrdered(false);
+                dispatch({
+                  type: SET_IFMOBILEORDERED,
+                  payload: false
+                });
               }}
               className={constructor__button}
             >

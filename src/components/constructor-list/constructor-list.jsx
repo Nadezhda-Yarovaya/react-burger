@@ -20,6 +20,7 @@ import {
   REPLACE_BUN,
 } from '../../services/actions';
 import { useDrag, useDrop } from 'react-dnd';
+import { ifItsMobile } from '../../services/selectors';
 
 const opts= {
     enableMouseEvents: true
@@ -65,20 +66,17 @@ const {
 
 function ConstructorList(props) {
   const dispatch = useDispatch();
-  const { isMobile } = useSelector((store) => {
-   // console.log('mobile? ', store.isMobile);
-    return store.isMobile;
-  });
+  const { isMobile } = useSelector(ifItsMobile);
   //const droppedElements = useSelector(store => store.droppedElements);
-  const currentBun1 = useSelector((store) => {
-    //console.log('whers bun?? ', store.bun);
-    return store.bun;
+  const currentBun = useSelector((store) => {
+    //console.log('whers bun?? ', store.ingredients.bun);
+    return store.ingredients.bun;
   });
-  const currentBun = currentBun1;
+  //const currentBun = currentBun1;
 
   const stuffingListDropped = useSelector((store) => {
     //console.log('store in constr list:', store);
-    return store.droppedElements;
+    return store.other.droppedElements;
   });
   const [direction, setDirection] = useState('');
 
@@ -130,7 +128,7 @@ function ConstructorList(props) {
 
   const { bunSelected, stuffingsList, isLoading } = props;
 
-  const initialIngredOffset = useSelector((store) => store.initialIngredOffset);
+  const initialIngredOffset = useSelector((store) => store.other.initialIngredOffset);
 
   const [{ isBunHover }, dropContainerBunTop] = useDrop({
     accept: 'bun',

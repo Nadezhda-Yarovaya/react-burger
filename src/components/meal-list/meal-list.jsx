@@ -7,14 +7,22 @@ import mealListStyles from './meal-list.module.css';
 
 import { ingredientType } from '../../utils/types';
 import Ingredient from '../ingredient/ingredient';
+import { useSelector } from 'react-redux';
 
 const { list, list__item, price, item__name, counter, list__choice } =
   mealListStyles;
 
 function MealList(props) {
-  const { currentList, title, changeChoice } = props;
+  const { type, title, changeChoice } = props;
   //console.log(currentList);
 
+  
+  const burgerIngredients = useSelector((store) => {
+//    console.log('mist her? ', store);
+    return store.ingredients.ingredientsByCategory});
+
+    const current = burgerIngredients[type];
+    //const current = [];
   return (
     <>
       <h2
@@ -23,9 +31,9 @@ function MealList(props) {
         {title}
       </h2>
       <ul className={`pl-4 pr-4 mt-6 mb-6 ${list}`}>
-        {currentList.map((item) => (
+        {(current) && (current.map((item) => (
           <Ingredient key={item._id} item={item} changeChoice={changeChoice} />
-        ))}
+        )))}
       </ul>
     </>
   );
