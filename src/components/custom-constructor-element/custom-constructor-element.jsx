@@ -23,7 +23,7 @@ import {
   DELETE_ITEM
 } from '../../services/actions';
 
-const { constructor__item, icon } = CustomConstructorStyles;
+const { constructor__item, icon , delete_mobile} = CustomConstructorStyles;
 
 const {
   stuffings,
@@ -33,7 +33,7 @@ const {
   list,
   stuffings__item,
   list_flex,
-  delete_mobile
+  
 } = constructorListStyles;
 
 
@@ -189,7 +189,7 @@ style={{transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.un
     {/* ${Math.floor(initialY)}px*/}
       </div>
       </div>
-      {(diffx < 0) ? (<div className={delete_mobile} style={{ width: `${-diffx}px`, top: '30px'}}>
+      {(diffx < 0) ? (<div className={delete_mobile} style={{ width: `${-diffx}px`, top: '0'}}>
       <img src={trashIconMobile} alt="иконка удалить элемент" /></div>) : (<></>)
       }
     </>
