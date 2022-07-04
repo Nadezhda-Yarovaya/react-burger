@@ -1,24 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { IfMobileContext } from '../../services/app-contexts';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import { useSelector } from 'react-redux';
 
 const { modal, modal__button, container } = modalStyles;
 
 const modalRoot = document.getElementById('modal');
 
 function Modal(props) {
-  const [isOpened, setIsOpened] = React.useState(props.isOpen);
+  const [isOpened, setIsOpened] = useState(props.isOpen);
 
-  const { isMobile } = useContext(IfMobileContext);
+  const isMobile = useSelector((store) => store.mobile.isMobile);
+  const windowWidth = useSelector((store) => store.mobile.windowData.width);
+  const windowHeight = useSelector((store) => store.mobile.windowData.height);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function closeByEscape(evt) {
       if (evt.key === 'Escape') {
-        props.closeAllPopups();
+        props.closeModal();
         setIsOpened(false);
       }
     }
@@ -32,12 +34,10 @@ function Modal(props) {
 
   const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
 
-  const topPosition =
-    ((props.windowHeight - modalHeight) / 2).toString() + 'px';
+  const topPosition = ((windowHeight - modalHeight) / 2).toString() + 'px';
   const leftPosition =
     (
-      (props.windowWidth -
-        (isMobile ? (props.windowWidth < 480 ? 290 : 420) : 720)) /
+      (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
       2
     ).toString() + 'px';
 
@@ -62,13 +62,6 @@ function Modal(props) {
 
 Modal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  closeAllPopups: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
-  windowHeight: PropTypes.number.isRequired,
-  windowWidth: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   type: PropTypes.string,
 };

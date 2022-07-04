@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 
 import {
   Logo,
@@ -14,6 +13,14 @@ import logoMobile from '../../images/logomobile.svg';
 
 import openSubmIcon from '../../images/openSubmenu.svg';
 import closeSubmIcon from '../../images/closeSubmenu.svg';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  OPEN_MOBILEMENU,
+  CLOSE_MOBILEMENU,
+  UNFOLD_SUBMOBILEMENU,
+  FOLD_SUBMOBILEMENU,
+} from '../../services/actions';
 
 const {
   header,
@@ -34,16 +41,34 @@ const {
   header__mobilebutton,
 } = headerStyles;
 
-function AppHeader(props) {
-  const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
-  const [isSubMenuOpened, setIsSubMenuOpened] = useState(false);
+function AppHeader() {
+  const dispatch = useDispatch();
+  const isMobileMenuOpened = useSelector(
+    (store) => store.mobile.isMobileMenuOpened
+  );
+  const isSubMenuOpened = useSelector((store) => store.mobile.isSubMenuOpened);
 
-  function toggleMobileMenu() {
-    setIsMobileMenuOpened(!isMobileMenuOpened);
+  function openMobileMenu() {
+    dispatch({
+      type: OPEN_MOBILEMENU,
+    });
+  }
+
+  function closeMobileMenu() {
+    dispatch({
+      type: CLOSE_MOBILEMENU,
+    });
   }
 
   function toggleSubMenu() {
-    setIsSubMenuOpened(!isSubMenuOpened);
+    if (isSubMenuOpened) {
+      dispatch({
+        type: FOLD_SUBMOBILEMENU,
+      });
+    } else
+      dispatch({
+        type: UNFOLD_SUBMOBILEMENU,
+      });
   }
 
   return (
@@ -72,7 +97,7 @@ function AppHeader(props) {
 
         <div className={header__mobile}>
           <img src={logoMobile} alt='логотип мобильная версия' />
-          <button className={header__mobilebutton} onClick={toggleMobileMenu}>
+          <button className={header__mobilebutton} onClick={openMobileMenu}>
             <MenuIcon type='primary' />
           </button>
         </div>
@@ -85,7 +110,7 @@ function AppHeader(props) {
       >
         <div className={`pb-4 ${mobilemenu__top}`}>
           <p className='text text_type_main-medium'>Меню</p>
-          <button className={header__mobilebutton} onClick={toggleMobileMenu}>
+          <button className={header__mobilebutton} onClick={closeMobileMenu}>
             <CloseIcon type='primary' />
           </button>
         </div>

@@ -1,11 +1,13 @@
 import ingredientStyles from './ingredient-details.module.css';
 
-import { ingredientType } from '../../utils/types';
+import { useSelector } from 'react-redux';
 
 const { text, details, image, nutrients, nutrient } = ingredientStyles;
 
-function IngredientDetails(props) {
-  const { selectedCard } = props;
+function IngredientDetails() {
+  const selectedCard = useSelector(
+    (store) => store.ingredients.currentIngredient
+  );
   return (
     <>
       <div className={details}>
@@ -48,9 +50,5 @@ function IngredientDetails(props) {
     </>
   );
 }
-
-IngredientDetails.propTypes = {
-  selectedCard: ingredientType.isRequired,
-};
 
 export default IngredientDetails;

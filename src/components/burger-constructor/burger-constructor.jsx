@@ -1,34 +1,16 @@
-import React, { useState, useContext, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import ConstructorList from '../constructor-list/constructor-list';
 
-import { TotalSumContext } from '../../services/app-contexts';
-import api from '../../utils/api';
+import { useSelector, useDispatch } from 'react-redux';
 
-import {
-  IngredientsContext,
-  IfMobileContext,
-} from '../../services/app-contexts';
+import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
+
 import TotalSum from '../total-sum/total-sum';
-const initialSum = { totalSum: 0 };
-
-function totalSumReducer(state, action) {
-  switch (action.type) {
-    case 'set':
-      return { ...state, totalSum: action.payload };
-    default:
-      return state;
-  }
-}
-
-const initialItem = {
-  name: 'ТЕСТ Выберите булку',
-  image: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
-  price: 0,
-  _id: '60d3b41abdacab0026a733c7',
-};
+import { ifItsMobile, loadIngredients } from '../../services/selectors';
+import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
 
 const {
   constructor__title,
@@ -40,40 +22,24 @@ const {
   container,
 } = constructorStyles;
 
-function BurgerConstructor(props) {
-  const [totalSumOrder, setTotalSumOrder] = useReducer(
-    totalSumReducer,
-    initialSum,
-    undefined
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const listOfIngredients = useSelector((store) => {
+    return store.ingredients.listOfIngredients;
+  });
+  const createdStuffingsList = useSelector(
+    (store) => store.dragAndDrop.droppedElements
   );
-  const [stuffingsList, setStuffingsList] = useState([]);
-
-  const { isMobile } = useContext(IfMobileContext);
-
-  const {
-    isMobileOrdered,
-    setMobiledOrdered,
-    isLoading,
-    isPerformed,
-    setIsPerformed,
-    setOrderNumber,
-  } = props;
-
-  const { allIngredients } = useContext(IngredientsContext);
-  const [bunSelected, setBunSelected] = useState(initialItem);
+  const isMobile = useSelector(ifItsMobile);
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const bunSelectedFromStore = useSelector((store) => store.ingredients.bun);
+  const isLoading = useSelector(loadIngredients);
 
   useEffect(() => {
-    if (allIngredients) {
-      const stuffings = defineStuffings(allIngredients);
-      setStuffingsList(stuffings);
-      calculateAllPrices(stuffings);
-      setBunSelected(allIngredients[0]);
+    if (listOfIngredients) {
+      calculateAllPrices(createdStuffingsList);
     }
-  }, [allIngredients]);
-
-  function defineStuffings(allData) {
-    return allData.filter((item, index) => index > 4 && index < 11);
-  }
+  }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
 
   function calculateAllPrices(stuffings) {
     let allPrices = [];
@@ -83,93 +49,79 @@ function BurgerConstructor(props) {
     const finalNumber =
       allPrices.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
-        1
+        0
       ) +
-      bunSelected.price * 2;
+      bunSelectedFromStore.price * 2;
 
-    setTotalSumOrder({ type: 'set', payload: finalNumber });
+    dispatch({ type: SET_TOTALSUM, totalSum: finalNumber });
   }
 
-  function handlePerformOrder() {
+  function makeListOfOrder() {
     const ingredientsFormed = [];
-    ingredientsFormed.push(allIngredients[0]._id);
+    ingredientsFormed.push(bunSelectedFromStore._id);
 
-    stuffingsList.forEach((item) => {
+    createdStuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 
-    ingredientsFormed.push(allIngredients[0]._id); //вторая сторона булки тоже добавлена
-    placeOrder(ingredientsFormed);
+    ingredientsFormed.push(bunSelectedFromStore._id);
+    return ingredientsFormed;
   }
 
-  function placeOrder(ingredientsInOrder) {
-    api
-      .makeOrder({ ingredients: ingredientsInOrder })
-      .then((res) => {
-        setIsPerformed(!isPerformed);
-        setOrderNumber(res.order.number);
-      })
-      .catch((err) => console.log(err));
+  function handlePerformOrder() {
+    const thisOrderList = makeListOfOrder();
+    dispatch(fetchOrderNumber(thisOrderList));
   }
 
   function handleToggleIfMobile() {
     if (isMobileOrdered) {
       handlePerformOrder();
     }
-    setMobiledOrdered(!isMobileOrdered);
+    dispatch({
+      type: SET_IFMOBILEORDERED,
+      payload: !isMobileOrdered,
+    });
   }
 
   const mobileListStyle = isMobileOrdered ? list_displayed : list_notdisplayed;
 
   return (
     <>
-      <TotalSumContext.Provider value={{ totalSumOrder }}>
-        <div
-          className={`${container}
+      <div
+        className={`${container}
     ${isMobile ? mobileListStyle : list_flex}`}
-        >
-          {isMobile && isMobileOrdered ? (
-            <div className={constructor__order}>
-              <p className={constructor__title}>Заказ</p>
-              <button
-                onClick={() => {
-                  setMobiledOrdered(false);
-                }}
-                className={constructor__button}
-              >
-                <CloseIcon type='primary' />
-              </button>
-            </div>
-          ) : (
-            <></>
-          )}
-          <ConstructorList
-            stuffingsList={stuffingsList}
-            isLoading={isLoading}
-            bunSelected={bunSelected}
-          />
-        </div>
-        {isLoading ? (
-          <></>
+      >
+        {isMobile && isMobileOrdered ? (
+          <div className={constructor__order}>
+            <p className={constructor__title}>Заказ</p>
+            <button
+              onClick={() => {
+                dispatch({
+                  type: SET_IFMOBILEORDERED,
+                  payload: false,
+                });
+              }}
+              className={constructor__button}
+            >
+              <CloseIcon type='primary' />
+            </button>
+          </div>
         ) : (
-          <TotalSum
-            handleToggleIfMobile={handleToggleIfMobile}
-            isMobileOrdered={isMobileOrdered}
-            handlePerformOrder={handlePerformOrder}
-          />
+          <></>
         )}
-      </TotalSumContext.Provider>
+        <ConstructorList />
+      </div>
+
+      {isLoading ? (
+        <></>
+      ) : (
+        <TotalSum
+          handleToggleIfMobile={handleToggleIfMobile}
+          handlePerformOrder={handlePerformOrder}
+        />
+      )}
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  isMobileOrdered: PropTypes.bool.isRequired,
-  setMobiledOrdered: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  isPerformed: PropTypes.bool.isRequired,
-  setIsPerformed: PropTypes.func.isRequired,
-  setOrderNumber: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;

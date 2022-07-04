@@ -3,22 +3,21 @@ import PropTypes from 'prop-types';
 
 import headerItemStyles from './header-item.module.css';
 
-import { useContext } from 'react';
-
-import { IfMobileContext } from '../../services/app-contexts';
+import { useSelector } from 'react-redux';
 
 import {
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ifItsMobile } from '../../services/selectors';
 
 const texts = ['Конструктор', 'Лента заказов', 'Личный кабинет'];
 const icons = [BurgerIcon, ListIcon, ProfileIcon];
 let Icon = icons[0];
 
 function HeaderItem(props) {
-  const { isMobile } = useContext(IfMobileContext);
+  const isMobile = useSelector(ifItsMobile);
 
   texts.forEach((item, ind) => {
     if (item === props.text) {

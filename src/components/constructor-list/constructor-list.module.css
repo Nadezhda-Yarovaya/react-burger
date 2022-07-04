@@ -12,15 +12,20 @@
   margin: 100px 0 0 0;
   padding: 0;
   /*min-height: 80vh;*/
+  background-color: #131316!important;
 }
 
-.stuffings__item {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-start;
+.empty {
+  min-height: 5vh;
 }
+
+.stuffings__empty {
+  font-family: 'JetBrains Mono';
+ margin-right: 20%;
+  font-size: 14px;
+}
+
+
 
 .item {
   width: 100%;
@@ -33,7 +38,7 @@
   display: flex;
   box-sizing: border-box;
   justify-content: flex-end;
-  padding: 0 16px 0 0;
+  padding: 0 16px 0 52px;
 }
 
 .stuffings {
@@ -47,7 +52,7 @@
   overflow-y: auto;
   box-sizing: border-box;
   max-height: calc(
-    (5 * 80px) + (16px * 4)
+    (5 * 70px) + (16px * 4)
   ); /*включаю скролл, когда более 5 элементов добавлено */
 }
 
@@ -79,11 +84,26 @@
   .stuffings {
     padding: 0 0 0 20px;
   }
+
+  
+}
+
+@media screen and (max-width: 1150px) {
+
+  .stuffings {
+    margin: 0;
+  }
+
+
 }
 
 @media screen and (max-width: 960px) {
   .stuffings {
     max-height: 2000px;
+  }
+  .stuffings__empty {
+    margin-right: 0;
+    margin-left: 5%;
   }
 }
 
@@ -96,7 +116,7 @@
 
   .item_type_bun {
     width: 100%;
-    padding: 0 0 0 32px;
+    padding: 0 8px 0 52px;
     margin: 0;
   }
 

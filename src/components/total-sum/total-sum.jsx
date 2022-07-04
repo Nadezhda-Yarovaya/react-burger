@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -9,17 +8,27 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
-import { TotalSumContext } from '../../services/app-contexts';
+import { useSelector } from 'react-redux';
+import { ifItsMobile } from '../../services/selectors';
+import TotalSumButton from '../total-sum-button/total-sum-button';
 
-import { IfMobileContext } from '../../services/app-contexts';
-
-const { container, sum } = totalSumStyles;
+const { container, sum, button_visible, button_hidden } = totalSumStyles;
 
 function TotalSum(props) {
-  const { handleToggleIfMobile, isMobileOrdered, handlePerformOrder } = props;
+  const { handleToggleIfMobile, handlePerformOrder } = props;
 
-  const { totalSumOrder } = useContext(TotalSumContext);
-  const { isMobile } = useContext(IfMobileContext);
+  const stuffingsList = useSelector(
+    (state) => state.dragAndDrop.droppedElements
+  );
+  const bunSelected = useSelector((state) => state.ingredients.bun);
+
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+
+  const totalSumOrder = useSelector((store) => store.order.totalSum);
+
+  const isMobile = useSelector(ifItsMobile);
+
+  const isDisabled = stuffingsList.length === 0 || bunSelected._id === '1';
 
   return (
     <div className={`pr-4 ${container}`}>
@@ -29,7 +38,7 @@ function TotalSum(props) {
             isMobile ? 'text_type_digits-default' : 'text_type_digits-medium'
           }`}
         >
-          {totalSumOrder.totalSum}
+          {totalSumOrder}
         </p>
         {isMobile ? (
           <CurrencyIcon type='primary' />
@@ -37,26 +46,37 @@ function TotalSum(props) {
           <img src={currencyBig} alt='итого' />
         )}
       </div>
-      <Button
-        type='primary'
-        size={isMobile ? 'small' : 'large'}
-        onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}
-      >
-        {isMobile
-          ? isMobileOrdered
-            ? 'Оформить'
-            : 'Смотреть заказ'
-          : 'Оформить заказ'}
-      </Button>
+      {isMobile ? (
+        <>
+          <div className={isMobileOrdered ? button_hidden : button_visible}>
+            <Button type='primary' size='small' onClick={handleToggleIfMobile}>
+              Смотреть заказ
+            </Button>
+          </div>
+          <div className={isMobileOrdered ? button_visible : button_hidden}>
+            <TotalSumButton
+              size='small'
+              handleClick={handlePerformOrder}
+              btnText='Оформить'
+              isDisabled={isDisabled}
+            />
+          </div>
+        </>
+      ) : (
+        <TotalSumButton
+          size='large'
+          handleClick={handlePerformOrder}
+          btnText='Оформить заказ'
+          isDisabled={isDisabled}
+        />
+      )}
     </div>
   );
 }
 
 TotalSum.propTypes = {
   handleToggleIfMobile: PropTypes.func.isRequired,
-  isMobileOrdered: PropTypes.bool.isRequired,
   handlePerformOrder: PropTypes.func.isRequired,
-  //totalSumOrder: PropTypes.number.isRequired,
 };
 
 export default TotalSum;

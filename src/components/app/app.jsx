@@ -1,19 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import {
-  IngredientsContext,
-  IfMobileContext,
-} from '../../services/app-contexts';
 import { useWindowSize } from '../../hooks/resize.js';
-import api from '../../utils/api';
+
+import { DndProvider } from 'react-dnd';
+import MultiBackend from 'react-dnd-multi-backend';
+import { fetchAllIngredients } from '../../services/action-creators/ingredients-action-creators';
+
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
 import appStyles from './app.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ifItsMobile } from '../../services/selectors';
+
+import {
+  SET_IFMOBILE,
+  REMOVE_CURRENT,
+  CLEAR_ORDERDATA,
+  SET_IFMOBILEORDERED,
+  REMOVE_MODALINGREDIENTS,
+  CLOSE_MOBILEMENU,
+  SET_WINDOWDATA,
+  CLEAR_BUN,
+  CLEAR_STUFFINGLIST,
+} from '../../services/actions';
 
 const {
   page,
@@ -25,119 +41,120 @@ const {
 } = appStyles;
 
 function App() {
-  const [allIngredients, setAllIngredients] = useState(null);
   const [width, height] = useWindowSize();
-  const [isMobile, setIsMobile] = useState(false);
-  const [isMobileOrdered, setIsMobiledOrdered] = useState(false);
-  const [isPerformed, setIsPerformed] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
-  const [areIngredientsShown, setAreIngredientsShown] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     handleSetMobile();
-  }, [width]);
+    handleSetWindowData();
+  }, [width, height]);
 
   useEffect(() => {
-    setIsLoading(true);
-    api
-      .getIngredients()
-      .then((res) => {
-        setAllIngredients(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('Ошибка при соединении с сервером: ', err);
-        setIsLoading(false);
-      });
+    dispatch(fetchAllIngredients());
   }, []);
 
-  function closeAllPopups() {
-    closeModalIngredientsShown();
-    closeIsPerformed();
+  const isPerformed = useSelector((state) => state.order.isPerformed);
+  const isMobile = useSelector(ifItsMobile);
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const areIngredientsShown = useSelector(
+    (state) => state.ingredients.areIngredientsShown
+  );
+  const isMobileMenuOpened = useSelector(
+    (store) => store.mobile.isMobileMenuOpened
+  );
+
+  function closeIsPerformed() {
+    dispatch({
+      type: CLEAR_ORDERDATA,
+    });
+    dispatch({
+      type: CLEAR_BUN,
+    });
+
+    dispatch({
+      type: CLEAR_STUFFINGLIST,
+    });
+  }
+  function closeModalIngredientsShown() {
+    dispatch({
+      type: REMOVE_CURRENT,
+    });
+    dispatch({
+      type: REMOVE_MODALINGREDIENTS,
+    });
   }
 
   const handleSetMobile = () => {
     if (width < 790) {
-      setIsMobile(true);
+      dispatch({
+        type: SET_IFMOBILE,
+        payload: true,
+      });
     } else {
-      setIsMobile(false);
-      setIsMobiledOrdered(false);
+      dispatch({
+        type: SET_IFMOBILE,
+        payload: false,
+      });
+      dispatch({
+        type: SET_IFMOBILEORDERED,
+        payload: false,
+      });
+      if (isMobileMenuOpened) {
+        dispatch({
+          type: CLOSE_MOBILEMENU,
+        });
+      }
     }
   };
 
-  function handleShowNutrients(currentItem) {
-    setSelectedCard(currentItem);
-    setAreIngredientsShown(!areIngredientsShown);
-  }
-
-  function closeModalIngredientsShown() {
-    setAreIngredientsShown(false);
-  }
-
-  function closeIsPerformed() {
-    setIsPerformed(false);
-  }
+  const handleSetWindowData = () => {
+    dispatch({
+      type: SET_WINDOWDATA,
+      payload: {
+        width: width,
+        height: height,
+      },
+    });
+  };
 
   return (
     <>
-      <IfMobileContext.Provider value={{ isMobile }}>
-        <IngredientsContext.Provider value={{ allIngredients, orderNumber }}>
-          <div className={page}>
-            <AppHeader />
+      <div className={page}>
+        <AppHeader />
 
-            <main className={`${main} mb-10`}>
-              <section
-                className={`mr-10} ${ingredients} ${
-                  isMobile && isMobileOrdered
-                    ? section_notdisplayed
-                    : section_flex
-                }`}
-              >
-                <BurgerIngredients
-                  changeChoice={handleShowNutrients}
-                  selectedCard={selectedCard}
-                  isLoading={isLoading}
-                />
-              </section>
-              <section className={`${constructor}`}>
-                <BurgerConstructor
-                  isMobileOrdered={isMobileOrdered}
-                  setMobiledOrdered={setIsMobiledOrdered}
-                  isLoading={isLoading}
-                  isPerformed={isPerformed}
-                  setIsPerformed={setIsPerformed}
-                  setOrderNumber={setOrderNumber}
-                />
-              </section>
-            </main>
-          </div>{' '}
-          {isPerformed && (
-            <Modal
-              closeModal={closeIsPerformed}
-              closeAllPopups={closeAllPopups}
-              windowWidth={width}
-              windowHeight={height}
-              type='orderPerformed'
-              isOpen={true}
+        <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+          <main className={`${main} mb-10`}>
+            <section
+              className={`mr-10} ${ingredients} ${
+                isMobile && isMobileOrdered
+                  ? section_notdisplayed
+                  : section_flex
+              }`}
             >
-              <OrderDetails />
-            </Modal>
-          )}
-          {areIngredientsShown && (
-            <Modal
-              closeModal={closeModalIngredientsShown}
-              closeAllPopups={closeAllPopups}
-              windowWidth={width}
-              windowHeight={height}
-              isOpen={true}
-            >
-              <IngredientDetails selectedCard={selectedCard} />
-            </Modal>
-          )}
-        </IngredientsContext.Provider>
-      </IfMobileContext.Provider>
+              <BurgerIngredients />
+            </section>
+            <section className={`${constructor}`}>
+              <BurgerConstructor />
+            </section>
+          </main>
+        </DndProvider>
+      </div>{' '}
+      {isPerformed ? (
+        <Modal
+          closeModal={closeIsPerformed}
+          type='orderPerformed'
+          isOpen={true}
+        >
+          <OrderDetails />
+        </Modal>
+      ) : (
+        <></>
+      )}
+      {areIngredientsShown && (
+        <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
+          <IngredientDetails />
+        </Modal>
+      )}
     </>
   );
 }

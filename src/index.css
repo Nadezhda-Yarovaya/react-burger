@@ -13,29 +13,45 @@
 .constructor-element__action {
   display: inline-flex !important;
 }
-
-.tab_tab__ffQSK {
+/*
+.tab_tab__dTxCS {
   width: 100% !important;
   max-width: 260px;
+}*/
+
+.constructor-element__row {
+  width: 100% !important;
+  justify-content: space-between!important;
+  max-width: 650px!important;
 }
 
-@media screen and (max-width: 1210px) {
-  .tab_tab__ffQSK {
-    min-width: 100px !important;
+
+.constructor-element {
+  width: 100% !important;
+  max-width: 650px!important;
+  display: flex !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+}
+
+@media screen and (max-width: 1250px) {
+  .tab_tab__dTxCS {
+    min-width: 50px !important;
+    max-width: 120px;
+    padding: 16px 8px !important;
   }
 }
 
 @media screen and (max-width: 1150px) {
-  .tab_tab__ffQSK {
-    min-width: 60px !important;
-    max-width: 180px;
+  /*.tab_tab__dTxCS {
     padding: 16px 8px !important;
-  }
+  }*/
 
   .constructor-element {
     max-width: 450px !important;
     font-size: 13px !important;
     line-height: 18px !important;
+    /*padding: 16px 0 !important;*/
   }
 }
 
@@ -44,10 +60,17 @@
     margin-right: 0 !important;
     width: 68px !important;
     height: 32px !important;
+    object-fit: cover;
   }
 
+  .constructor-element__row {
+    max-width: 530px!important;
+  }
+  
+ 
+
   .constructor-element {
-    max-width: 360px !important;
+    max-width:530px !important;
     font-size: 13px !important;
     line-height: 18px !important;
   }
@@ -55,12 +78,13 @@
   .constructor-element__price {
     font-size: 24px !important;
   }
+  /*
 
-  .tab_tab__ffQSK {
+  .tab_tab__dTxCS {
     min-width: 30px !important;
     max-width: 140px;
     padding: 16px 4px !important;
-  }
+  }*/
 
   .constructor-element_pos_top {
     margin: 0 0 20px 0 !important;
@@ -88,7 +112,11 @@
 
   .constructor-element__row {
     width: 100% !important;
+    justify-content: space-between!important;
+    max-width: 700px!important;
   }
+  
+
 
   .constructor-element__image {
     margin-right: 0 !important;
@@ -102,17 +130,32 @@
     display: none !important;
   }
 
-  .constructor-element__price {
-    padding: 0 8px 0 0;
-  }
-  .tab_tab__ffQSK {
-    min-width: 30px !important;
-    max-width: 230px;
-    padding: 16px 16px !important;
+ 
+  .box {
+    margin-right: 0!important;
   }
 
+  .constructor-element__price {
+    padding: 0;
+  }
+  /*
+  
+  .tab_tab__dTxCS {
+    min-width: 30px!important;
+    max-width: 80px;
+    padding: 16px 4px!important;
+  }
+*/
   .button_button__gss3G {
     padding: 10px 32px!important;
   }
 
+}
+
+
+@media screen and (max-width: 460px) {
+.constructor-element__image {
+  width: 43px !important;
+  height: 25px !important;
+}
 }
