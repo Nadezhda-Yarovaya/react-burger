@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 
 import {
   Logo,
@@ -19,14 +18,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   OPEN_MOBILEMENU,
   CLOSE_MOBILEMENU,
-  SET_CURRENT,
-  SET_IFMOBILE,
-  REMOVE_CURRENT,
-  NULL_ORDERDATA,
-  SET_IFMOBILEORDERED,
-  SET_MODALINGREDIENTS,
-  REMOVE_MODALINGREDIENTS,
-  SET_WINDOWDATA,
   UNFOLD_SUBMOBILEMENU,
   FOLD_SUBMOBILEMENU,
 } from '../../services/actions';
@@ -50,10 +41,7 @@ const {
   header__mobilebutton,
 } = headerStyles;
 
-function AppHeader(props) {
-  //const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
-  //const [isSubMenuOpened, setIsSubMenuOpened] = useState(false);
-
+function AppHeader() {
   const dispatch = useDispatch();
   const isMobileMenuOpened = useSelector(
     (store) => store.mobile.isMobileMenuOpened
@@ -61,14 +49,12 @@ function AppHeader(props) {
   const isSubMenuOpened = useSelector((store) => store.mobile.isSubMenuOpened);
 
   function openMobileMenu() {
-    //setIsMobileMenuOpened(!isMobileMenuOpened);
     dispatch({
       type: OPEN_MOBILEMENU,
     });
   }
 
   function closeMobileMenu() {
-    //setIsMobileMenuOpened(!isMobileMenuOpened);
     dispatch({
       type: CLOSE_MOBILEMENU,
     });

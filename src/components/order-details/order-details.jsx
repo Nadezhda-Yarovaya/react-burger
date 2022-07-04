@@ -1,16 +1,13 @@
 import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 
-import doneSign from '../../images/done.svg';import { useSelector } from 'react-redux';
+import doneSign from '../../images/done.svg';
+import { useSelector } from 'react-redux';
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 
 function OrderDetails() {
-  //const ingredientsFromContext = React.useContext(IngredientsContext);
-  const orderNumber = useSelector((store) => {
-    console.log('order-details: ', store);
-    return store.order.createdOrder.number;
-  });
+  const orderNumber = useSelector((store) => store.order.createdOrder.number);
 
   return (
     <>

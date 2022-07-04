@@ -1,25 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { NULL_ORDERDATA,REMOVE_CURRENT,REMOVE_MODALINGREDIENTS } from '../../services/actions';
 const { modal, modal__button, container } = modalStyles;
 
 const modalRoot = document.getElementById('modal');
 
 function Modal(props) {
   const [isOpened, setIsOpened] = useState(props.isOpen);
-  const dispatch= useDispatch();
 
   const isMobile = useSelector((store) => store.mobile.isMobile);
   const windowWidth = useSelector((store) => store.mobile.windowData.width);
   const windowHeight = useSelector((store) => store.mobile.windowData.height);
-
-
 
   useEffect(() => {
     function closeByEscape(evt) {
@@ -38,12 +34,10 @@ function Modal(props) {
 
   const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
 
-  const topPosition =
-    ((windowHeight - modalHeight) / 2).toString() + 'px';
+  const topPosition = ((windowHeight - modalHeight) / 2).toString() + 'px';
   const leftPosition =
     (
-      (windowWidth -
-        (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
+      (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
       2
     ).toString() + 'px';
 
@@ -67,18 +61,9 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-  /*
   closeModal: PropTypes.func.isRequired,
-  closeAllPopups: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
-  windowHeight: PropTypes.number.isRequired,
-  windowWidth: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  type: PropTypes.string,*/
-
+  type: PropTypes.string,
 };
 
 export default Modal;

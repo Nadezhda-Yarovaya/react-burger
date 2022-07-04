@@ -25,19 +25,7 @@
   font-size: 14px;
 }
 
-.candrop__style {
-}
 
-.cantdrop__style  {
-}
-
-.stuffings__item {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-start;
-}
 
 .item {
   width: 100%;
@@ -50,7 +38,7 @@
   display: flex;
   box-sizing: border-box;
   justify-content: flex-end;
-  padding: 0 16px 0 48px;
+  padding: 0 16px 0 52px;
 }
 
 .stuffings {
@@ -128,7 +116,7 @@
 
   .item_type_bun {
     width: 100%;
-    padding: 0 0 0 32px;
+    padding: 0 8px 0 52px;
     margin: 0;
   }
 

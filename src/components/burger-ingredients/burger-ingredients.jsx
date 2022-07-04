@@ -1,43 +1,29 @@
-import React from 'react';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTSBYCAT } from '../../services/actions';
-import { useDrag } from 'react-dnd';
-import { useInView } from 'react-intersection-observer';
+import { getAllIngredients, loadIngredients } from '../../services/selectors';
 
-import { ingredientType } from '../../utils/types';
-import { loadIngredients } from '../../services/selectors';
+const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
-const { title, list, tabs, ingredients, tab1 } = ingredientsStyles;
-
-function BurgerIngredients(props) {
+function BurgerIngredients() {
   const dispatch = useDispatch();
-  //const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
-  //const { allIngredients } = useContext(IngredientsContext);
-  /* const [mainIngredients, setMainIngredients] = useState({
-    buns: [initialItem],
-    sauce: [initialItem],
-    main: [initialItem],
-  }); */
 
   const isLoading = useSelector(loadIngredients);
 
-  const allIngredients = useSelector((store) => {
-    //    console.log('all: ', store);
-    return store.ingredients.listOfIngredients;
-  });
+  const allIngredients = useSelector(getAllIngredients);
 
-  //console.log('final ingred from redux: ', burgerIngredients);
+  const bunsRef = useRef();
+  const sauceRef = useRef();
+  const stuffingRef = useRef();
+  const listRef = useRef();
 
   useEffect(() => {
     if (allIngredients) {
-      //console.log('wer here');
       const formedIngredients = {
         bun: filterByType(allIngredients, 'bun'),
         sauce: filterByType(allIngredients, 'sauce'),
@@ -53,11 +39,6 @@ function BurgerIngredients(props) {
   function filterByType(arr, type) {
     return arr.filter((item) => item.type === type);
   }
-
-  const bunsRef = React.useRef();
-  const sauceRef = React.useRef();
-  const stuffingRef = React.useRef();
-  const listRef = React.useRef();
 
   function scroll() {
     let scrollYinitial = Math.floor(
@@ -89,7 +70,7 @@ function BurgerIngredients(props) {
       ) : (
         <div className={ingredients}>
           <div className={`${tabs}`}>
-            <div className={tab1}>
+            <div className={tabcontainer}>
               <Tab
                 value='one'
                 active={current === 'one'}
@@ -101,7 +82,7 @@ function BurgerIngredients(props) {
                 Булки
               </Tab>
             </div>
-            <div className={tab1}>
+            <div className={tabcontainer}>
               <Tab
                 value='two'
                 active={current === 'two'}
@@ -113,7 +94,7 @@ function BurgerIngredients(props) {
                 Соусы
               </Tab>
             </div>
-            <div className={tab1}>
+            <div className={tabcontainer}>
               <Tab
                 value='three'
                 active={current === 'three'}
@@ -143,7 +124,5 @@ function BurgerIngredients(props) {
     </>
   );
 }
-
-BurgerIngredients.propTypes = {};
 
 export default BurgerIngredients;

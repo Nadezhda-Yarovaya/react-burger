@@ -1,17 +1,5 @@
 import {
-  SET_ALLINGREDIENTS,
-  SET_CURRENT,
-  REMOVE_CURRENT,
-  SET_ORDERDATA,
   SET_IFMOBILE,
-  INCREASE_DROPPEDELEMENT,
-  UPDATE_COUNTER,
-  CHANGE_POSITION,
-  DELETE_ITEM,
-  SET_DROPDIRECTION,
-  SET_DRAGGEDCONSTRUCTOR,
-  SET_TOTALSUM,
-  REPLACE_BUN,
   SET_IFMOBILEORDERED,
   SET_WINDOWDATA,
   OPEN_MOBILEMENU,
@@ -19,10 +7,13 @@ import {
   UNFOLD_SUBMOBILEMENU,
   FOLD_SUBMOBILEMENU,
   SET_TOUCHEDITEM,
-  CLEAR_TOUCHEDITEM
+  CLEAR_TOUCHEDITEM,
+  SET_OFFSETS,
+  SET_INITIALS,
+  SET_FINALS,
+  CLEAR_INITIALS,
+  CLEAR_FINALS,
 } from '../actions';
-
-//[{uniqueId: 0, id: '', name: '', price: 0, image: ''}],
 
 const initialState = {
   isMobile: false,
@@ -30,7 +21,12 @@ const initialState = {
   windowData: { width: 0, height: 0 },
   isMobileMenuOpened: false,
   isSubMenuOpened: false,
-  currentTouchedItem: {}
+  currentTouchedItem: {},
+  offsets: {
+    rectangle: { top: 0, right: 0 },
+    initials: { x: 0, y: 0 },
+    finals: { x: 0, y: 0 },
+  },
 };
 
 export function mobileReducer(state = initialState, action) {
@@ -60,28 +56,72 @@ export function mobileReducer(state = initialState, action) {
         ...state,
         isMobileMenuOpened: false,
       };
-      case UNFOLD_SUBMOBILEMENU:
-        return {
-          ...state,
-          isSubMenuOpened: true,
-        };
-      case FOLD_SUBMOBILEMENU:
-        return {
-          ...state,
-          isSubMenuOpened: false,
-        };
-      
-      case SET_TOUCHEDITEM:
-        return {
-          ...state,
-          currentTouchedItem: action.payload
-        };
+    case UNFOLD_SUBMOBILEMENU:
+      return {
+        ...state,
+        isSubMenuOpened: true,
+      };
+    case FOLD_SUBMOBILEMENU:
+      return {
+        ...state,
+        isSubMenuOpened: false,
+      };
 
-        case CLEAR_TOUCHEDITEM:
-          return {
-            ...state,
-            currentTouchedItem: {}
-          };
+    case SET_TOUCHEDITEM:
+      return {
+        ...state,
+        currentTouchedItem: action.payload,
+      };
+
+    case CLEAR_TOUCHEDITEM:
+      return {
+        ...state,
+        currentTouchedItem: {},
+      };
+
+    case SET_OFFSETS:
+      return {
+        ...state,
+        offsets: {
+          ...state.offsets,
+          rectangle: action.payload,
+        },
+      };
+    case SET_INITIALS:
+      return {
+        ...state,
+        offsets: {
+          ...state.offsets,
+          initials: action.payload,
+        },
+      };
+
+    case SET_FINALS:
+      return {
+        ...state,
+        offsets: {
+          ...state.offsets,
+          finals: action.payload,
+        },
+      };
+
+    case CLEAR_INITIALS:
+      return {
+        ...state,
+        offsets: {
+          ...state.offsets,
+          initials: initialState.offsets.initials,
+        },
+      };
+
+    case CLEAR_FINALS:
+      return {
+        ...state,
+        offsets: {
+          ...state.offsets,
+          finals: initialState.offsets.finals,
+        },
+      };
 
     default:
       return state;

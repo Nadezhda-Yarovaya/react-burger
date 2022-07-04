@@ -1,28 +1,18 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import constructorListStyles from './constructor-list.module.css';
 
-import PropTypes from 'prop-types';
-import CustomConstructorElement 
-from '../custom-constructor-element/custom-constructor-element';
-import { DndProvider } from 'react-dnd';
+import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
 
-import { ingredientType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { TouchBackend } from 'react-dnd-touch-backend';
-
 import {
-  SET_ORDERDATA,
-  UPDATE_COUNTER,
-  INCREASE_DROPPEDELEMENT,
-  CHANGE_POSITION,
   SET_DROPDIRECTION,
   REPLACE_BUN,
+  SET_OFFSETS,
 } from '../../services/actions';
 import { useDrop } from 'react-dnd';
-import { ifItsMobile } from '../../services/selectors';
+import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
-
 
 const {
   stuffings,
@@ -30,41 +20,27 @@ const {
   item_type_bun,
   item_type_stuffing,
   list,
-  stuffings__item,
   list_flex,
   stuffings__empty,
   empty,
-  candrop__style,
-  cantdrop__style,
-  buttonswipestyle
 } = constructorListStyles;
-
-/*
-Если при выполнении запроса к API в усилителе произошла ошибка, то содержимое хранилища соответствующего
-элемента приводится к начальному состоянию. Например, если пользователь оформил заказ, а при оформлении
-следующего у него произошла ошибка — в модальном окне не должен отображаться старый номер заказа.
-Аналогично при работе со списком ингредиентов.*/
 
 function ConstructorList() {
   const dispatch = useDispatch();
-  const  isMobile  = useSelector(state=> {
-    console.log('statemob: ', state.mobile.isMobile);
-    return state.mobile.isMobile;
-  });
-  const direction = useSelector(state=>state.dragAndDrop.dropDirection);
-  const currentBun = useSelector((store) => {
-    return store.ingredients.bun;
-  });
-  const isLoading  = useSelector(store=>store.ingredients.isLoading) ;
+  const isMobile = useSelector(ifItsMobile);
+  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
+  const currentBun = useSelector((store) => store.ingredients.bun);
+  const isLoading = useSelector(loadIngredients);
 
-  const initialIngredOffset = useSelector((store) => store.dragAndDrop.initialIngredOffset);
+  const initialIngredOffset = useSelector(
+    (store) => store.dragAndDrop.initialIngredOffset
+  );
 
   const stuffingListDropped = useSelector((store) => {
     return store.dragAndDrop.droppedElements;
   });
 
   const thisRef = useRef();
-
 
   const handleBunDrop = (currentItem) => {
     dispatch({
@@ -73,21 +49,17 @@ function ConstructorList() {
     });
   };
 
-
   const [stuffingsEmptyText, setStuffingsEmptyText] = useState('');
 
-useEffect(()=> {
-  console.log('ismob? ', isMobile);
-  if(isMobile) {
-    setStuffingsEmptyText('Пока нет начинки. Добавляйте на странице ингредиентов');
-   }
-   else {
-    setStuffingsEmptyText('Пока нет начинки. Перетяните с поля слева');
-   }
-
-}, [isMobile]);
-
-
+  useEffect(() => {
+    if (isMobile) {
+      setStuffingsEmptyText(
+        'Пока нет начинки. Добавляйте на странице ингредиентов'
+      );
+    } else {
+      setStuffingsEmptyText('Пока нет начинки. Перетяните с поля слева');
+    }
+  }, [isMobile]);
 
   const [{ isBunHover }, dropContainerBunTop] = useDrop({
     accept: 'bun',
@@ -109,76 +81,49 @@ useEffect(()=> {
     }),
   });
 
-  const [{ canDrop, isHover, currentOffset }, dropContainerRef] = useDrop({
+  const [{ isHover }, dropContainerRef] = useDrop({
     accept: 'ingredient',
 
     hover(item, monitor) {
       const hoverBoundingRect = thisRef.current?.getBoundingClientRect();
       const currentOffset = Math.floor(monitor.getClientOffset().y);
-      const hoverBoundingRectTop=Math.floor(hoverBoundingRect.top);
+      const hoverBoundingRectTop = Math.floor(hoverBoundingRect.top);
 
       const currentItemOffset = initialIngredOffset.y;
 
       const initialDistToTop = currentItemOffset - hoverBoundingRectTop;
       const finalPixelsTtoTop = currentOffset - hoverBoundingRectTop;
       const goesToBottom = initialDistToTop < finalPixelsTtoTop;
-      //console.log('goesToBottom', goesToBottom, ' if true === bottom', ' diff init, final top: ', initialDistToTop,  finalPixelsTtoTop);
       const currentPosition = goesToBottom ? 'bottom' : 'top';
-      //setDirection(currentPosition);
-      dispatch ({
+      dispatch({
         type: SET_DROPDIRECTION,
-        payload: currentPosition
+        payload: currentPosition,
       });
     },
-    drop(itemId) {
-      dropElementWithinConstructor(itemId, dispatch, direction);
+    drop(item) {
+      dropElementWithinConstructor(item.item, dispatch, direction);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
-      canDrop: monitor.canDrop(),
     }),
   });
 
-const [target1, setTarget1] = useState({});
-
-
-  const emptyText = isMobile
-    ? 'Пока нет начинки. Добавляйте на странице ингредиентов'
-    : 'Пока нет начинки. Перетяните с поля слева';
- // console.log('ismob:', isMobile, 'empty:', emptyText);
-  //{span.constructor-element__action}
-
   const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
-  
-  const [tempShow, setTempshow] =useState('');
-  const [initialX, setInitialX] = useState(0);
-  const [finalX, setFinalX] = useState(0);
- 
-  const [initialY, setInitialY] = useState(0);
-  const [finalY, setFinalY] = useState(0);
 
-  const [rect1, setRect1] = useState(0);
- 
-  
-  /*
-  useEffect(() => {
-      document.getElementById('buttonswipe').addEventListener('touchstart', (e) => {
-          setTempshow('swiped');
-      });
-  },[]);*/
   const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
 
   useEffect(() => {
     if (isMobileOrdered) {
-   const rectang = thisRef.current?.getBoundingClientRect();
-   console.log('rectang : ', rectang);
-   setRect1(Math.floor(rectang.top));
+      const rectangle = thisRef.current?.getBoundingClientRect();
+      dispatch({
+        type: SET_OFFSETS,
+        payload: {
+          top: Math.floor(rectangle.top),
+          right: Math.floor(rectangle.right),
+        },
+      });
     }
-    
-},[isMobile, isMobileOrdered, stuffingListDropped]);
-  
-
-   /* minHeight: isHover ? heightOfCont : '80px',*/
+  }, [isMobile, isMobileOrdered, stuffingListDropped]);
 
   return (
     <>
@@ -210,7 +155,7 @@ const [target1, setTarget1] = useState({});
                 item={currentBun}
               />
             </li>
-            <li className={`${item_type_stuffing}`} ref={thisRef} >
+            <li className={`${item_type_stuffing}`} ref={thisRef}>
               <div
                 className={`${stuffings} ${
                   stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
@@ -219,14 +164,13 @@ const [target1, setTarget1] = useState({});
                   padding: isHover ? '0 8px 80px 0' : '0 8px 0 0',
                   backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
                   border: isHover ? '1px dashed white' : '0',
-                  position: 'relative'
+                  position: 'relative',
+                  minHeight: { heightOfCont },
                 }}
                 ref={dropContainerRef}
               >
                 {stuffingListDropped.length === 0 ? (
-                  <p className={stuffings__empty}>
-                 {stuffingsEmptyText}
-                  </p>
+                  <p className={stuffings__empty}>{stuffingsEmptyText}</p>
                 ) : (
                   <></>
                 )}
@@ -237,19 +181,6 @@ const [target1, setTarget1] = useState({});
                     thumbnail={item.image}
                     item={item}
                     key={item.uniqueId}
-                    setTempshow={setTempshow}
-setTarget1={setTarget1}
-                    finalX={finalX}
-                    initialX={initialX}
-                    setFinalX={setFinalX}
-                    setInitialX={setInitialX}
-                    finalY={finalY}
-                    initialY={initialY}
-                    setFinalY={setFinalY}
-                    setInitialY={setInitialY}
-                    setRect1={setRect1}
-                    rect1 = {rect1}
-                    isHover = {isHover}
                   />
                 ))}
               </div>
@@ -278,15 +209,8 @@ setTarget1={setTarget1}
           </>
         )}
       </ul>
-     
     </>
   );
 }
-
-ConstructorList.propTypes = {
-  /* bunSelected: ingredientType.isRequired,
-  stuffingsList: PropTypes.arrayOf(ingredientType).isRequired,
-  isLoading: PropTypes.bool.isRequired,*/
-};
 
 export default ConstructorList;

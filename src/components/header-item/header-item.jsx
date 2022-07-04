@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import headerItemStyles from './header-item.module.css';
 
-//import { IfMobileContext } from '../../services/app-contexts';
 import { useSelector } from 'react-redux';
 
 import {

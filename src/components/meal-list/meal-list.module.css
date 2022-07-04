@@ -15,10 +15,10 @@
   max-width: calc((272px * 2) + 24px + (16px * 2));
   box-sizing: border-box;
 }
-
+/*
 .item {
   width: 100%;
-  /*border: var(--dashed-border);*/
+  border: var(--dashed-border);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -31,7 +31,7 @@
 .burgerItem:nth-of-type(even) {
   margin: 0;
 }
-
+*/
 @media screen and (max-width: 1250px) {
   .list {
     grid-template-columns: repeat(2, minmax(100px, 220px));

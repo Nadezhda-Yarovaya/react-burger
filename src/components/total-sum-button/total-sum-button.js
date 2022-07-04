@@ -1,27 +1,10 @@
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-
-
-
-import currencyBig from '../../images/currency36x36.svg';
-
-/* посмотреть, как тотал сам теперь высчитывать "динамически" */
-
-//import { IfMobileContext } from '../../services/app-contexts';
-import { useSelector } from 'react-redux';
-import { ifItsMobile } from '../../services/selectors';
-
-
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function TotalSumButton(props) {
-
-    return (
-        <>
-        <Button
+  return (
+    <>
+      <Button
         type='primary'
         size={props.size}
         onClick={props.handleClick}
@@ -29,9 +12,15 @@ function TotalSumButton(props) {
       >
         {props.btnText}
       </Button>
-
-      </>
-    );
+    </>
+  );
 }
+
+TotalSumButton.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  btnText: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
+};
 
 export default TotalSumButton;

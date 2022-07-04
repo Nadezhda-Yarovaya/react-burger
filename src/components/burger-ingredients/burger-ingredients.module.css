@@ -34,13 +34,13 @@
   justify-content: space-between;
 }
 
-.tab1 {
+.tabcontainer {
   box-sizing: border-box;
   width: 100%;
 }
 
-.tab1 div{
-box-sizing: border-box;
+.tabcontainer div {
+  box-sizing: border-box;
 }
 
 .ingredients {
@@ -64,16 +64,13 @@ box-sizing: border-box;
 }
 
 @media screen and (max-width: 1150px) {
-
-  .tab1 div{
+  .tabcontainer div {
     padding: 16px 8px;
   }
 }
 
-
 @media screen and (max-width: 960px) {
-
-  .tab1 div{
+  .tabcontainer div {
     padding: 16px 8px;
   }
 }
@@ -91,18 +88,14 @@ box-sizing: border-box;
     width: 0;
   }
 
-  .tab1 div{
+  .tabcontainer div {
     padding: 16px 24px;
   }
 }
 
 @media screen and (max-width: 460px) {
-  .tab1 div{
+  .tabcontainer div {
     padding: 16px 8px;
     min-width: 90px;
   }
-/*
-  .tab1 span{
-    font-size: 14px;
-  }*/
 }

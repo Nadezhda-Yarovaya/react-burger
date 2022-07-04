@@ -1,22 +1,12 @@
 import {
-  SET_ALLINGREDIENTS,
-  SET_CURRENT,
-  REMOVE_CURRENT,
-  SET_ORDERDATA,
-  SET_IFMOBILE,
   INCREASE_DROPPEDELEMENT,
-  UPDATE_COUNTER,
-  CHANGE_POSITION,
   DELETE_ITEM,
   SET_DROPDIRECTION,
   SET_DRAGGEDCONSTRUCTOR,
-  SET_TOTALSUM,
-  REPLACE_BUN,
   GOUP_POSITION,
   GODOWN_POSITION,
+  CLEAR_STUFFINGLIST,
 } from '../actions';
-
-//[{uniqueId: 0, id: '', name: '', price: 0, image: ''}],
 
 const initialState = {
   droppedElements: [],
@@ -25,7 +15,6 @@ const initialState = {
 };
 
 export function dndReducer(state = initialState, action) {
-  //console.log('bun:', action.bun);
   switch (action.type) {
     case INCREASE_DROPPEDELEMENT:
       return {
@@ -37,6 +26,12 @@ export function dndReducer(state = initialState, action) {
             uniqueId: action.uniqueId,
           },
         ],
+      };
+
+    case CLEAR_STUFFINGLIST:
+      return {
+        ...state,
+        droppedElements: initialState.droppedElements,
       };
 
     case SET_DRAGGEDCONSTRUCTOR: {
@@ -67,7 +62,7 @@ export function dndReducer(state = initialState, action) {
     case DELETE_ITEM:
       return {
         ...state,
-        droppedElements: [...state.droppedElements].filter((item, index) => {
+        droppedElements: [...state.droppedElements].filter((item) => {
           if (item.uniqueId === action.element.uniqueId) {
           } else {
             return item;
@@ -99,10 +94,3 @@ function arraymoveDown(arr, fromIndex) {
   arr.splice(fromIndex + 1, 0, element);
   return arr;
 }
-/* case UPDATE_COUNTER : 
-      return {
-        ...state,
-        listOfIngredients: state.listOfIngredients.map
-        action.currentElementId
-      };*/
-/* 0 is how many removed */
