@@ -19,13 +19,26 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ifItsMobile } from '../../services/selectors';
 
+import {
+  SET_ALLINGREDIENTS,
+  SET_CURRENT,
+  SET_IFMOBILE,
+  REMOVE_CURRENT,
+  NULL_ORDERDATA,
+  SET_IFMOBILEORDERED,
+  SET_MODALINGREDIENTS,
+  REMOVE_MODALINGREDIENTS
+} from '../../services/actions';
+import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
+
+
 function Ingredient(props) {
     const dispatch = useDispatch();
 
     const { price, item__name, counter, list__choice, item__mobilebutton, list__item} = ingredientStyles;
 
     
-  const { item, changeChoice } = props;
+  const { item } = props;
   /*
     const ingredientCount = useSelector(store=>{
       let totalCount = 0;
@@ -47,7 +60,7 @@ function Ingredient(props) {
 
   const ingredientCount = useSelector((store) => {
     let totalCount = 0;
-    store.other.droppedElements.forEach((curItem) => {
+    store.dragAndDrop.droppedElements.forEach((curItem) => {
       if (curItem._id === item._id) {
         totalCount++;
       }
@@ -79,29 +92,7 @@ function Ingredient(props) {
 const currentTimeInSeconds = Math.floor(Date.now());
 //console.log('uniq id: ', currentTimeInSeconds);
 
-  const handleDrop = (currentItem) => {
-    // updating counter for main ingredient
-    dispatch({
-      type: UPDATE_COUNTER,
-      currentElementId: currentItem._id,
-    });
-
-    //setting dropped elements
-    /*
-     droppedIngredient: currentItem,
-      uniqueId: currentTimeInSeconds*/
-    dispatch({
-      type: INCREASE_DROPPEDELEMENT,
-      element: currentItem,
-      uniqueId: currentTimeInSeconds,
-    });
-    /*setDraggedElements([
-        ...draggedElements,
-        ...elements.filter(element => element.id === itemId.id)
-    ]);*/
-  };
-
-  
+    
   const handleBunDrop = (currentItem) => {
     console.log('indrop mobile', currentItem._id);
     dispatch({
@@ -116,6 +107,19 @@ const currentTimeInSeconds = Math.floor(Date.now());
 
   const currentCounter = (item.type === 'bun') ? bunCount : ingredientCount;
 
+  function openModalIngredient(currentItem) {
+    //setSelectedCard(currentItem);
+    dispatch({
+      type: SET_CURRENT,
+      currentIngredient: currentItem,
+    });
+    //setAreIngredientsShown(!areIngredientsShown);
+
+    dispatch({
+      type: SET_MODALINGREDIENTS,
+    });
+  }
+
 
 
   return (
@@ -124,7 +128,7 @@ const currentTimeInSeconds = Math.floor(Date.now());
       <button
         onClick={() => {
           /* changeChoice(currentList, item._id, setWithChoice);*/
-          changeChoice(item);
+          openModalIngredient(item);
         }}
         className={list__choice}
       >
@@ -152,7 +156,7 @@ const currentTimeInSeconds = Math.floor(Date.now());
         if (item.type === 'bun') {
           handleBunDrop(item);
         } else {
-            handleDrop(item);}
+          dropElementWithinConstructor(item, dispatch, 'bottom');}
         }}>Добавить</button>) : (<></>)}
         </div>
     </li>

@@ -31,13 +31,15 @@
   display: flex;
   justify-content: center;
   /*flex-direction: row;*/
-
   justify-content: space-between;
 }
 
 .tab1 {
-border: 1px solid grey;
-padding: 16px 32px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.tab1 div{
 box-sizing: border-box;
 }
 
@@ -61,9 +63,18 @@ box-sizing: border-box;
   border: 0;
 }
 
+@media screen and (max-width: 1150px) {
+
+  .tab1 div{
+    padding: 16px 8px;
+  }
+}
+
+
 @media screen and (max-width: 960px) {
-  .list {
-    max-height: 2500px;
+
+  .tab1 div{
+    padding: 16px 8px;
   }
 }
 
@@ -80,7 +91,18 @@ box-sizing: border-box;
     width: 0;
   }
 
-  .tab1 {
-    padding: 16px 8px;
+  .tab1 div{
+    padding: 16px 24px;
   }
+}
+
+@media screen and (max-width: 460px) {
+  .tab1 div{
+    padding: 16px 8px;
+    min-width: 90px;
+  }
+/*
+  .tab1 span{
+    font-size: 14px;
+  }*/
 }

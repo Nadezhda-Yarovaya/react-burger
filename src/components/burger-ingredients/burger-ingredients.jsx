@@ -11,12 +11,13 @@ import { useDrag } from 'react-dnd';
 import { useInView } from 'react-intersection-observer';
 
 import { ingredientType } from '../../utils/types';
+import { loadIngredients } from '../../services/selectors';
 
 const { title, list, tabs, ingredients, tab1 } = ingredientsStyles;
 
 function BurgerIngredients(props) {
   const dispatch = useDispatch();
-  const { changeChoice, selectedCard, isLoading } = props;
+  //const { changeChoice, selectedCard, isLoading } = props;
   const [current, setCurrent] = useState('one');
   //const { allIngredients } = useContext(IngredientsContext);
   /* const [mainIngredients, setMainIngredients] = useState({
@@ -25,8 +26,10 @@ function BurgerIngredients(props) {
     main: [initialItem],
   }); */
 
+  const isLoading = useSelector(loadIngredients);
+
   const allIngredients = useSelector((store) => {
-//    console.log('all: ', store);
+    //    console.log('all: ', store);
     return store.ingredients.listOfIngredients;
   });
 
@@ -40,12 +43,9 @@ function BurgerIngredients(props) {
         sauce: filterByType(allIngredients, 'sauce'),
         main: filterByType(allIngredients, 'main'),
       };
-      //setMainIngredients(newIngredients);
-
-      //console.log('formed categories: ', formedIngredients);
       dispatch({
         type: SET_INGREDIENTSBYCAT,
-      payload: formedIngredients,
+        payload: formedIngredients,
       });
     }
   }, [allIngredients]);
@@ -54,34 +54,32 @@ function BurgerIngredients(props) {
     return arr.filter((item) => item.type === type);
   }
 
-  /*
-  function changeChoice(items, cardId, setArray) {
-    const newArray = items.map((item) => {
-      if (item._id === cardId) {
-        return {
-          ...item,
-          chosen: !item.chosen,
-        };
-      } else {
-        return item;
-      }
-    });
-    setArray(newArray);
-  }*/
-
   const bunsRef = React.useRef();
   const sauceRef = React.useRef();
   const stuffingRef = React.useRef();
+  const listRef = React.useRef();
+
+  function scroll() {
+    let scrollYinitial = Math.floor(
+      listRef.current?.getBoundingClientRect().top
+    );
+    let sauceOffset =
+      Math.floor(sauceRef.current?.getBoundingClientRect().top) - 100;
+    let stuffingOffset =
+      Math.floor(stuffingRef.current?.getBoundingClientRect().top) - 180;
+
+    if (sauceOffset < scrollYinitial && sauceOffset > -280) {
+      setCurrent('two');
+    } else if (stuffingOffset < scrollYinitial) {
+      setCurrent('three');
+    } else {
+      setCurrent('one');
+    }
+  }
 
   function handleTabClick(currentRef) {
     currentRef.current.scrollIntoView({ behavior: 'smooth' });
   }
-
-  /*
-  const TrackVisible = () => {
-    const { ref, entry } = useInView({ trackVisibility: true, delay: 100 });
-    return <div ref={ref}>{entry?.isVisible}</div>;
-  }; */
 
   return (
     <>
@@ -92,68 +90,52 @@ function BurgerIngredients(props) {
         <div className={ingredients}>
           <div className={`${tabs}`}>
             <div className={tab1}>
-            <Tab
-              value='one'
-              active={current === 'one'}
-              onClick={() => {
-                setCurrent('one');
-                handleTabClick(bunsRef);
-              }}
-            >
-              Булки
-            </Tab>
+              <Tab
+                value='one'
+                active={current === 'one'}
+                onClick={() => {
+                  setCurrent('one');
+                  handleTabClick(bunsRef);
+                }}
+              >
+                Булки
+              </Tab>
             </div>
             <div className={tab1}>
-            <Tab
-              value='two'
-              active={current === 'two'}
-              onClick={() => {
-                setCurrent('two');
-                handleTabClick(sauceRef);
-              }}
-            >
-              Соусы
-            </Tab>
+              <Tab
+                value='two'
+                active={current === 'two'}
+                onClick={() => {
+                  setCurrent('two');
+                  handleTabClick(sauceRef);
+                }}
+              >
+                Соусы
+              </Tab>
             </div>
             <div className={tab1}>
-            <Tab
-              value='three'
-              active={current === 'three'}
-              onClick={() => {
-                setCurrent('three');
-                handleTabClick(stuffingRef);
-              }}
-            >
-              Начинки
-            </Tab>
+              <Tab
+                value='three'
+                active={current === 'three'}
+                onClick={() => {
+                  setCurrent('three');
+                  handleTabClick(stuffingRef);
+                }}
+              >
+                Начинки
+              </Tab>
             </div>
           </div>
 
-          <div className={`mt-10 ${list}`}>
+          <div className={`mt-10 ${list}`} onScroll={scroll} ref={listRef}>
             <section ref={bunsRef}>
-              <MealList
-                title='Булки'
-                changeChoice={changeChoice}
-                selectedCard={selectedCard}
-                type='bun'
-              />
+              <MealList title='Булки' type='bun' />
             </section>
             <section ref={sauceRef}>
-              <MealList
-                
-                title='Соусы'
-                changeChoice={changeChoice}
-                type='sauce'
-              />
+              <MealList title='Соусы' type='sauce' />
             </section>
             <section ref={stuffingRef}>
-              <MealList
-                
-                title='Начинки'
-                changeChoice={changeChoice}
-                type='main'
-                
-              />
+              <MealList title='Начинки' type='main' />
             </section>
           </div>
         </div>
@@ -162,10 +144,6 @@ function BurgerIngredients(props) {
   );
 }
 
-BurgerIngredients.propTypes = {
-  changeChoice: PropTypes.func.isRequired,
-  selectedCard: ingredientType.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-};
+BurgerIngredients.propTypes = {};
 
 export default BurgerIngredients;

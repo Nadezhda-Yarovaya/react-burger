@@ -44,6 +44,7 @@
     margin-right: 0 !important;
     width: 68px !important;
     height: 32px !important;
+    object-fit: cover;
   }
 
   .constructor-element {
@@ -89,6 +90,8 @@
 
   .constructor-element__row {
     width: 100% !important;
+    justify-content: space-between!important;
+    max-width: 700px!important;
   }
 
   .constructor-element__image {
@@ -103,8 +106,13 @@
     display: none !important;
   }
 
+ 
+  .box {
+    margin-right: 0!important;
+  }
+
   .constructor-element__price {
-    padding: 0 8px 0 0;
+    padding: 0;
   }
   /*
   
@@ -118,4 +126,12 @@
     padding: 10px 32px!important;
   }
 
+}
+
+
+@media screen and (max-width: 460px) {
+.constructor-element__image {
+  width: 43px !important;
+  height: 25px !important;
+}
 }

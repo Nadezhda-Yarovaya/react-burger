@@ -17,7 +17,7 @@ import {
 import { useDrop } from 'react-dnd';
 
 import TotalSum from '../total-sum/total-sum';
-import { ifItsMobile } from '../../services/selectors';
+import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
 const initialSum = { totalSum: 0 };
 
@@ -46,29 +46,32 @@ function BurgerConstructor(props) {
     return store.ingredients.listOfIngredients;
   });
 
-  const createdStuffingsList = useSelector((store) => store.other.droppedElements);
+  const createdStuffingsList = useSelector((store) => store.dragAndDrop.droppedElements);
 
-  const [stuffingsList, setStuffingsList] = useState([]);
+  //const [stuffingsList, setStuffingsList] = useState([]);
 
   //const { isMobile } = useContext(IfMobileContext);
   const isMobile = useSelector(ifItsMobile);
   const isMobileOrdered = useSelector(store=>store.mobile.isMobileOrdered);
-  const {
-    isLoading,
-  } = props;
+  const bunSelectedFromStore = useSelector(store=>{
+    //console.log('bun here: ', store.ingredients.bun);
+    return store.ingredients.bun;
+  });
+
+  const isLoading = useSelector(loadIngredients);
 
   //  console.log('constructor ingred: ', listOfIngredients);
 
-  const [bunSelected, setBunSelected] = useState(initialItem);
+  //const [bunSelected, setBunSelected] = useState(initialItem);
 
   useEffect(() => {
     if (listOfIngredients) {
       //const stuffings = defineStuffings(listOfIngredients);
       //setStuffingsList(stuffings);
       calculateAllPrices(createdStuffingsList);
-      setBunSelected(listOfIngredients[0]);
+      //setBunSelected(listOfIngredients[0]);
     }
-  }, [createdStuffingsList, listOfIngredients]);
+  }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
   /*
   function defineStuffings(allData) {
     return allData.filter((item, index) => index > 4 && index < 7);
@@ -84,27 +87,21 @@ function BurgerConstructor(props) {
         (previousValue, currentValue) => previousValue + currentValue,
         0
       ) +
-      bunSelected.price * 2;
-   /* console.log(
-      'попадаем сюда или что',
-      'stuffings: ',
-      stuffings,
-      'total nubm: ',
-      finalNumber
-    );*/
+      bunSelectedFromStore.price * 2;
+
 
     dispatch({ type: SET_TOTALSUM, totalSum: finalNumber });
   }
 
   function makeListOfOrder() {
     const ingredientsFormed = [];
-    ingredientsFormed.push(listOfIngredients[0]._id);
+    ingredientsFormed.push(bunSelectedFromStore[0]._id);
 
     createdStuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 
-    ingredientsFormed.push(listOfIngredients[0]._id); //вторая сторона булки тоже добавлена
+    ingredientsFormed.push(bunSelectedFromStore[0]._id); //вторая сторона булки тоже добавлена
     return ingredientsFormed;
   }
 
@@ -153,9 +150,6 @@ function BurgerConstructor(props) {
           <></>
         )}
         <ConstructorList
-          stuffingsList={stuffingsList}
-          isLoading={isLoading}
-          bunSelected={bunSelected}
         />
       </div>
 
@@ -164,7 +158,6 @@ function BurgerConstructor(props) {
       ) : (
         <TotalSum
           handleToggleIfMobile={handleToggleIfMobile}
-          isMobileOrdered={isMobileOrdered}
           handlePerformOrder={handlePerformOrder}
         />
       )}

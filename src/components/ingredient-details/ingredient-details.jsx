@@ -8,7 +8,7 @@ const { text, details, image, nutrients, nutrient } = ingredientStyles;
 function IngredientDetails(props) {
   //const { selectedCard } = props;
 
-  const selectedCard = useSelector((store) => store.other.currentIngredient);
+  const selectedCard = useSelector((store) => store.ingredients.currentIngredient);
   return (
     <>
       <div className={details}>
@@ -53,7 +53,6 @@ function IngredientDetails(props) {
 }
 
 IngredientDetails.propTypes = {
-  selectedCard: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

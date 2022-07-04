@@ -3,7 +3,11 @@ import {
     SET_ALLINGREDIENTS_SUCCESS,
     SET_ALLINGREDIENTS_FAILURE,
     SET_INGREDIENTSBYCAT,
-    REPLACE_BUN
+    REPLACE_BUN,
+    SET_CURRENT,
+    REMOVE_CURRENT,
+    SET_MODALINGREDIENTS,
+    REMOVE_MODALINGREDIENTS
   } from '../actions';
 
   const initialState = {
@@ -13,14 +17,15 @@ import {
       buns: [],
       sauce: [],
       main: [],
-    },
-    
+    },    
     bun: {
       name: 'добавьте булочку в конструктор бургера',
       _id: '1',
       price: 0,
       image: 'https://code.s3.yandex.net/react/code/bun-02.png',
     },
+    currentIngredient: { name: '', price: 0, image: '' },
+    areIngredientsShown: false
   } 
 
   export function ingredientsReducer (state = initialState, action) {
@@ -47,12 +52,38 @@ import {
               ...state,
               ingredientsByCategory: action.payload,
             };
-          default: return state;
+     
           case REPLACE_BUN:
             return {
               ...state,
               bun: action.bun,
             };
+            
+      case SET_CURRENT:
+        return {
+          ...state,
+          currentIngredient: action.currentIngredient,
+        };
+  
+      case REMOVE_CURRENT:
+        return {
+          ...state,
+          currentIngredient: { name: '', price: 0, image: '' },
+        };
+
+        case SET_MODALINGREDIENTS:
+        return {
+          ...state,
+          areIngredientsShown: true,
+        };
+
+        case REMOVE_MODALINGREDIENTS:
+          return {
+            ...state,
+            areIngredientsShown: false,
+          };
+        
+        default: return state;
       
         }
   }

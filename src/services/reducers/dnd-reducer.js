@@ -12,12 +12,14 @@ import {
     SET_DRAGGEDCONSTRUCTOR,
     SET_TOTALSUM,
     REPLACE_BUN,
+
+    GOUP_POSITION,
+    GODOWN_POSITION
   } from '../actions';
   
   //[{uniqueId: 0, id: '', name: '', price: 0, image: ''}],
   
   const initialState = {
-    currentIngredient: { name: '', price: 0, image: '' },
     droppedElements: [],
     dropDirection: '',
     initialIngredOffset: {},
@@ -28,22 +30,6 @@ import {
     switch (action.type) {
      
      
-      case SET_CURRENT:
-        return {
-          ...state,
-          currentIngredient: action.currentIngredient,
-        };
-  
-      case REMOVE_CURRENT:
-        return {
-          ...state,
-          currentIngredient: { name: '', price: 0, image: '' },
-        };
-      case SET_IFMOBILE:
-        return {
-          ...state,
-          isMobile: action.isMobile,
-        };
       case INCREASE_DROPPEDELEMENT:
         return {
           ...state,
@@ -55,28 +41,32 @@ import {
             },
           ],
         };
+        
+
       case SET_DRAGGEDCONSTRUCTOR: {
         return {
           ...state,
           initialIngredOffset: action.initialIngredOffset,
         };
       }
-      /* case UPDATE_COUNTER : 
-      return {
-        ...state,
-        listOfIngredients: state.listOfIngredients.map
-        action.currentElementId
-      };*/
-      /* 0 is how many removed */
-      case CHANGE_POSITION:
+  
+      case GOUP_POSITION:
         return {
           ...state,
-          droppedElements: arraymove(
+          droppedElements: arraymoveUp(
             [...state.droppedElements],
-            state.droppedElements.indexOf(action.element),
-            action.dropDirection
+            state.droppedElements.indexOf(action.element)
           ),
         };
+
+        case GODOWN_POSITION:
+          return {
+            ...state,
+            droppedElements: arraymoveDown(
+              [...state.droppedElements],
+              state.droppedElements.indexOf(action.element)
+            ),
+          };
   
       case DELETE_ITEM:
         return {
@@ -92,67 +82,31 @@ import {
       case SET_DROPDIRECTION:
         return {
           ...state,
-          dropDirection: action.dropDirection,
+          dropDirection: action.payload,
         };
   
       default:
         return state;
     }
   }
-  
-  /* for counter say    droppedElements: [...state.droppedElements].map(item =>
-  item.uniqueId === action.item.uniqueId ? { ...item, qty: ++item.qty } : item
-  ) */
-  
-  //[...state.droppedElements].splice([...state.droppedElements].indexOf(action.element) +1, 0, [...state.droppedElements].splice([...state.droppedElements].indexOf(action.element),1)[0])
-  // [...state.droppedElements].splice(2, 0, [...state.droppedElements].splice(1,1))
-  
-  // state.droppedElements.splice([...state.droppedElements].indexOf(action.element.uniqueId), 1) - returns only this element
-  /*
-  arraymove(state.droppedElements, state.droppedElements.indexOf(action.element), state.droppedElements.indexOf(action.element)+1)
-  .map((item, index, arr) => {
-          if (index === 2) {        
-            arr[index+1] = item;
-          } else {
-          return arr[index];
-          }
-        }
-        )
-         
-  */
-  
-  function arraymove(arr, fromIndex, dropDirection) {
-    //console.log('arr', arr, 'DIRECTION: ', dropDirection);
-    let element = arr[fromIndex];
-    let toIndex = 0;
-    if (dropDirection === 'bottom') {
-      toIndex = fromIndex + 1;
-    } else {
-      toIndex = fromIndex - 1;
-    }
-    arr.splice(fromIndex, 1);
-    arr.splice(toIndex, 0, element);
-    //console.log('arr final', arr);
-    /* fromIndex=3;
-    toIndex=2;*/
-    /*arr.map((item,index,arr) => {
-      
-    })*/
-    return arr;
-  }
-  
-    
-  /*
-   droppedElements: {
-          ...state.droppedElements,
-          ...action.droppedIngredient,
-          uniqueId: action.uniqueId
-        }*/
-  
-  /* to STORE: 
-  список всех полученных ингредиентов,
-  список всех ингредиентов в текущем конструкторе бургера,
-  объект текущего просматриваемого ингредиента,
-  объект созданного заказа.
-  */
-  
+
+function arraymoveUp(arr, fromIndex) {
+  let element = arr[fromIndex];  
+  arr.splice(fromIndex, 1);
+  arr.splice(fromIndex - 1, 0, element);
+  return arr;
+}
+
+function arraymoveDown(arr, fromIndex) {
+  let element = arr[fromIndex];  
+  arr.splice(fromIndex, 1);
+  arr.splice(fromIndex + 1, 0, element);
+  return arr;
+}
+      /* case UPDATE_COUNTER : 
+      return {
+        ...state,
+        listOfIngredients: state.listOfIngredients.map
+        action.currentElementId
+      };*/
+      /* 0 is how many removed */

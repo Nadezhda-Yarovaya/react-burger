@@ -13,8 +13,10 @@ const { list, list__item, price, item__name, counter, list__choice } =
   mealListStyles;
 
 function MealList(props) {
-  const { type, title, changeChoice } = props;
+  const { type, title, } = props;
   //console.log(currentList);
+
+
 
   
   const burgerIngredients = useSelector((store) => {
@@ -32,7 +34,7 @@ function MealList(props) {
       </h2>
       <ul className={`pl-4 pr-4 mt-6 mb-6 ${list}`}>
         {(current) && (current.map((item) => (
-          <Ingredient key={item._id} item={item} changeChoice={changeChoice} />
+          <Ingredient key={item._id} item={item}  />
         )))}
       </ul>
     </>

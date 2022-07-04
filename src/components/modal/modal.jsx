@@ -1,21 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { NULL_ORDERDATA,REMOVE_CURRENT,REMOVE_MODALINGREDIENTS } from '../../services/actions';
 const { modal, modal__button, container } = modalStyles;
 
 const modalRoot = document.getElementById('modal');
 
 function Modal(props) {
-  const [isOpened, setIsOpened] = React.useState(props.isOpen);
+  const [isOpened, setIsOpened] = useState(props.isOpen);
+  const dispatch= useDispatch();
 
-  const isMobile = useSelector((store) => store.isMobile);
+  const isMobile = useSelector((store) => store.mobile.isMobile);
+  const windowWidth = useSelector((store) => store.mobile.windowData.width);
+  const windowHeight = useSelector((store) => store.mobile.windowData.height);
 
-  React.useEffect(() => {
+
+
+  useEffect(() => {
     function closeByEscape(evt) {
       if (evt.key === 'Escape') {
         props.closeModal();
@@ -33,11 +39,11 @@ function Modal(props) {
   const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
 
   const topPosition =
-    ((props.windowHeight - modalHeight) / 2).toString() + 'px';
+    ((windowHeight - modalHeight) / 2).toString() + 'px';
   const leftPosition =
     (
-      (props.windowWidth -
-        (isMobile ? (props.windowWidth < 480 ? 290 : 420) : 720)) /
+      (windowWidth -
+        (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
       2
     ).toString() + 'px';
 
@@ -61,6 +67,7 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
+  /*
   closeModal: PropTypes.func.isRequired,
   closeAllPopups: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
@@ -70,7 +77,8 @@ Modal.propTypes = {
   windowHeight: PropTypes.number.isRequired,
   windowWidth: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  type: PropTypes.string,
+  type: PropTypes.string,*/
+
 };
 
 export default Modal;

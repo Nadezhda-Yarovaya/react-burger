@@ -25,11 +25,9 @@
 }
 
 .candrop__style {
-  background-color: green;
 }
 
 .cantdrop__style  {
-  background-color: purple;
 }
 
 .stuffings__item {
@@ -88,6 +86,7 @@
   justify-content: flex-start;
   width: 100%;
   box-sizing: border-box;
+  border: 2px solid lightblue;
 }
 
 @media screen and (max-width: 1250px) {

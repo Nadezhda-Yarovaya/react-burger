@@ -21,6 +21,7 @@ import {
 } from '../../services/actions';
 import { useDrag, useDrop } from 'react-dnd';
 import { ifItsMobile } from '../../services/selectors';
+import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 
 const opts= {
     enableMouseEvents: true
@@ -42,93 +43,39 @@ const {
   buttonswipestyle
 } = constructorListStyles;
 
-/* will perform later delete by swipe on mobile */
-
-/*
-требования к работе 
-Для каждого экшена, который связан с запросом к API создан усилитель. Для таких экшенов описан тип _REQUEST ,
-тип _SUCCESS , _ERROR .
-Экшен описывает лишь одно действие. Например, экшена DECREASE_OR_INCREASE_ITEM быть не должно.
-Редьюсеры — чистые функции.
-*/
-
 /*
 Если при выполнении запроса к API в усилителе произошла ошибка, то содержимое хранилища соответствующего
 элемента приводится к начальному состоянию. Например, если пользователь оформил заказ, а при оформлении
 следующего у него произошла ошибка — в модальном окне не должен отображаться старый номер заказа.
 Аналогично при работе со списком ингредиентов.*/
 
-/*
-Каждый редьюсер решает только свою задачу: загрузка и хранение ингредиентов, работа конструктора, управление
-модальным окном ингредиента или оформлением заказа.
-Редьюсеры объединены в один с помощью combineReducers 
-*/
-
 function ConstructorList(props) {
   const dispatch = useDispatch();
   const { isMobile } = useSelector(ifItsMobile);
-  //const droppedElements = useSelector(store => store.droppedElements);
+  const direction = useSelector(state=>state.dragAndDrop.dropDirection);
   const currentBun = useSelector((store) => {
-    //console.log('whers bun?? ', store.ingredients.bun);
     return store.ingredients.bun;
   });
-  //const currentBun = currentBun1;
+  const isLoading  = useSelector(store=>store.ingredients.isLoading) ;
+
+  const initialIngredOffset = useSelector((store) => store.dragAndDrop.initialIngredOffset);
 
   const stuffingListDropped = useSelector((store) => {
-    //console.log('store in constr list:', store);
-    return store.other.droppedElements;
+    return store.dragAndDrop.droppedElements;
   });
-  const [direction, setDirection] = useState('');
 
   const thisRef = useRef();
 
-  const currentTimeInSeconds = Math.floor(Date.now() / 2);
 
   const handleBunDrop = (currentItem) => {
-    console.log('indrop', currentItem);
     dispatch({
       type: REPLACE_BUN,
       bun: currentItem.item,
     });
   };
 
-  const handleDrop = (currentItem) => {
-    //e.preventDefault();
-    // updating counter for main ingredient
-    //   console.log('cur item in dropped: ', currentItem);
-    // console.log('cur item in dropped unique: ', currentItem.item.uniqueId);
 
-    if (currentItem.item.uniqueId) {
-      console.log('такой уже есть в списке');
-      dispatch({
-        type: CHANGE_POSITION,
-        element: currentItem.item,
-        dropDirection: direction,
-      });
-    } else {
-      dispatch({
-        type: UPDATE_COUNTER,
-        currentElementId: currentItem.item._id,
-      });
-      //setting dropped elements
-      /*
-     droppedIngredient: currentItem,
-      uniqueId: currentTimeInSeconds*/
-      dispatch({
-        type: INCREASE_DROPPEDELEMENT,
-        element: currentItem.item,
-        uniqueId: currentTimeInSeconds,
-      });
-      /*setDraggedElements([
-        ...draggedElements,
-        ...elements.filter(element => element.id === itemId.id)
-    ]);*/
-    }
-  };
 
-  const { bunSelected, stuffingsList, isLoading } = props;
-
-  const initialIngredOffset = useSelector((store) => store.other.initialIngredOffset);
 
   const [{ isBunHover }, dropContainerBunTop] = useDrop({
     accept: 'bun',
@@ -155,36 +102,24 @@ function ConstructorList(props) {
 
     hover(item, monitor) {
       const hoverBoundingRect = thisRef.current?.getBoundingClientRect();
-      const currentOffset = monitor.getClientOffset().y;
+      const currentOffset = Math.floor(monitor.getClientOffset().y);
+      const hoverBoundingRectTop=Math.floor(hoverBoundingRect.top);
 
       const currentItemOffset = initialIngredOffset.y;
-      // console.log('initialIngredOffset Y: ', initialIngredOffset.y);
 
-      const initialDistToTop = currentItemOffset - hoverBoundingRect.top;
-      // console.log('initial pixels to top : ', initialDistToTop);
-      //const hoverItemRect = item.getBoundingClientRect();
-
-      const finalPixelsTtoTop = currentOffset - hoverBoundingRect.top;
-      //console.log('FINAL pixels to top : ', finalPixelsTtoTop);
-
-      // console.log('rect. item bottom: ', hoverItemRect.bottom , ' rect item top: ', hoverItemRect.top);
-
-      // console.log('rect. bottom: ', hoverBoundingRect.bottom , ' rect top: ', hoverBoundingRect.top);
+      const initialDistToTop = currentItemOffset - hoverBoundingRectTop;
+      const finalPixelsTtoTop = currentOffset - hoverBoundingRectTop;
       const goesToBottom = initialDistToTop < finalPixelsTtoTop;
-      // console.log('raznica: ',hoverBoundingRect.bottom - hoverBoundingRect.top, ' offset: ', currentOffset);
-
+      //console.log('goesToBottom', goesToBottom, ' if true === bottom', ' diff init, final top: ', initialDistToTop,  finalPixelsTtoTop);
       const currentPosition = goesToBottom ? 'bottom' : 'top';
-      //console.log(' CUR position: ', currentPosition);
-      setDirection(currentPosition);
-
-      
-      /*  dispatch({
-        type: SET_DROPDIRECTION,        
-        dropDirection: currentPosition
-      })*/
+      //setDirection(currentPosition);
+      dispatch ({
+        type: SET_DROPDIRECTION,
+        payload: currentPosition
+      });
     },
     drop(itemId) {
-      handleDrop(itemId);
+      dropElementWithinConstructor(itemId, dispatch, direction);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -203,20 +138,34 @@ const [target1, setTarget1] = useState({});
   const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
   
   const [tempShow, setTempshow] =useState('');
+  const [initialX, setInitialX] = useState(0);
+  const [finalX, setFinalX] = useState(0);
+ 
+  const [initialY, setInitialY] = useState(0);
+  const [finalY, setFinalY] = useState(0);
+
+  const [rect1, setRect1] = useState(0);
+ 
   
-  
+  /*
   useEffect(() => {
       document.getElementById('buttonswipe').addEventListener('touchstart', (e) => {
           setTempshow('swiped');
       });
-  },[]);
+  },[]);*/
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+
+  useEffect(() => {
+    if (isMobileOrdered) {
+   const rectang = thisRef.current?.getBoundingClientRect();
+   console.log('rectang : ', rectang);
+   setRect1(Math.floor(rectang.top));
+    }
+    
+},[isMobile, isMobileOrdered, stuffingListDropped]);
   
-  const [initialX, setInitialX] = useState(0);
-   const [finalX, setFinalX] = useState(0);
-  
-   const [initialY, setInitialY] = useState(0);
-   const [finalY, setFinalY] = useState(0);
-  
+
+   /* minHeight: isHover ? heightOfCont : '80px',*/
 
   return (
     <>
@@ -224,9 +173,11 @@ const [target1, setTarget1] = useState({});
             
     <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
     <p>{tempShow}</p>
-    <p>initial: {Math.floor(initialX)} final: {Math.floor(finalX)}</p>
-    <p> diff: {finalX- initialX}</p>
-    <p> show obj etarget: {Object.keys(target1)}</p>
+    <p>initial Y: {Math.floor(initialX)} final: {Math.floor(finalX)}</p>
+    <p>initial Y: {Math.floor(initialY)} final: {Math.floor(finalY)}</p>
+    <p> diff x: {finalX- initialX}</p>
+    <p> diff y: {finalY- initialY}</p>
+    <p> show target RECT measures: {rect1}</p>
     </div>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
@@ -262,7 +213,7 @@ const [target1, setTarget1] = useState({});
                   stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
                 }`}
                 style={{
-                  minHeight: isHover ? heightOfCont : '80px',
+                 
                   backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
                   border: isHover ? '1px dashed white' : '0',
                   position: 'relative'
@@ -293,6 +244,9 @@ setTarget1={setTarget1}
                     initialY={initialY}
                     setFinalY={setFinalY}
                     setInitialY={setInitialY}
+                    setRect1={setRect1}
+                    rect1 = {rect1}
+                    isHover = {isHover}
                   />
                 ))}
               </div>

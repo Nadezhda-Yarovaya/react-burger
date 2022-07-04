@@ -18,9 +18,11 @@ import { ifItsMobile } from '../../services/selectors';
 const { container, sum } = totalSumStyles;
 
 function TotalSum(props) {
-  const { handleToggleIfMobile, isMobileOrdered, handlePerformOrder } = props;
+  const { handleToggleIfMobile, handlePerformOrder } = props;
 
   //  const { totalSumOrder } = useContext(TotalSumContext);
+
+  const isMobileOrdered = useSelector(store=>store.mobile.isMobileOrdered);
 
   const totalSumOrder = useSelector((store) => {
     //console.log('store:', store);
@@ -66,9 +68,10 @@ totalSum: 2300,
 }
 
 TotalSum.propTypes = {
+  /*
   handleToggleIfMobile: PropTypes.func.isRequired,
   isMobileOrdered: PropTypes.bool.isRequired,
-  handlePerformOrder: PropTypes.func.isRequired,
+  handlePerformOrder: PropTypes.func.isRequired,*/
   //totalSumOrder: PropTypes.number.isRequired,
 };
 

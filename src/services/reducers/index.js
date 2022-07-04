@@ -9,6 +9,6 @@ export const rootReducer = combineReducers({
   ingredients: ingredientsReducer, 
   order: orderInfoReducer,
   mobile: mobileReducer,
-  other: dndReducer
+  dragAndDrop: dndReducer
 });
 
