@@ -13,6 +13,14 @@
   max-width: 200px;
 }
 
+.button_visible {
+  display: flex;
+}
+
+.button_hidden {
+  display: none;
+}
+
 @media screen and (max-width: 1150px) {
   .container {
     margin: 20px 0 0 0;

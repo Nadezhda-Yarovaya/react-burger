@@ -44,7 +44,6 @@
 }
 
 .delete_mobile {
-  background-color: red;
   box-sizing: border-box;
   height: 70px;
    display: block;
@@ -59,8 +58,8 @@
 .delete_image {
   background-image: url('../../images/trash.svg');
   background-size: cover;
-  width: 48px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   background-color: transparent;
 }
 

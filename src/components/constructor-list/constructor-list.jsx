@@ -19,14 +19,10 @@ import {
   SET_DROPDIRECTION,
   REPLACE_BUN,
 } from '../../services/actions';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import { ifItsMobile } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 
-const opts= {
-    enableMouseEvents: true
-
-};
 
 const {
   stuffings,
@@ -49,9 +45,12 @@ const {
 следующего у него произошла ошибка — в модальном окне не должен отображаться старый номер заказа.
 Аналогично при работе со списком ингредиентов.*/
 
-function ConstructorList(props) {
+function ConstructorList() {
   const dispatch = useDispatch();
-  const { isMobile } = useSelector(ifItsMobile);
+  const  isMobile  = useSelector(state=> {
+    console.log('statemob: ', state.mobile.isMobile);
+    return state.mobile.isMobile;
+  });
   const direction = useSelector(state=>state.dragAndDrop.dropDirection);
   const currentBun = useSelector((store) => {
     return store.ingredients.bun;
@@ -74,6 +73,19 @@ function ConstructorList(props) {
     });
   };
 
+
+  const [stuffingsEmptyText, setStuffingsEmptyText] = useState('');
+
+useEffect(()=> {
+  console.log('ismob? ', isMobile);
+  if(isMobile) {
+    setStuffingsEmptyText('Пока нет начинки. Добавляйте на странице ингредиентов');
+   }
+   else {
+    setStuffingsEmptyText('Пока нет начинки. Перетяните с поля слева');
+   }
+
+}, [isMobile]);
 
 
 
@@ -129,6 +141,7 @@ function ConstructorList(props) {
 
 const [target1, setTarget1] = useState({});
 
+
   const emptyText = isMobile
     ? 'Пока нет начинки. Добавляйте на странице ингредиентов'
     : 'Пока нет начинки. Перетяните с поля слева';
@@ -169,16 +182,6 @@ const [target1, setTarget1] = useState({});
 
   return (
     <>
-    <div style={{ minHeight: '200px', boxSizing : 'border-box', border: '2px solid blue'}}>
-            
-    <button id='buttonswipe' className={buttonswipestyle}>swipe???</button>
-    <p>{tempShow}</p>
-    <p>initial Y: {Math.floor(initialX)} final: {Math.floor(finalX)}</p>
-    <p>initial Y: {Math.floor(initialY)} final: {Math.floor(finalY)}</p>
-    <p> diff x: {finalX- initialX}</p>
-    <p> diff y: {finalY- initialY}</p>
-    <p> show target RECT measures: {rect1}</p>
-    </div>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
           <li style={{ alignSelf: 'flex-start' }}>
@@ -213,7 +216,7 @@ const [target1, setTarget1] = useState({});
                   stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
                 }`}
                 style={{
-                 
+                  padding: isHover ? '0 8px 80px 0' : '0 8px 0 0',
                   backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
                   border: isHover ? '1px dashed white' : '0',
                   position: 'relative'
@@ -222,7 +225,7 @@ const [target1, setTarget1] = useState({});
               >
                 {stuffingListDropped.length === 0 ? (
                   <p className={stuffings__empty}>
-                    Пока нет начинки. Добавляйте со страницы ингредиентов
+                 {stuffingsEmptyText}
                   </p>
                 ) : (
                   <></>

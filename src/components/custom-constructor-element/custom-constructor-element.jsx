@@ -240,14 +240,13 @@ transform : ((item.uniqueId) && (currentTouchedItem.uniqueId === item.uniqueId))
               ? `translate(${diffx + 'px'}, 0px)`
               : 'translate(0px,0px)',
           boxSizing: 'border-box',
-          border: '1px solid purple',
           margin: isItemDragging ? marginOnDirection : '0',
         }}
         ref={isMobile ? null : draggedWithinConstructorRef}
       >
         <div
           className={`${constructor__item} mb-4`}
-          style={{ backgroundColor: 'black' }}  ref={tempRef}
+         ref={tempRef}
         >
           {type ? (
             <></>

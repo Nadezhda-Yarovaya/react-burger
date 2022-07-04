@@ -14,15 +14,21 @@ import currencyBig from '../../images/currency36x36.svg';
 //import { IfMobileContext } from '../../services/app-contexts';
 import { useSelector } from 'react-redux';
 import { ifItsMobile } from '../../services/selectors';
+import TotalSumButton from '../total-sum-button/total-sum-button';
 
-const { container, sum } = totalSumStyles;
+const { container, sum, button_visible, button_hidden } = totalSumStyles;
 
 function TotalSum(props) {
   const { handleToggleIfMobile, handlePerformOrder } = props;
 
+  const stuffingsList = useSelector(
+    (state) => state.dragAndDrop.droppedElements
+  );
+  const bunSelected = useSelector((state) => state.ingredients.bun);
+
   //  const { totalSumOrder } = useContext(TotalSumContext);
 
-  const isMobileOrdered = useSelector(store=>store.mobile.isMobileOrdered);
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
 
   const totalSumOrder = useSelector((store) => {
     //console.log('store:', store);
@@ -35,6 +41,21 @@ totalSum: 2300,
 };*/
 
   const isMobile = useSelector(ifItsMobile);
+
+  const isDisabled = stuffingsList.length === 0 || bunSelected._id === '1';
+/*
+  console.log(
+    'stuffingsList: ',
+    stuffingsList.length,
+    ' || bunSelected',
+    bunSelected,
+    ' is dis? ',
+    isDisabled,
+    'if length true: ',
+    stuffingsList.length === 0,
+    ' || if bunsel id =-1: ',
+    bunSelected._id === '1'
+  );*/
 
   return (
     <div className={`pr-4 ${container}`}>
@@ -52,17 +73,34 @@ totalSum: 2300,
           <img src={currencyBig} alt='итого' />
         )}
       </div>
-      <Button
-        type='primary'
-        size={isMobile ? 'small' : 'large'}
-        onClick={isMobile ? handleToggleIfMobile : handlePerformOrder}
-      >
-        {isMobile
-          ? isMobileOrdered
-            ? 'Оформить'
-            : 'Смотреть заказ'
-          : 'Оформить заказ'}
-      </Button>
+      {isMobile ? (
+        <>
+        <div className={isMobileOrdered ? button_hidden : button_visible}>
+          <Button
+            type='primary'
+            size='small'
+            onClick={handleToggleIfMobile}
+          >      
+            Смотреть заказ
+          </Button>
+          </div>
+        <div className={isMobileOrdered ? button_visible : button_hidden}>
+          <TotalSumButton
+            size='small'
+            handleClick={handlePerformOrder}
+            btnText='Оформить'
+            isDisabled={isDisabled}
+          />
+          </div>
+        </>
+      ) : (
+        <TotalSumButton
+          size='large'
+          handleClick={handlePerformOrder}
+          btnText='Оформить заказ'
+          isDisabled={isDisabled}
+        />
+      )}
     </div>
   );
 }
