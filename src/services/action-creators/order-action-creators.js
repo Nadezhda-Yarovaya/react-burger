@@ -14,6 +14,7 @@ export function fetchOrderNumber(ingredientsInOrder) {
     api
       .makeOrder({ ingredients: ingredientsInOrder })
       .then((res) => {
+        console.log('res: ', res);
         dispatch({
           type: GET_ORDERDATA_SUCCESS,
           createdOrder: {

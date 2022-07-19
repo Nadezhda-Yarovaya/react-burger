@@ -37,6 +37,7 @@
   background-color: transparent;
   color: var(--text-color);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .counter {

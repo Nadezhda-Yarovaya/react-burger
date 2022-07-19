@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.box {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.title {
+    font-size: 30px;
+    font-family: 'JetBrains Mono', sans-serif;
+
+}
+
+.par {
+    font-size: 15px;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.link {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', sans-serif;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: var(--accent-text);
+}

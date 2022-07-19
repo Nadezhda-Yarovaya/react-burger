@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import constructorStyles from './burger-constructor.module.css';
-import ConstructorList from '../constructor-list/constructor-list';
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import constructorStyles from "./burger-constructor.module.css";
+import ConstructorList from "../constructor-list/constructor-list";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
-import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
+import { SET_TOTALSUM, SET_IFMOBILEORDERED } from "../../services/actions";
 
-import TotalSum from '../total-sum/total-sum';
-import { ifItsMobile, loadIngredients } from '../../services/selectors';
-import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
+import TotalSum from "../total-sum/total-sum";
+import { ifItsMobile, loadIngredients } from "../../services/selectors";
+import { fetchOrderNumber } from "../../services/action-creators/order-action-creators";
+import { useHistory } from "react-router-dom";
 
 const {
   constructor__title,
@@ -34,6 +35,13 @@ function BurgerConstructor() {
   const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
   const bunSelectedFromStore = useSelector((store) => store.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
+
+  const history = useHistory();
+
+  const isLogged = useSelector((state) => {
+    // console.log(state.auth.isLogged);
+    return state.auth.isLogged;
+  });
 
   useEffect(() => {
     if (listOfIngredients) {
@@ -70,7 +78,13 @@ function BurgerConstructor() {
 
   function handlePerformOrder() {
     const thisOrderList = makeListOfOrder();
-    dispatch(fetchOrderNumber(thisOrderList));
+    console.log("made list: ", thisOrderList);
+    if (isLogged) {
+      dispatch(fetchOrderNumber(thisOrderList));
+    } else {
+      localStorage.setItem("listOfOrder", thisOrderList);
+      history.push("/login");
+    }
   }
 
   function handleToggleIfMobile() {
@@ -103,7 +117,7 @@ function BurgerConstructor() {
               }}
               className={constructor__button}
             >
-              <CloseIcon type='primary' />
+              <CloseIcon type="primary" />
             </button>
           </div>
         ) : (
