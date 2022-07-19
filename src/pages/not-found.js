@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import notFoundStyles from "./not-found.module.css";
 
-const { container, box, par, link,title } = notFoundStyles;
+const { container, box, par, link, title } = notFoundStyles;
 
 function NotFound() {
   return (
@@ -13,7 +13,10 @@ function NotFound() {
         <p className={title}>404</p>
         <p className={par}>
           Вернуться на
-          <Link to="/" className={link}> Главную</Link>
+          <Link to="/" className={link}>
+            {" "}
+            Главную
+          </Link>
         </p>
       </div>
     </div>

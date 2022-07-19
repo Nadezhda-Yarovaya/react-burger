@@ -23,13 +23,11 @@ class AuthAndRegister {
 
       body: JSON.stringify({ email: data }),
     }).then((res) => {
-
       try {
         if (res.status === 200) {
           return res.json();
         }
       } catch (error) {
-
         return error;
       }
     });
@@ -43,13 +41,11 @@ class AuthAndRegister {
 
       body: JSON.stringify({ password: newPass, token }),
     }).then((res) => {
-
       try {
         if (res.status === 200) {
           return res.json();
         }
       } catch (error) {
-
         return error;
       }
     });
@@ -62,7 +58,7 @@ class AuthAndRegister {
       body: JSON.stringify({ email, password, name }),
     }).then((res) => {
       try {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           return res.json();
         }
       } catch (error) {
@@ -79,7 +75,8 @@ class AuthAndRegister {
       body: JSON.stringify({ email, password }),
     }).then((res) => {
       try {
-        if (res.status === 200) {
+        console.log("res before: ", res);
+        if (res.status === 200 || res.status === 201) {
           return res.json();
         }
       } catch (error) {
@@ -171,7 +168,6 @@ function setCookie(name, value, props) {
   if (exp && exp.toUTCString) {
     props.expires = exp.toUTCString();
   }
-  console.log("expire: ", exp);
   value = encodeURIComponent(value);
   let updatedCookie = name + "=" + value;
   for (const propName in props) {
@@ -181,7 +177,6 @@ function setCookie(name, value, props) {
       updatedCookie += "=" + propValue;
     }
   }
-  // console.log("cookie: ", updatedCookie);
   document.cookie = updatedCookie;
 }
 
@@ -196,11 +191,11 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export { authApi, setCookie, getCookie };
-
 const authApi = new AuthAndRegister({
   BASE_URL: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+export { authApi, setCookie, getCookie };

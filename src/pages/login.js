@@ -30,6 +30,7 @@ export function Login(props) {
   const formValid = isEmailValid && isPassValid;
 
   function handleLogin() {
+    console.log("formvalid? ,", formValid, "email: ", email, " pass: ", pass);
     if (formValid) {
       dispatch(performLogin(email, pass, history));
     } else {

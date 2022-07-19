@@ -80,24 +80,23 @@ function Profile(props) {
 
     if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
       dispatch(patchUser(email, name, pass));
+      makeDefaultForm();
     } else {
-      console.log(ifAnyChanged, isNameValid, isEmailValid, isPassValid);
       dispatch({
         type: SHOW_APIMESSAGE,
         payload: {
-          message: ifAnyChanged
-            ? "Заполните все поля формы корректно"
-            : "Вы не совершили изменений данных",
+          message:
+            !isNameValid || !isEmailValid || !isPassValid
+              ? "Заполните все поля формы корректно"
+              : "Вы не совершили изменений данных",
           success: false,
         },
       });
 
       setTimeout(() => {
         dispatch({ type: CLEAR_APIMESSAGE });
-      }, 2000);
+      }, 2500);
     }
-
-    makeDefaultForm();
   }
 
   function makeDefaultForm() {

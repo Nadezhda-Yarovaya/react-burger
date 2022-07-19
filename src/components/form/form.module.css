@@ -50,30 +50,31 @@
 
 
 .form__element_profile {
-padding: 32px 24px 8px 24px;    
-overflow: visible;
+    padding: 32px 24px 8px 24px;
+    overflow: visible;
 }
 
 
 .form__input::placeholder {
-color:  var(--secondary-text);
-font-size: 16px;
-line-height: 20px;
-font-family: 'JetBrains Mono', sans-serif;
+    color: var(--secondary-text);
+    font-size: 16px;
+    line-height: 20px;
+    font-family: 'JetBrains Mono', sans-serif;
 }
 
 .links {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin: 80px 0 0 0;
+    margin: 80px 0 32px 0;
+    box-sizing: border-box;
 }
 
 .par {
     font-family: 'JetBrains Mono', sans-serif;
     font-size: 16px;
     line-height: 24px;
-    color:  var(--secondary-text);
+    color: var(--secondary-text);
     margin: 0 0 16px 0;
     width: 100%;
     text-align: center;
@@ -87,11 +88,11 @@ font-family: 'JetBrains Mono', sans-serif;
     font-family: 'JetBrains Mono', sans-serif;
     font-size: 16px;
     line-height: 24px;
-    color:  var(--accent);
+    color: var(--accent);
     text-decoration: none;
 }
 
-.form__element{
+.form__element {
     width: 100%;
     display: flex;
     overflow: visible;
@@ -115,8 +116,8 @@ font-family: 'JetBrains Mono', sans-serif;
     font-family: 'JetBrains Mono', sans-serif;
     font-size: 16px;
     line-height: 24px;
-    color:  var(--secondary-text);
-    position: absolute; 
+    color: var(--secondary-text);
+    position: absolute;
     top: 8px;
     left: 24px;
 

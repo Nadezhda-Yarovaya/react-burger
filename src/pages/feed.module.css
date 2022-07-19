@@ -1,16 +1,14 @@
-.container{
+.container {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
-    width: 100%;    
+    width: 100%;
     max-width: var(--container-width);
-    
     border: 1px solid grey;
     position: relative;
-
 }
 
 .feed {
-    width: 100%; 
+    width: 100%;
     min-height: 60vh;
 }

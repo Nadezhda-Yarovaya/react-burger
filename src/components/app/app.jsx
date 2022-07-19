@@ -126,6 +126,7 @@ function App() {
   };
 
   function setFormValidation(e, setValue, setValueValidity, setValueError) {
+    e.preventDefault();
     setValue(e.target.value);
     setValueValidity(e.target.validity.valid);
     setValueError(e.target.validationMessage);
@@ -186,8 +187,9 @@ function App() {
           <ProtectedRouteLogged path="/profile/orders/:id" exact>
             <OrdersId />
           </ProtectedRouteLogged>
-
-          <Route><NotFound /></Route>
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
       </div>{" "}
       {isPerformed ? (

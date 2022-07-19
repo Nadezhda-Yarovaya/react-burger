@@ -41,6 +41,7 @@ export function performLogin(email, pass, history) {
     authApi
       .login(email, pass)
       .then((res) => {
+        console.log('сюда попали', res);
         if (res && res.accessToken) {
           updateCookie(res);
           localStorage.setItem("refreshToken", res.refreshToken); // не меняется, только access менеятся
@@ -65,12 +66,12 @@ export function performLogin(email, pass, history) {
             history.push({ pathname: "./", state: { from: "./login" } });
           }, 1500);
         } else {
-          handleApiMessageError(dispatch, res.mmessage);
+          handleApiMessageError(dispatch, 'Ошибка e-mail или пароля');
         }
       })
 
       .catch((err) => {
-        console.log(err.message);
+        console.log('попали сюда' , err);
       });
   };
 }
@@ -253,5 +254,5 @@ export function handleApiMessageError(dispatch, message) {
 
   setTimeout(() => {
     dispatch({ type: CLEAR_APIMESSAGE });
-  }, 2000);
+  }, 2500);
 }

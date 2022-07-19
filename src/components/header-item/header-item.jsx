@@ -8,7 +8,7 @@ import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 function HeaderItem(props) {
   const [menuItems1, setMenuItems1] = useState([
     { path: "/", id: 1, type: "" },
-    { path: "/feed", id: 2, type: "" }, // лента заказов тут, а не личные заказы
+    { path: "/feed", id: 2, type: "" },
     { path: "/profile", id: 3, type: "" },
   ]);
 
