@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useWindowSize } from "../../hooks/resize.js";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 import { fetchAllIngredients } from "../../services/action-creators/ingredients-action-creators";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
@@ -32,10 +32,11 @@ import NotFound from "../../pages/not-found";
 import Orders from "../../pages/profile/orders/orders";
 import Feed from "../../pages/feed";
 import OrdersId from "../../pages/profile/orders-id/orders-id";
-import IngredientData from "../ingredient-data/ingredient-data";
+import IngredientData from "../ingredient-page/ingredient-page";
 import ProtectedRouteLogged from "../protected-route-logged/protected-route-logged";
 import ProtectedRouteNotLogged from "../protected-route-not-logged/protected-route-not-logged";
 import ProtectedPass from "../protected-pass/protected-pass";
+import IngredientPage from "../ingredient-page/ingredient-page";
 
 const { page } = appStyles;
 
@@ -43,6 +44,7 @@ function App() {
   const [width, height] = useWindowSize();
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     handleSetMobile();
@@ -68,6 +70,8 @@ function App() {
   const areIngredientsShown = useSelector(
     (state) => state.ingredients.areIngredientsShown
   );
+
+  const location = useLocation();
 
   const isMobileMenuOpened = useSelector(
     (store) => store.mobile.isMobileMenuOpened
@@ -95,6 +99,7 @@ function App() {
     dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });
+    history.goBack();
   }
 
   const handleSetMobile = () => {
@@ -125,13 +130,6 @@ function App() {
     }
   };
 
-  function setFormValidation(e, setValue, setValueValidity, setValueError) {
-    e.preventDefault();
-    setValue(e.target.value);
-    setValueValidity(e.target.validity.valid);
-    setValueError(e.target.validationMessage);
-  }
-
   const handleSetWindowData = () => {
     dispatch({
       type: SET_WINDOWDATA,
@@ -141,6 +139,8 @@ function App() {
       },
     });
   };
+
+  const locateModal = location?.state && location?.state?.locate;
 
   return (
     <>
@@ -153,27 +153,27 @@ function App() {
           </Route>
 
           <ProtectedRouteNotLogged exact path="/login">
-            <Login setFormValidation={setFormValidation} />{" "}
+            <Login />{" "}
           </ProtectedRouteNotLogged>
 
           <ProtectedRouteNotLogged path="/register" exact>
-            <Register setFormValidation={setFormValidation} />{" "}
+            <Register />{" "}
           </ProtectedRouteNotLogged>
 
           <ProtectedRouteNotLogged path="/forgot-password" exact>
-            <ForgotPassword setFormValidation={setFormValidation} />
+            <ForgotPassword />
           </ProtectedRouteNotLogged>
 
           <ProtectedPass path="/reset-password">
-            <ResetPassword setFormValidation={setFormValidation} />
+            <ResetPassword />
           </ProtectedPass>
 
           <ProtectedRouteLogged exact path="/profile">
-            <Profile setFormValidation={setFormValidation} />
+            <Profile />
           </ProtectedRouteLogged>
 
           <Route path="/ingredients/:id" exact>
-            <IngredientData />
+            <IngredientPage />
           </Route>
 
           <ProtectedRouteLogged path="/feed" exact>
@@ -203,10 +203,13 @@ function App() {
       ) : (
         <></>
       )}
-      {areIngredientsShown && (
-        <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
-          <IngredientDetails />
-        </Modal>
+      {locateModal && (
+        <Route path="/ingredients/:id">
+          {" "}
+          <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
       )}
     </>
   );

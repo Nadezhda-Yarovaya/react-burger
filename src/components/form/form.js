@@ -1,4 +1,5 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import buttonStyles from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button.module.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import formStyles from "./form.module.css";
@@ -14,6 +15,8 @@ const {
   form__twobuttons,
   message,
 } = formStyles;
+
+const { button, button_type_primary, button_size_medium } = buttonStyles;
 
 function Form(props) {
   let linksContent = "";
@@ -74,14 +77,12 @@ function Form(props) {
   const apiSuccess = useSelector((state) => state.auth.apiData.success);
 
   const oneButton = (
-    <Button
-      size="medium"
-      onClick={handleFormClick}
+    <input
+      type="submit"
+      value={props.buttonText}
+      className={`${button} ${button_type_primary} ${button_size_medium}`}
       disabled={false}
-      type="primary"
-    >
-      {props.buttonText}
-    </Button>
+    />
   );
 
   const twoButtons = props.isDisabled ? (
@@ -91,14 +92,13 @@ function Form(props) {
       <Button size="medium" onClick={handleCancelEdit} type="primary">
         Отмена
       </Button>
-      <Button
-        size="medium"
-        onClick={handleFormClick}
+
+      <input
+        type="submit"
+        value={props.buttonText}
+        className={`${button} ${button_type_primary} ${button_size_medium}`}
         disabled={false}
-        type="primary"
-      >
-        {props.buttonText}
-      </Button>
+      />
     </div>
   );
 
@@ -112,6 +112,7 @@ function Form(props) {
           name={props.name}
           className={form}
           style={{ margin: props.title ? "180px 0 0 0" : "120px 0 0 0" }}
+          onSubmit={handleFormClick}
           noValidate
         >
           {props.title ? <h1 className={form__title}>{props.title}</h1> : <></>}

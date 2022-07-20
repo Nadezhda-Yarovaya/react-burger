@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from "../components/form/form";
-
-import PropTypes from "prop-types";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 import {
   handleApiMessageError,
@@ -18,12 +17,15 @@ const { form__input, form__element, validationError } = formStyles;
 function ForgotPassword(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  const [emailValidError, setEmailValidError] = useState("");
+
+  const { values, handleChange, errors, isValid } = useFormAndValidation({
+    email: "",
+  });
+
+  const { email } = values;
 
   function handleForgotPass() {
-    if (isEmailValid) {
+    if (isValid) {
       dispatch(handleRequestResetPassword(email, history));
     } else {
       handleApiMessageError(dispatch, "Заполните e-mail корректно");
@@ -40,26 +42,16 @@ function ForgotPassword(props) {
       <div className={form__element}>
         <input
           type="email"
+          name="email"
           placeholder="Email"
           className={form__input}
           value={email}
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setEmail,
-              setIsEmailValid,
-              setEmailValidError
-            )
-          }
+          onChange={handleChange}
         />
-        <p className={validationError}>{isEmailValid ? "" : emailValidError}</p>
+        <p className={validationError}>{errors.email}</p>
       </div>
     </Form>
   );
 }
-
-ForgotPassword.propTypes = {
-  setFormValidation: PropTypes.func.isRequired,
-};
 
 export default ForgotPassword;

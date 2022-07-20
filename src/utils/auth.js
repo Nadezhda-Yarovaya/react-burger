@@ -4,12 +4,9 @@ class AuthAndRegister {
     this._headers = apiData.headers;
   }
 
-  _getResJson(res) {
-    return res.json();
-  }
-
   _getResponse(res) {
     if (res.ok) {
+      return res.json();
     } else {
       return Promise.reject(`Ошибка при соединении: ${res.status}`);
     }
@@ -22,15 +19,7 @@ class AuthAndRegister {
       headers: this._headers,
 
       body: JSON.stringify({ email: data }),
-    }).then((res) => {
-      try {
-        if (res.status === 200) {
-          return res.json();
-        }
-      } catch (error) {
-        return error;
-      }
-    });
+    }).then(this._getResponse);
   }
 
   resetPassword(newPass, token) {
@@ -40,15 +29,7 @@ class AuthAndRegister {
       headers: this._headers,
 
       body: JSON.stringify({ password: newPass, token }),
-    }).then((res) => {
-      try {
-        if (res.status === 200) {
-          return res.json();
-        }
-      } catch (error) {
-        return error;
-      }
-    });
+    }).then(this._getResponse);
   }
 
   register(email, password, name) {
@@ -56,16 +37,7 @@ class AuthAndRegister {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ email, password, name }),
-    }).then((res) => {
-      try {
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-      } catch (error) {
-        console.log("ошибка при регистрации :", error);
-        return error;
-      }
-    });
+    }).then(this._getResponse);
   }
 
   login(email, password) {
@@ -73,17 +45,7 @@ class AuthAndRegister {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ email, password }),
-    }).then((res) => {
-      try {
-        console.log("res before: ", res);
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-      } catch (error) {
-        console.log("ошибка при входе :", error);
-        return error;
-      }
-    });
+    }).then(this._getResponse);
   }
 
   getUser(accessToken) {
@@ -93,20 +55,7 @@ class AuthAndRegister {
         "Content-Type": "application/json",
         Authorization: "Bearer " + accessToken,
       },
-    })
-      .then((res) => {
-        try {
-          if (res.status === 200 || res.status === 201) {
-            return res.json();
-          }
-        } catch (error) {
-          console.log("error in get user :", error);
-
-          return error;
-        }
-      })
-
-      .catch((err) => console.log("Ошибка при регистрации от сервера: " + err)); // don't know yet, why it's necessary
+    }).then(this._getResponse);
   }
 
   updateUser(email, name, password, accessToken) {
@@ -121,16 +70,7 @@ class AuthAndRegister {
         Authorization: "Bearer " + accessToken,
       },
       body: JSON.stringify(bodySent),
-    }).then((res) => {
-      try {
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-      } catch (error) {
-        console.log("error in patch :", error);
-        return error;
-      }
-    });
+    }).then(this._getResponse);
   }
 
   refreshToken(refreshToken) {
@@ -138,12 +78,7 @@ class AuthAndRegister {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ token: refreshToken }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при обновлении токена: ${res.status}`);
-    });
+    }).then(this._getResponse);
   }
 
   logout(refreshToken) {
@@ -151,9 +86,7 @@ class AuthAndRegister {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ token: refreshToken }),
-    })
-      .then((res) => res.json())
-      .catch((err) => console.log(err));
+    }).then(this._getResponse);
   }
 }
 

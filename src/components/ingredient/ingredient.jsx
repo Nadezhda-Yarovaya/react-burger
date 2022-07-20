@@ -17,13 +17,12 @@ import {
   REPLACE_BUN,
 } from "../../services/actions";
 import { dropElement } from "../../services/action-creators/dnd-action-creators";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 function Ingredient(props) {
   const dispatch = useDispatch();
-
-  useEffect(() => {}, []);
+  const location = useLocation();
 
   const {
     price,
@@ -98,7 +97,10 @@ function Ingredient(props) {
     >
       <div className={list__item}>
         <Link
-          to={{ pathname: `/ingredients/${item._id}`, state: { from: "/" } }}
+          to={{
+            pathname: `/ingredients/${item._id}`,
+            state: { locate: location },
+          }}
           onClick={() => {
             openModalIngredient(item);
           }}
@@ -123,7 +125,7 @@ function Ingredient(props) {
           )}
         </Link>
         {isMobile ? (
-          <Link
+          <button
             className={item__mobilebutton}
             onClick={(e) => {
               e.preventDefault();
@@ -135,7 +137,7 @@ function Ingredient(props) {
             }}
           >
             Добавить
-          </Link>
+          </button>
         ) : (
           <></>
         )}

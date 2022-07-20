@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
 import { SET_LOGGED } from "../../services/actions";
+import { useLocation } from "react-router-dom";
 
 function ProtectedRouteLogged({ children, ...rest }) {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem("refreshToken")) {
@@ -16,7 +17,7 @@ function ProtectedRouteLogged({ children, ...rest }) {
     }
   }, []);
 
-  const isLogged = localStorage.getItem("refreshToken");
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   return (
     <Route
@@ -25,8 +26,9 @@ function ProtectedRouteLogged({ children, ...rest }) {
         isLogged ? (
           children
         ) : (
-          // Если пользователя нет в хранилище, происходит переадресация на роут /login
-          <Redirect to="/login" />
+          <Redirect
+            to={{ pathname: "/login", state: { from: location.pathname } }}
+          />
         )
       }
     />

@@ -6,8 +6,6 @@ import {
   ShowIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import PropTypes from "prop-types";
-
 import formStyles from "../components/form/form.module.css";
 import {
   handleApiMessageError,
@@ -15,32 +13,26 @@ import {
 } from "../services/action-creators/auth-action-creators";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
 function Register(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [pass, setPass] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
   const [isPassShown, setIsPassShown] = useState(true);
-  const [isPassValid, setIsPassValid] = useState(false);
-  const [passValidError, setPassValidError] = useState("");
 
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  const [emailValidError, setEmailValidError] = useState("");
+  const { values, handleChange, errors, isValid } = useFormAndValidation({
+    email: "",
+    password: "",
+    name: "",
+  });
 
-  const [isNameValid, setIsNameValid] = useState(false);
-  const [nameValidError, setNameValidError] = useState("");
-
-  const formValid = isNameValid && isEmailValid && isPassValid;
+  const { email, password, name } = values;
 
   function handleRegister() {
-    if (formValid) {
-      dispatch(performRegister(name, email, pass, history));
+    if (isValid) {
+      dispatch(performRegister(name, email, password, history));
     } else {
       handleApiMessageError(dispatch, "Заполните все поля формы корректно");
     }
@@ -62,58 +54,40 @@ function Register(props) {
         <input
           type="text"
           placeholder="Имя"
+          name="name"
           required
           minLength="2"
           maxLength="25"
           className={form__input}
           value={name}
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setName,
-              setIsNameValid,
-              setNameValidError
-            )
-          }
+          onChange={handleChange}
         />
-        <p className={validationError}>{isNameValid ? "" : nameValidError}</p>
+        <p className={validationError}>{errors.name}</p>
       </div>
 
       <div className={form__element}>
         <input
           type="email"
           placeholder="Email"
+          name="email"
           className={form__input}
           value={email}
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setEmail,
-              setIsEmailValid,
-              setEmailValidError
-            )
-          }
+          onChange={handleChange}
           required
           minLength="2"
           maxLength="25"
         />
-        <p className={validationError}>{isEmailValid ? "" : emailValidError}</p>
+        <p className={validationError}>{errors.email}</p>
       </div>
 
       <div className={form__element}>
         <input
           type={isPassShown ? "password" : "text"}
+          name="password"
           placeholder="Пароль"
           className={form__input}
-          value={pass}
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setPass,
-              setIsPassValid,
-              setPassValidError
-            )
-          }
+          value={password}
+          onChange={handleChange}
           required
           minLength="2"
           maxLength="25"
@@ -125,13 +99,10 @@ function Register(props) {
             <HideIcon type="primary" />
           )}
         </div>
-        <p className={validationError}>{isPassValid ? "" : passValidError}</p>
+        <p className={validationError}>{errors.password}</p>
       </div>
     </Form>
   );
 }
-Register.propTypes = {
-  setFormValidation: PropTypes.func.isRequired,
-};
 
 export default Register;

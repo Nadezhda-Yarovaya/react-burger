@@ -38,10 +38,10 @@ export function performRegister(name, email, pass, history) {
 
 export function performLogin(email, pass, history) {
   return (dispatch, getState) => {
+    const cameFrom = history.location?.state?.from || "/";
     authApi
       .login(email, pass)
       .then((res) => {
-        console.log('сюда попали', res);
         if (res && res.accessToken) {
           updateCookie(res);
           localStorage.setItem("refreshToken", res.refreshToken); // не меняется, только access менеятся
@@ -54,24 +54,21 @@ export function performLogin(email, pass, history) {
 
           setTimeout(() => {
             dispatch({
-              type: CLEAR_APIMESSAGE,
-            });
-            dispatch({
-              type: LOGIN_SUCCESS,
-              payload: { email },
-            });
-            dispatch({
               type: SET_LOGGED,
             });
-            history.push({ pathname: "./", state: { from: "./login" } });
+            dispatch({
+              type: CLEAR_APIMESSAGE,
+            });
+
+            history.push({ pathname: cameFrom, state: { from: "/login" } });
           }, 1500);
         } else {
-          handleApiMessageError(dispatch, 'Ошибка e-mail или пароля');
+          handleApiMessageError(dispatch, "Ошибка e-mail или пароля");
         }
       })
 
       .catch((err) => {
-        console.log('попали сюда' , err);
+        console.log("Ошибка: ", err);
       });
   };
 }

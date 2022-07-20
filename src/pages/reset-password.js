@@ -4,12 +4,13 @@ import {
   HideIcon,
   ShowIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 import {
   handleApiMessageError,
   resetPass,
 } from "../services/action-creators/auth-action-creators";
-import PropTypes from "prop-types";
+
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import formStyles from "../components/form/form.module.css";
@@ -18,19 +19,17 @@ const { form__input, form__element, form__icon, validationError } = formStyles;
 function ResetPassword(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [pass, setPass] = useState("");
-  const [token, setToken] = useState("");
   const [isPassShown, setIsPassShown] = useState(true);
-  const [isPassValid, setIsPassValid] = useState(false);
-  const [passValidError, setPassValidError] = useState("");
-  const [isTokenValid, setIsTokenValid] = useState(false);
-  const [tokenValidError, setTokenValidError] = useState("");
+  const { values, handleChange, errors, isValid } = useFormAndValidation({
+    password: "",
+    token: "",
+  });
 
-  const formValid = isPassValid && isTokenValid;
+  const { password, token } = values;
 
   function handleResetPass() {
-    if (formValid) {
-      dispatch(resetPass(pass, token, history));
+    if (isValid) {
+      dispatch(resetPass(password, token, history));
     } else {
       handleApiMessageError(dispatch, "Заполните все поля формы корректно");
     }
@@ -53,18 +52,12 @@ function ResetPassword(props) {
           type={isPassShown ? "password" : "text"}
           placeholder="Задайте новый пароль"
           className={form__input}
-          value={pass}
+          value={password}
+          name="password"
           required
           minLength="2"
           maxLength="25"
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setPass,
-              setIsPassValid,
-              setPassValidError
-            )
-          }
+          onChange={handleChange}
         />
         <div className={form__icon} onClick={(e) => toggleShowPass(e)}>
           {isPassShown ? (
@@ -73,7 +66,7 @@ function ResetPassword(props) {
             <HideIcon type="primary" />
           )}
         </div>
-        <p className={validationError}>{isPassValid ? "" : passValidError}</p>
+        <p className={validationError}>{errors.password}</p>
       </div>
 
       <div className={form__element}>
@@ -82,25 +75,15 @@ function ResetPassword(props) {
           placeholder="Введите код из письма"
           className={form__input}
           value={token}
-          onChange={(e) =>
-            props.setFormValidation(
-              e,
-              setToken,
-              setIsTokenValid,
-              setTokenValidError
-            )
-          }
+          name="token"
+          onChange={handleChange}
           required
           minLength="2"
         />
-        <p className={validationError}>{isTokenValid ? "" : tokenValidError}</p>
+        <p className={validationError}>{errors.token}</p>
       </div>
     </Form>
   );
 }
-
-ResetPassword.propTypes = {
-  setFormValidation: PropTypes.func.isRequired,
-};
 
 export default ResetPassword;

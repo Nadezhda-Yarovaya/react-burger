@@ -9,7 +9,7 @@ import profileStyles from "./profile.module.css";
 import formStyles from "../../components/form/form.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import PersonalMenu from "../../components/personal-menu/personal-menu";
-import PropTypes from "prop-types";
+
 import {
   loadUser,
   patchUser,
@@ -271,9 +271,5 @@ function Profile(props) {
     </>
   );
 }
-
-Profile.propTypes = {
-  setFormValidation: PropTypes.func.isRequired,
-};
 
 export default Profile;

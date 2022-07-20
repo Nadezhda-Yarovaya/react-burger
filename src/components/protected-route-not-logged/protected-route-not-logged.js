@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 
 function ProtectedRouteNotLogged({ children, ...rest }) {
-  useEffect(() => {}, []);
-
-  const isLogged = localStorage.getItem("refreshToken");
+  const location = useLocation();
+  const cameFrom = location?.state?.from || "/";
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   return (
     <Route
       {...rest}
-      render={() => (!isLogged ? children : <Redirect to="/" />)}
+      render={() => (!isLogged ? children : <Redirect to={cameFrom} />)}
     />
   );
 }

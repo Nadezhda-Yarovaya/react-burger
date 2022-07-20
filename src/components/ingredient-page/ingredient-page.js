@@ -7,7 +7,7 @@ import { SET_CURRENT, SET_MODALINGREDIENTS } from "../../services/actions";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import NotFound from "../../pages/not-found";
 
-function IngredientData() {
+function IngredientPage() {
   const allIngredients = useSelector(
     (store) => store.ingredients.listOfIngredients
   );
@@ -25,24 +25,9 @@ function IngredientData() {
         type: SET_CURRENT,
         currentIngredient: thisCard,
       });
-      if (cameFrom === "/") {
-        dispatch({
-          type: SET_MODALINGREDIENTS, // вот здесь задаю, показывать ли модалку. areIngredientsShown = тру
-        });
-      }
     }
   }, [allIngredients, cameFrom, thisCard]);
 
-  return (
-    <>
-      {cameFrom === "/" ? (
-        <Main />
-      ) : thisCard ? (
-        <IngredientDetails />
-      ) : (
-        <NotFound />
-      )}
-    </>
-  );
+  return <> {thisCard ? <IngredientDetails /> : <NotFound />}</>;
 }
-export default IngredientData;
+export default IngredientPage;
