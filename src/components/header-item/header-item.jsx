@@ -1,53 +1,63 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
-import headerItemStyles from './header-item.module.css';
-
-import { useSelector } from 'react-redux';
-
-import {
-  BurgerIcon,
-  ListIcon,
-  ProfileIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { ifItsMobile } from '../../services/selectors';
-
-const texts = ['Конструктор', 'Лента заказов', 'Личный кабинет'];
-const icons = [BurgerIcon, ListIcon, ProfileIcon];
-let Icon = icons[0];
+import headerItemStyles from "./header-item.module.css";
+import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function HeaderItem(props) {
-  const isMobile = useSelector(ifItsMobile);
+  const [menuItems1, setMenuItems1] = useState([
+    { path: "/", id: 1, type: "" },
+    { path: "/feed", id: 2, type: "" },
+    { path: "/profile", id: 3, type: "" },
+  ]);
 
-  texts.forEach((item, ind) => {
-    if (item === props.text) {
-      Icon = icons[ind];
-    }
-  });
+  const location = useLocation();
+
+  const indexToShow = props.id ? props.id - 1 : 0;
+  const Icon = props.icon ? props.icon : BurgerIcon;
+  const text2 = props.text ? props.text : "";
+
+  const currentPath = location.pathname;
+
+  function filterType() {
+    return menuItems1.filter((item) => {
+      if (
+        currentPath === item.path ||
+        (currentPath === "/profile/orders" && item.path === "/profile")
+      ) {
+        item.type = "primary";
+      } else {
+        item.type = "secondary";
+      }
+      return item;
+    });
+  }
+
+  useEffect(() => {
+    const newItems = filterType();
+    setMenuItems1(newItems);
+  }, [location.pathname]);
 
   return (
     <>
-      {isMobile ? (
+      {" "}
+      {props.sub ? (
         <></>
       ) : (
         <div className={`${headerItemStyles.icon} ml-1 mr-2`}>
-          <Icon type={`${props.secondary ? 'secondary' : 'primary'}`} />
+          <Icon type={menuItems1[indexToShow].type} />
         </div>
       )}
-      <p
-        className={`mb-2 text text_type_main-default${
-          props.secondary ? ' ' + headerItemStyles.menu__item_inactive : ''
-        }`}
-      >
-        {props.text}
-      </p>
+      <p className={`mb-2 text text_type_main-default`}>{text2}</p>
     </>
   );
 }
 
 HeaderItem.propTypes = {
   text: PropTypes.string.isRequired,
-  secondary: PropTypes.bool,
+  sub: PropTypes.bool,
+  id: PropTypes.number,
 };
 
 export default HeaderItem;

@@ -1,52 +1,66 @@
-import ingredientStyles from './ingredient-details.module.css';
+import ingredientStyles from "./ingredient-details.module.css";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-const { text, details, image, nutrients, nutrient } = ingredientStyles;
+const { text, details, image, nutrients, nutrient, container } =
+  ingredientStyles;
 
 function IngredientDetails() {
   const selectedCard = useSelector(
-    (store) => store.ingredients.currentIngredient
+    (state) => state.ingredients.currentIngredient
   );
+
   return (
     <>
-      <div className={details}>
-        <p className={`text text_type_main-medium`}>Детали ингредиента</p>
-      </div>
-      <img className={image} src={selectedCard.image} alt={selectedCard.name} />
-      <p className='text text_type_main-medium mt-4 mb-8'>
-        {selectedCard.name}
-      </p>
-      <ul className={`${nutrients}`}>
-        <li className={nutrient}>
-          {' '}
-          <p className={`text text_type_main-small ${text}`}>Калории, ккал</p>
-          <p className={`text text_type_digits-default ${text}`}>
-            {selectedCard.calories}
+      {selectedCard ? (
+        <div className={container}>
+          <div className={details}>
+            <p className={`text text_type_main-medium`}>Детали ингредиента</p>
+          </div>
+          <img
+            className={image}
+            src={selectedCard.image}
+            alt={selectedCard.name}
+          />
+          <p className="text text_type_main-medium mt-4 mb-8">
+            {selectedCard.name}
           </p>
-        </li>
-        <li className={nutrient}>
-          {' '}
-          <p className={`text text_type_main-small ${text}`}>Белки, г</p>
-          <p className={`text text_type_digits-default ${text}`}>
-            {selectedCard.proteins}
-          </p>
-        </li>
-        <li className={nutrient}>
-          {' '}
-          <p className={`text text_type_main-small ${text}`}>Жиры, г</p>
-          <p className={`text text_type_digits-default ${text}`}>
-            {selectedCard.fat}
-          </p>
-        </li>
-        <li className={nutrient}>
-          {' '}
-          <p className={`text text_type_main-small ${text}`}>Углеводы, г</p>
-          <p className={`text text_type_digits-default ${text}`}>
-            {selectedCard.carbohydrates}
-          </p>
-        </li>
-      </ul>
+          <ul className={`${nutrients}`}>
+            <li className={nutrient}>
+              {" "}
+              <p className={`text text_type_main-small ${text}`}>
+                Калории, ккал
+              </p>
+              <p className={`text text_type_digits-default ${text}`}>
+                {selectedCard.calories}
+              </p>
+            </li>
+            <li className={nutrient}>
+              {" "}
+              <p className={`text text_type_main-small ${text}`}>Белки, г</p>
+              <p className={`text text_type_digits-default ${text}`}>
+                {selectedCard.proteins}
+              </p>
+            </li>
+            <li className={nutrient}>
+              {" "}
+              <p className={`text text_type_main-small ${text}`}>Жиры, г</p>
+              <p className={`text text_type_digits-default ${text}`}>
+                {selectedCard.fat}
+              </p>
+            </li>
+            <li className={nutrient}>
+              {" "}
+              <p className={`text text_type_main-small ${text}`}>Углеводы, г</p>
+              <p className={`text text_type_digits-default ${text}`}>
+                {selectedCard.carbohydrates}
+              </p>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

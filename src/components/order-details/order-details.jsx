@@ -1,8 +1,8 @@
-import React from 'react';
-import orderDetailsStyles from './order-details.module.css';
+import React from "react";
+import orderDetailsStyles from "./order-details.module.css";
 
-import doneSign from '../../images/done.svg';
-import { useSelector } from 'react-redux';
+import doneSign from "../../images/done.svg";
+import { useSelector } from "react-redux";
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 
@@ -15,7 +15,7 @@ function OrderDetails() {
       <p className={`text text_type_main-default mt-8 mb-15`}>
         Идентификатор заказа
       </p>
-      <img src={doneSign} alt='заказ совершен' />
+      <img src={doneSign} alt="заказ совершен" />
       <p className={`text text_type_main-default mt-15 mt-8 ${window__text}`}>
         Заказ начали готовить
       </p>

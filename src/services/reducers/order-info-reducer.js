@@ -4,6 +4,7 @@ import {
   GET_ORDERDATA_FAILURE,
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
+  SET_POSITIONSDATA
 } from '../actions';
 
 const initialState = {
@@ -11,6 +12,15 @@ const initialState = {
   isOrderLoading: false,
   isPerformed: false,
   totalSum: 0,
+  orderFullList: [{
+    name: '',
+    order: { number: 2547 },
+    status: '',
+    positions: [],
+    sum: 0,
+    date: Date("2022-03-25"),
+    _id: '',
+  }]
 };
 
 export function orderInfoReducer(state = initialState, action) {
@@ -48,6 +58,11 @@ export function orderInfoReducer(state = initialState, action) {
         totalSum: action.totalSum,
       };
 
+      case SET_POSITIONSDATA: 
+      return {
+        ...state,
+        orderFullList: action.payload
+      };
     default:
       return state;
   }

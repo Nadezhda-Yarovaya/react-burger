@@ -4,6 +4,7 @@
   align-items: center;
   box-sizing: border-box;
 }
+
 .item__mobilebutton {
   background-color: transparent;
   margin: 18px 0 0 0;
@@ -37,6 +38,7 @@
   background-color: transparent;
   color: var(--text-color);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .counter {

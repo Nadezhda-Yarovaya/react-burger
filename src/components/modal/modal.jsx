@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import modalStyles from './modal.module.css';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import ModalOverlay from '../modal-overlay/modal-overlay';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import modalStyles from "./modal.module.css";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import ModalOverlay from "../modal-overlay/modal-overlay";
+import { useSelector } from "react-redux";
 
 const { modal, modal__button, container } = modalStyles;
 
-const modalRoot = document.getElementById('modal');
+const modalRoot = document.getElementById("modal");
 
 function Modal(props) {
   const [isOpened, setIsOpened] = useState(props.isOpen);
@@ -19,27 +19,27 @@ function Modal(props) {
 
   useEffect(() => {
     function closeByEscape(evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === "Escape") {
         props.closeModal();
         setIsOpened(false);
       }
     }
     if (isOpened) {
-      document.addEventListener('keydown', closeByEscape);
+      document.addEventListener("keydown", closeByEscape);
       return () => {
-        document.removeEventListener('keydown', closeByEscape);
+        document.removeEventListener("keydown", closeByEscape);
       };
     }
   }, [isOpened]);
 
-  const modalHeight = props.type === 'orderPerformed' ? 650 : 538;
+  const modalHeight = props.type === "orderPerformed" ? 650 : 538;
 
-  const topPosition = ((windowHeight - modalHeight) / 2).toString() + 'px';
+  const topPosition = ((windowHeight - modalHeight) / 2).toString() + "px";
   const leftPosition =
     (
       (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
       2
-    ).toString() + 'px';
+    ).toString() + "px";
 
   return ReactDOM.createPortal(
     <>
@@ -50,7 +50,7 @@ function Modal(props) {
       >
         <div className={`${container}`}>
           <button className={modal__button} onClick={props.closeModal}>
-            <CloseIcon type='primary' />
+            <CloseIcon type="primary" />
           </button>
           {props.children}
         </div>
