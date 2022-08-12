@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import ordersStyles from "./orders.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllIngredients } from "../../../services/selectors";
@@ -13,7 +13,7 @@ const {
   maintitle,
 } = ordersStyles;
 
-function Orders(props) {
+const Orders: FC = (props) => {
   const dispatch = useDispatch();
 
   const allIngredients = useSelector(getAllIngredients);
@@ -30,9 +30,12 @@ function Orders(props) {
     }
   }, [allIngredients]);
 
-  const orderList = useSelector((state) => state.order.orderFullList);
+  const orderList = useSelector((state: any) => state.order.orderFullList);
+  type TList = {
 
-  function newListAfterFilter(arr1) {
+  };
+
+  const newListAfterFilter:FC <TList> = (arr1) => {
     return arr1.map((item) => {
       const newPositions = item.positions.map((elementId) => {
         const newArrayItem = allIngredients.find(

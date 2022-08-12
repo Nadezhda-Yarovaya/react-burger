@@ -18,6 +18,8 @@ import {
 import { SHOW_APIMESSAGE, CLEAR_APIMESSAGE } from "../../services/actions";
 
 import { EditIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useFormAndValidation } from "../../hooks/useFormAndValidation";
+
 
 const {
   form__input,
@@ -29,18 +31,9 @@ const {
 } = formStyles;
 
 const { profile, container } = profileStyles;
-type TFormValidation = {
-  e : SyntheticEvent;
-  setName : ()=> void;
-  setIsNameValid: () => void;
-  setNameValidError: () => void;
-}
-type TProfileProps = {
-  
-  setFormValidation: ( {e, setName, setIsNameValid,   setNameValidError} :TFormValidation) => void;
-}
 
-const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
+
+const Profile: FC = () => {
   const dispatch = useDispatch();
 
   const user1 = useSelector((state : any) => 
@@ -48,7 +41,14 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
   );
 
   const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const { values, handleChange, errors, isValid, validities } = useFormAndValidation({
+    
+    name: user1.name,
+    email: user1.email,
+    password: "",
+  });
 
+/*
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,7 +57,7 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
   const [isNameValid, setIsNameValid] = useState(true);
   const [nameValidError, setNameValidError] = useState("");
   const [isPassValid, setIsPassValid] = useState(true);
-  const [passValidError, setPassValidError] = useState("");
+  const [passValidError, setPassValidError] = useState(""); */
   const [isNameDisabled, setIsNameDisabled] = useState(true);
   const [isEmailDisabled, setIsEmailDisabled] = useState(true);
   const [isPassDisabled, setIsPassDisabled] = useState(true);
@@ -69,10 +69,15 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
     }
   }, [isLogged]);
 
+
+  
+  const { email, password, name } = values;
+
+  /*
   useEffect(() => {
     setName(user1.name);
     setEmail(user1.email);
-  }, [user1]);
+  }, [user1]);*/
 
   const [isProfileFormDisabled, setIsProfileFormDisabled] = useState(true);
 
@@ -86,10 +91,10 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
 
   function updateData() {
     const ifAnyChanged =
-      email !== user1.email || name !== user1.name || pass !== "";
+      email !== user1.email || name !== user1.name || password !== "";
 
-    if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
-      dispatch<any>(patchUser(email, name, pass));
+    if (ifAnyChanged && validities.name && validities.email && validities.password) {
+      dispatch<any>(patchUser(email, name, password));
       makeDefaultForm();
     } else {
       dispatch<any>({
@@ -119,12 +124,12 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
     setIsNameDisabled(true);
     setIsEmailDisabled(true);
     setIsPassDisabled(true);
-    setEmail(user1.email);
+   /* setEmail(user1.email);
     setName(user1.name);
     setPass("");
     setPassValidError("");
     setEmailValidError("");
-    setNameValidError("");
+    setNameValidError("");*/
   }
 
   function toggleShowPass(e: SyntheticEvent) {
@@ -159,14 +164,7 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
                 className={`${form__input} ${form__element_profile}`}
                 name="profileName"
                 value={name || ""}
-                onChange={(e) =>
-                  setFormValidation(
-                    e,
-                    setName,
-                    setIsNameValid,
-                    setNameValidError
-                  )
-                }
+                onChange={handleChange}
                 disabled={isNameDisabled}
               />
               {isNameDisabled ? (
@@ -201,13 +199,7 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
                 maxLength="30"
                 name="profileEmail"
                 value={email || ""}
-                onChange={(e) =>
-                  setFormValidation(
-                    e,
-                    setEmail,
-                    setIsEmailValid,
-                    setEmailValidError
-                  )
+                onChange={handleChange
                 }
                 disabled={isEmailDisabled}
               />
@@ -242,14 +234,7 @@ const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
                 maxLength="30"
                 name="profileName"
                 value={pass || ""}
-                onChange={(e) =>
-                  setFormValidation(
-                    e,
-                    setPass,
-                    setIsPassValid,
-                    setPassValidError
-                  )
-                }
+                onChange={handleChange}
                 disabled={isPassDisabled}
               />
               {isPassDisabled ? (

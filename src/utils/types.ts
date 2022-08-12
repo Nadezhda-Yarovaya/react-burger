@@ -50,3 +50,20 @@ export type TRectangle = {
   left?: number;
   right?: number;
 }
+
+export type TForm = {
+  values: {
+  name?: string;
+  email?: string;
+  password?: string;},
+  errors: {
+    name?: string;
+    email?: string;
+    password?: string;
+  },
+  validities: {
+    name?: boolean;
+    email?: boolean;
+    password?: boolean;
+  }
+}

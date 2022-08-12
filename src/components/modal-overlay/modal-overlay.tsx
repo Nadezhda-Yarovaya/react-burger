@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {FC} from 'react';
 import PropTypes from 'prop-types';
 import modalStyles from './modal-overlay.module.css';
 const { overlay } = modalStyles;
 
-function ModalOverlay(props) {
+type TOverlayProps = {
+  closeModal: () => void;
+  children: React.ReactNode;
+}
+
+const ModalOverlay: FC<TOverlayProps> = ({closeModal, children}) => {
   return (
-    <div className={overlay} onClick={props.closeModal}>
-      {props.children}
+    <div className={overlay} onClick={closeModal}>
+      {children}
     </div>
   );
 }

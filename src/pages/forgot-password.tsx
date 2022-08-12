@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useEffect } from "react";
 import Form from "../components/form/form";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 
 const { form__input, form__element, validationError } = formStyles;
 
-function ForgotPassword(props) {
+const ForgotPassword : FC = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 

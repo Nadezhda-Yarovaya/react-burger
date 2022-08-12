@@ -1,3 +1,4 @@
+import React, { FC, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch";
@@ -11,9 +12,9 @@ import { ifItsMobile } from "../services/selectors";
 const { main, ingredients, constructor, section_notdisplayed, section_flex } =
   appStyles;
 
-function Main() {
+const Main: FC = () => {
   const isMobile = useSelector(ifItsMobile);
-  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
 
   return (
     <DndProvider backend={MultiBackend} options={HTML5toTouch}>
