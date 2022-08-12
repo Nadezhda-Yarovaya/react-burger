@@ -11,20 +11,26 @@ import currencyBig from '../../images/currency36x36.svg';
 import { useSelector } from 'react-redux';
 import { ifItsMobile } from '../../services/selectors';
 import TotalSumButton from '../total-sum-button/total-sum-button';
+import { FC } from 'react';
 
 const { container, sum, button_visible, button_hidden } = totalSumStyles;
 
-function TotalSum(props) {
-  const { handleToggleIfMobile, handlePerformOrder } = props;
+type TTotalSumProps = {
+  handleToggleIfMobile: () => void;
+  handlePerformOrder: () => void;
 
+}
+
+const TotalSum: FC<TTotalSumProps> = ( { handleToggleIfMobile, handlePerformOrder }) => {
+  
   const stuffingsList = useSelector(
-    (state) => state.dragAndDrop.droppedElements
+    (state : any) => state.dragAndDrop.droppedElements
   );
-  const bunSelected = useSelector((state) => state.ingredients.bun);
+  const bunSelected = useSelector((state: any) => state.ingredients.bun);
 
-  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
 
-  const totalSumOrder = useSelector((store) => store.order.totalSum);
+  const totalSumOrder = useSelector((store: any) => store.order.totalSum);
 
   const isMobile = useSelector(ifItsMobile);
 

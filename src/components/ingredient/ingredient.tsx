@@ -1,3 +1,4 @@
+import React, { useState, FunctionComponent, FC } from "react";
 import ingredientStyles from "./ingredient.module.css";
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +21,15 @@ import { dropElement } from "../../services/action-creators/dnd-action-creators"
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-function Ingredient(props) {
+interface IItem {
+  item: {[key: string]: string | number }
+};
+
+type TIngredientProps = {
+  item: {[key: string]: string}
+}
+
+const Ingredient: FC<TIngredientProps> = ({item}) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -33,7 +42,6 @@ function Ingredient(props) {
     list__item,
   } = ingredientStyles;
 
-  const { item } = props;
 
   const bunCount = useSelector((store) => {
     let totalCount = 0;
@@ -64,7 +72,7 @@ function Ingredient(props) {
     item: { item },
   });
 
-  const handleBunDrop = (currentItem) => {
+  const handleBunDrop = (currentItem : IItem) => {
     console.log("indrop mobile", currentItem._id);
     dispatch({
       type: REPLACE_BUN,
@@ -74,7 +82,7 @@ function Ingredient(props) {
 
   const currentCounter = item.type === "bun" ? bunCount : ingredientCount;
 
-  function openModalIngredient(currentItem) {
+  const openModalIngredient = (currentItem : IItem) => {
     dispatch({
       type: SET_CURRENT,
       currentIngredient: currentItem,
@@ -145,9 +153,9 @@ function Ingredient(props) {
     </li>
   );
 }
-
+/*
 Ingredient.propTypes = {
   item: ingredientType.isRequired,
-};
+};*/
 
 export default Ingredient;

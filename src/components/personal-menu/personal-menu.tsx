@@ -2,18 +2,19 @@ import personalMenuStyles from "./personal-menu.module.css";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { performLogout } from "../../services/action-creators/auth-action-creators";
+import { FC, SyntheticEvent } from "react";
 const { menu, menu__item, navigation, par, menu__item_active } =
   personalMenuStyles;
 
-function PersonalMenu(props) {
+const PersonalMenu: FC = ({}) : JSX.Element => {
   const dispatch = useDispatch();
 
   const history = useHistory();
 
-  function handleLogout(e) {
+  function handleLogout(e :SyntheticEvent) {
     e.preventDefault();
     const refreshToken = localStorage.getItem("refreshToken");
-    dispatch(performLogout(refreshToken, history));
+    // dispatch(performLogout(refreshToken, history));
   }
 
   return (

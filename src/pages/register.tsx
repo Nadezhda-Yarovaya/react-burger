@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, SyntheticEvent, useState } from "react";
 import Form from "../components/form/form";
 
 import {
@@ -17,7 +17,7 @@ import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
-function Register(props) {
+const Register: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isPassShown, setIsPassShown] = useState(true);
@@ -32,13 +32,13 @@ function Register(props) {
 
   function handleRegister() {
     if (isValid) {
-      dispatch(performRegister(name, email, password, history));
+      dispatch<any>(performRegister(name, email, password, history));
     } else {
       handleApiMessageError(dispatch, "Заполните все поля формы корректно");
     }
   }
 
-  function toggleShowPass(e) {
+  function toggleShowPass(e : SyntheticEvent) {
     e.preventDefault();
     setIsPassShown(!isPassShown);
   }

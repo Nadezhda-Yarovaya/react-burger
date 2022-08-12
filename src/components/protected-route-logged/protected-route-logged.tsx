@@ -1,23 +1,24 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, RouteProps } from "react-router-dom";
 
 import { SET_LOGGED } from "../../services/actions";
 import { useLocation } from "react-router-dom";
+import { TProtectedProps } from "../../utils/types";
 
-function ProtectedRouteLogged({ children, ...rest }) {
+const ProtectedRouteLogged: FC<RouteProps> = ({ children, ...rest }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<any>();
 
   useEffect(() => {
     if (localStorage.getItem("refreshToken")) {
-      dispatch({
+      dispatch<any>({
         type: SET_LOGGED,
       });
     }
   }, []);
 
-  const isLogged = useSelector((state) => state.auth.isLogged);
+  const isLogged = useSelector((state: any) => state.auth.isLogged);
 
   return (
     <Route

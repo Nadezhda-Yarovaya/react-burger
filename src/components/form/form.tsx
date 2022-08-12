@@ -1,9 +1,11 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+// import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import buttonStyles from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button.module.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import formStyles from "./form.module.css";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
+import { FC, HTMLInputTypeAttribute, SyntheticEvent } from "react";
+import {Button } from '../../utils/typesLibrary';
 
 const {
   container,
@@ -18,9 +20,20 @@ const {
 
 const { button, button_type_primary, button_size_medium } = buttonStyles;
 
-function Form(props) {
-  let linksContent = "";
-  if (props.name === "forgotform") {
+type TFormProps = {
+  name: string;
+  buttonText: string;
+  isDisabled? : boolean;
+  title?: string;
+  onSubmit: () => void;
+  toggleDisabled : () => void;
+  disableFields: () => void;
+  children: React.ReactNode;
+}
+
+const Form: FC<TFormProps>= ({name, buttonText, isDisabled, title, onSubmit, toggleDisabled, disableFields, children}) => {
+  let linksContent: React.ReactNode = "";
+  if (name === "forgotform") {
     linksContent = (
       <>
         <p className={par}>
@@ -32,7 +45,7 @@ function Form(props) {
       </>
     );
   }
-  if (props.name === "loginform") {
+  if (name === "loginform") {
     linksContent = (
       <>
         <p className={par}>
@@ -50,7 +63,7 @@ function Form(props) {
       </>
     );
   }
-  if (props.name === "registerform") {
+  if (name === "registerform") {
     linksContent = (
       <p className={par}>
         Уже зарегистрированы?{" "}
@@ -61,31 +74,31 @@ function Form(props) {
     );
   }
 
-  function handleCancelEdit(e) {
+  function handleCancelEdit(e : SyntheticEvent) {
     e.preventDefault();
-    props.toggleDisabled();
-    props.disableFields();
+    toggleDisabled();
+    disableFields();
   }
 
-  function handleFormClick(e) {
+  function handleFormClick(e : SyntheticEvent) {
     e.preventDefault();
-    props.onSubmit();
+    onSubmit();
   }
-  const apiMessage = useSelector((state) => {
+  const apiMessage = useSelector((state: any) => {
     return state.auth.apiData.message;
   });
-  const apiSuccess = useSelector((state) => state.auth.apiData.success);
+  const apiSuccess = useSelector((state: any) => state.auth.apiData.success);
 
   const oneButton = (
     <input
       type="submit"
-      value={props.buttonText}
+      value={buttonText}
       className={`${button} ${button_type_primary} ${button_size_medium}`}
       disabled={false}
     />
   );
 
-  const twoButtons = props.isDisabled ? (
+  const twoButtons = isDisabled ? (
     <></>
   ) : (
     <div className={form__twobuttons}>
@@ -95,7 +108,7 @@ function Form(props) {
 
       <input
         type="submit"
-        value={props.buttonText}
+        value={buttonText}
         className={`${button} ${button_type_primary} ${button_size_medium}`}
         disabled={false}
       />
@@ -103,38 +116,29 @@ function Form(props) {
   );
 
   const buttonToRender =
-    props.name === "editprofileform" ? twoButtons : oneButton;
+    name === "editprofileform" ? twoButtons : oneButton;
 
   return (
     <>
       <div className={container}>
         <form
-          name={props.name}
+          name={name}
           className={form}
-          style={{ margin: props.title ? "180px 0 0 0" : "120px 0 0 0" }}
+          style={{ margin: title ? "180px 0 0 0" : "120px 0 0 0" }}
           onSubmit={handleFormClick}
           noValidate
         >
-          {props.title ? <h1 className={form__title}>{props.title}</h1> : <></>}
-          {props.children}
-          {props.buttonText ? buttonToRender : <></>}
+          {title ? <h1 className={form__title}>{title}</h1> : <></>}
+          {children}
+          {buttonText ? buttonToRender : <></>}
         </form>
         <p style={{ color: apiSuccess ? "lime" : "red" }} className={message}>
           {apiMessage}
         </p>
-        {props.title ? <div className={links}>{linksContent}</div> : <></>}
+        {title ? <div className={links}>{linksContent}</div> : <></>}
       </div>
     </>
   );
 }
-
-Form.propTypes = {
-  name: PropTypes.string.isRequired,
-  buttonText: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  isDisabled: PropTypes.bool,
-  toggleDisabled: PropTypes.func,
-  disableFields: PropTypes.func,
-};
 
 export default Form;

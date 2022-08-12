@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useState } from "react";
 import Form from "../../components/form/form";
 import {
   HideIcon,
@@ -29,15 +29,25 @@ const {
 } = formStyles;
 
 const { profile, container } = profileStyles;
+type TFormValidation = {
+  e : SyntheticEvent;
+  setName : ()=> void;
+  setIsNameValid: () => void;
+  setNameValidError: () => void;
+}
+type TProfileProps = {
+  
+  setFormValidation: ( {e, setName, setIsNameValid,   setNameValidError} :TFormValidation) => void;
+}
 
-function Profile(props) {
+const Profile: FC<TProfileProps> = ({ setFormValidation }) => {
   const dispatch = useDispatch();
 
-  const user1 = useSelector((state) => {
-    return state.auth.user;
-  });
+  const user1 = useSelector((state : any) => 
+     state.auth.user
+  );
 
-  const isLogged = useSelector((state) => state.auth.isLogged);
+  const isLogged = useSelector((state: any) => state.auth.isLogged);
 
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
@@ -55,7 +65,7 @@ function Profile(props) {
 
   useEffect(() => {
     if (isLogged) {
-      dispatch(loadUser());
+      dispatch<any>(loadUser());
     }
   }, [isLogged]);
 
@@ -69,7 +79,7 @@ function Profile(props) {
   function toggleDisabled() {
     setIsProfileFormDisabled(!isProfileFormDisabled);
   }
-  function performEdit(e) {
+  function performEdit(e : SyntheticEvent) {
     e.preventDefault();
     setIsProfileFormDisabled(false);
   }
@@ -79,10 +89,10 @@ function Profile(props) {
       email !== user1.email || name !== user1.name || pass !== "";
 
     if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
-      dispatch(patchUser(email, name, pass));
+      dispatch<any>(patchUser(email, name, pass));
       makeDefaultForm();
     } else {
-      dispatch({
+      dispatch<any>({
         type: SHOW_APIMESSAGE,
         payload: {
           message:
@@ -99,13 +109,13 @@ function Profile(props) {
     }
   }
 
-  function makeDefaultForm() {
+  const makeDefaultForm = (): void => {
     setIsPassShown(false);
     toggleDisabled();
     disableFields();
   }
 
-  function disableFields() {
+  const disableFields = (): void => {
     setIsNameDisabled(true);
     setIsEmailDisabled(true);
     setIsPassDisabled(true);
@@ -117,7 +127,7 @@ function Profile(props) {
     setNameValidError("");
   }
 
-  function toggleShowPass(e) {
+  function toggleShowPass(e: SyntheticEvent) {
     e.preventDefault();
     setIsPassShown(!isPassShown);
   }
@@ -150,7 +160,7 @@ function Profile(props) {
                 name="profileName"
                 value={name || ""}
                 onChange={(e) =>
-                  props.setFormValidation(
+                  setFormValidation(
                     e,
                     setName,
                     setIsNameValid,
@@ -192,7 +202,7 @@ function Profile(props) {
                 name="profileEmail"
                 value={email || ""}
                 onChange={(e) =>
-                  props.setFormValidation(
+                  setFormValidation(
                     e,
                     setEmail,
                     setIsEmailValid,
@@ -233,7 +243,7 @@ function Profile(props) {
                 name="profileName"
                 value={pass || ""}
                 onChange={(e) =>
-                  props.setFormValidation(
+                  setFormValidation(
                     e,
                     setPass,
                     setIsPassValid,

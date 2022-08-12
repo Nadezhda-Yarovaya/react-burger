@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import modalStyles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,19 +8,27 @@ import { useSelector } from "react-redux";
 
 const { modal, modal__button, container } = modalStyles;
 
-const modalRoot = document.getElementById("modal");
+const modalRoot = document.getElementById("modal") as HTMLElement;
 
-function Modal(props) {
-  const [isOpened, setIsOpened] = useState(props.isOpen);
+type TModalProps = {
+  isOpen? : boolean;
+  closeModal: () => void;
+  type? : string;
+  children? : React.ReactNode;
 
-  const isMobile = useSelector((store) => store.mobile.isMobile);
-  const windowWidth = useSelector((store) => store.mobile.windowData.width);
-  const windowHeight = useSelector((store) => store.mobile.windowData.height);
+}
+
+const Modal: FC<TModalProps> = ({isOpen, closeModal, type, children }) => {
+  const [isOpened, setIsOpened] = useState(isOpen);
+
+  const isMobile = useSelector((store: any) => store.mobile.isMobile);
+  const windowWidth = useSelector((store: any) => store.mobile.windowData.width);
+  const windowHeight = useSelector((store: any) => store.mobile.windowData.height);
 
   useEffect(() => {
-    function closeByEscape(evt) {
+    function closeByEscape(evt : KeyboardEvent) {
       if (evt.key === "Escape") {
-        props.closeModal();
+        closeModal();
         setIsOpened(false);
       }
     }
@@ -32,7 +40,7 @@ function Modal(props) {
     }
   }, [isOpened]);
 
-  const modalHeight = props.type === "orderPerformed" ? 650 : 538;
+  const modalHeight = type === "orderPerformed" ? 650 : 538;
 
   const topPosition = ((windowHeight - modalHeight) / 2).toString() + "px";
   const leftPosition =
@@ -43,16 +51,16 @@ function Modal(props) {
 
   return ReactDOM.createPortal(
     <>
-      <ModalOverlay closeModal={props.closeModal} />
+      <ModalOverlay closeModal={closeModal} />
       <div
         className={`pl-10 pr-10 pb-15 pt-10  ${modal}`}
         style={{ top: topPosition, left: leftPosition }}
       >
         <div className={`${container}`}>
-          <button className={modal__button} onClick={props.closeModal}>
+          <button className={modal__button} onClick={closeModal}>
             <CloseIcon type="primary" />
           </button>
-          {props.children}
+          {children}
         </div>
       </div>
     </>,

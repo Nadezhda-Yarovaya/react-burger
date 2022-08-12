@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import React, { FC } from "react";
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './burger-ingredients.module.css';
@@ -6,10 +7,11 @@ import MealList from '../meal-list/meal-list';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTSBYCAT } from '../../services/actions';
 import { getAllIngredients, loadIngredients } from '../../services/selectors';
+import { TIngredient } from '../../utils/types';
 
 const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
-function BurgerIngredients() {
+  const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState('one');
 
@@ -17,10 +19,10 @@ function BurgerIngredients() {
 
   const allIngredients = useSelector(getAllIngredients);
 
-  const bunsRef = useRef();
-  const sauceRef = useRef();
-  const stuffingRef = useRef();
-  const listRef = useRef();
+  const bunsRef = useRef<HTMLDivElement>(null);
+  const sauceRef = useRef<HTMLDivElement>(null);
+  const stuffingRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (allIngredients) {
@@ -36,7 +38,7 @@ function BurgerIngredients() {
     }
   }, [allIngredients]);
 
-  function filterByType(arr, type) {
+  function filterByType(arr : Array<TIngredient>, type: string) {
     return arr.filter((item) => item.type === type);
   }
 
@@ -58,7 +60,7 @@ function BurgerIngredients() {
     }
   }
 
-  function handleTabClick(currentRef) {
+  function handleTabClick(currentRef: HTMLElement) {
     currentRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -109,15 +111,15 @@ function BurgerIngredients() {
           </div>
 
           <div className={`mt-10 ${list}`} onScroll={scroll} ref={listRef}>
-            <section ref={bunsRef}>
+            <div ref={bunsRef}>
               <MealList title='Булки' type='bun' />
-            </section>
-            <section ref={sauceRef}>
+            </div>
+            <div ref={sauceRef}>
               <MealList title='Соусы' type='sauce' />
-            </section>
-            <section ref={stuffingRef}>
+            </div>
+            <div ref={stuffingRef}>
               <MealList title='Начинки' type='main' />
-            </section>
+            </div>
           </div>
         </div>
       )}

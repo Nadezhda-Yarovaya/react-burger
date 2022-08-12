@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, SyntheticEvent, useState } from "react";
 
 import {
   HideIcon,
@@ -19,7 +19,7 @@ import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const { form__input, form__icon, form__element, validationError } = formStyles;
 
-export function Login(props) {
+const Login: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isPassShownLogin, setIsPassShownLogin] = useState(true);
@@ -33,13 +33,13 @@ export function Login(props) {
 
   function handleLogin() {
     if (isValid) {
-      dispatch(performLogin(email, password, history));
+      dispatch<any>(performLogin(email, password, history));
     } else {
       handleApiMessageError(dispatch, "Заполните все поля формы корректно");
     }
   }
 
-  function toggleShowPass(e) {
+  function toggleShowPass(e : SyntheticEvent) {
     e.preventDefault();
     setIsPassShownLogin(!isPassShownLogin);
   }
@@ -90,3 +90,5 @@ export function Login(props) {
     </Form>
   );
 }
+
+export default Login;

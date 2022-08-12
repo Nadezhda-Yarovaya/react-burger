@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, FC } from 'react';
 import constructorListStyles from './constructor-list.module.css';
 
 import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
@@ -13,6 +13,7 @@ import {
 import { useDrop } from 'react-dnd';
 import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
+import { TIngredient, TIngredientUnique } from '../../utils/types';
 
 const {
   stuffings,
@@ -25,25 +26,28 @@ const {
   empty,
 } = constructorListStyles;
 
-function ConstructorList() {
+
+
+const ConstructorList: FC = () => {
   const dispatch = useDispatch();
   const isMobile = useSelector(ifItsMobile);
-  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
-  const currentBun = useSelector((store) => store.ingredients.bun);
+  const direction = useSelector((state: any) => state.dragAndDrop.dropDirection);
+  const currentBun = useSelector((state: any) => state.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
 
   const initialIngredOffset = useSelector(
-    (store) => store.dragAndDrop.initialIngredOffset
+    (store: any) => store.dragAndDrop.initialIngredOffset
   );
 
-  const stuffingListDropped = useSelector((store) => {
-    return store.dragAndDrop.droppedElements;
-  });
+  const stuffingListDropped = useSelector((state: any) => state.dragAndDrop.droppedElements);
 
   const thisRef = useRef();
+  type TItem = {
+    item: TIngredient
+  }
 
-  const handleBunDrop = (currentItem) => {
-    dispatch({
+  const handleBunDrop = (currentItem: TItem): void => {
+    dispatch<any>({
       type: REPLACE_BUN,
       bun: currentItem.item,
     });
@@ -63,7 +67,7 @@ function ConstructorList() {
 
   const [{ isBunHover }, dropContainerBunTop] = useDrop({
     accept: 'bun',
-    drop(item) {
+    drop(item ) {
       handleBunDrop(item);
     },
     collect: (monitor) => ({
@@ -110,7 +114,7 @@ function ConstructorList() {
 
   const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
 
-  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
 
   useEffect(() => {
     if (isMobileOrdered) {
@@ -126,7 +130,6 @@ function ConstructorList() {
   }, [isMobile, isMobileOrdered, stuffingListDropped]);
 
   return (
-    <>
       <ul className={`${list} ${isMobile ? '' : list_flex}`}>
         {isLoading ? (
           <li style={{ alignSelf: 'flex-start' }}>
@@ -174,7 +177,7 @@ function ConstructorList() {
                 ) : (
                   <></>
                 )}
-                {stuffingListDropped.map((item) => (
+                {stuffingListDropped.map((item : TIngredientUnique) => (
                   <CustomConstructorElement
                     text={item.name}
                     price={item.price}
@@ -209,7 +212,6 @@ function ConstructorList() {
           </>
         )}
       </ul>
-    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent, SyntheticEvent } from "react";
 
 import {
   BurgerIcon,
@@ -50,25 +50,25 @@ const {
   menu__item_active,
 } = headerStyles;
 
-function AppHeader() {
+  const AppHeader: FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const curLocation = location.pathname;
 
   const isMobileMenuOpened = useSelector(
-    (store) => store.mobile.isMobileMenuOpened
+    (state: any) => state.mobile.isMobileMenuOpened
   );
 
-  const isSubMenuOpened = useSelector((store) => store.mobile.isSubMenuOpened);
+  const isSubMenuOpened = useSelector((state: any) => state.mobile.isSubMenuOpened);
 
-  function openMobileMenu() {
+  function openMobileMenu(): void {
     dispatch({
       type: OPEN_MOBILEMENU,
     });
   }
 
-  function closeMobileMenu() {
+  function closeMobileMenu():void {
     dispatch({
       type: CLOSE_MOBILEMENU,
     });
@@ -85,17 +85,17 @@ function AppHeader() {
       });
   }
 
-  function handleLogoutMobile(e) {
+  function handleLogoutMobile(e: SyntheticEvent) : void {
     handleLogout(e);
     closeMobileMenu();
   }
 
-  function handleLogout(e) {
+  function handleLogout(e: SyntheticEvent) : void {
     e.preventDefault();
 
     const refreshToken = localStorage.getItem("refreshToken");
 
-    dispatch(performLogout(refreshToken, history));
+    dispatch<any>(performLogout(refreshToken, history));
   }
 
   return (
@@ -219,7 +219,6 @@ function AppHeader() {
             </NavLink>
 
             <button
-              to="/checkout"
               className={menu__item}
               onClick={handleLogoutMobile}
             >

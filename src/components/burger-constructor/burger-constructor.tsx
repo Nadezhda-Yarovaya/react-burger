@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor.module.css";
@@ -12,6 +12,7 @@ import TotalSum from "../total-sum/total-sum";
 import { ifItsMobile, loadIngredients } from "../../services/selectors";
 import { fetchOrderNumber } from "../../services/action-creators/order-action-creators";
 import { useHistory } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
 
 const {
   constructor__title,
@@ -23,25 +24,23 @@ const {
   container,
 } = constructorStyles;
 
-function BurgerConstructor() {
+
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store) => {
+  const listOfIngredients = useSelector((store : any) => {
     return store.ingredients.listOfIngredients;
   });
   const createdStuffingsList = useSelector(
-    (store) => store.dragAndDrop.droppedElements
+    (store : any) => store.dragAndDrop.droppedElements
   );
   const isMobile = useSelector(ifItsMobile);
-  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
-  const bunSelectedFromStore = useSelector((store) => store.ingredients.bun);
+  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
+  const bunSelectedFromStore = useSelector((store: any) => store.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
 
   const history = useHistory();
 
-  const isLogged = useSelector((state) => {
-    // console.log(state.auth.isLogged);
-    return state.auth.isLogged;
-  });
+  const isLogged = useSelector((state: any) => state.auth.isLogged);
 
   useEffect(() => {
     if (listOfIngredients) {
@@ -49,13 +48,19 @@ function BurgerConstructor() {
     }
   }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
 
-  function calculateAllPrices(stuffings) {
-    let allPrices = [];
-    stuffings.forEach((item, index) => {
+  const calculateAllPrices = (stuffings: Array<TIngredient>): void => {
+    /*let allPrices: Array<TIngredient> = [];
+    stuffings.forEach((item: TIngredient, index : number) => {
+      console.log('ingred: ', stuffings[0]);
+      
       allPrices[index] = item.price;
-    });
+      console.log('item price', allPrices[index]);
+    });*/
+
+    const allPr1 = stuffings.map((item : TIngredient) => item.price);
+    console.log (allPr1);
     const finalNumber =
-      allPrices.reduce(
+      allPr1.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
         0
       ) +
@@ -68,7 +73,7 @@ function BurgerConstructor() {
     const ingredientsFormed = [];
     ingredientsFormed.push(bunSelectedFromStore._id);
 
-    createdStuffingsList.forEach((item) => {
+    createdStuffingsList.forEach((item : TIngredient) => {
       ingredientsFormed.push(item._id);
     });
 
@@ -77,12 +82,13 @@ function BurgerConstructor() {
   }
 
   function handlePerformOrder() {
-    const thisOrderList = makeListOfOrder();
+    const thisOrderList: Array<string> = makeListOfOrder();
+    console.log(thisOrderList);
     console.log("made list: ", thisOrderList);
     if (isLogged) {
-      dispatch(fetchOrderNumber(thisOrderList));
+      dispatch<any>(fetchOrderNumber(thisOrderList));
     } else {
-      localStorage.setItem("listOfOrder", thisOrderList);
+      localStorage.setItem("listOfOrder", JSON.stringify({list: thisOrderList}));
       history.push("/login");
     }
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useEffect } from "react";
 import orderDetailsStyles from "./order-details.module.css";
 
 import doneSign from "../../images/done.svg";
@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 
 const { digits, window__text, window__extra } = orderDetailsStyles;
 
-function OrderDetails() {
-  const orderNumber = useSelector((store) => store.order.createdOrder.number);
+  const OrderDetails: FC = () => {
+  const orderNumber = useSelector((store: any) => store.order.createdOrder.number);
 
   return (
     <>

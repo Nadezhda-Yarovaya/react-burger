@@ -16,7 +16,7 @@ const {
   status,
 } = orderStyles;
 
-function Order(props) {
+const Order = (props) => {
   const { item } = props;
   return (
     <>

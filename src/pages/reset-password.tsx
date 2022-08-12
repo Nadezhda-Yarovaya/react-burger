@@ -16,7 +16,7 @@ import { useHistory } from "react-router";
 import formStyles from "../components/form/form.module.css";
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
-function ResetPassword(props) {
+const ResetPassword = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isPassShown, setIsPassShown] = useState(true);
@@ -29,7 +29,7 @@ function ResetPassword(props) {
 
   function handleResetPass() {
     if (isValid) {
-      dispatch(resetPass(password, token, history));
+      dispatch<any>(resetPass(password, token, history));
     } else {
       handleApiMessageError(dispatch, "Заполните все поля формы корректно");
     }

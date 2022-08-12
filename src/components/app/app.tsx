@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useWindowSize } from "../../hooks/resize.js";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
-import { fetchAllIngredients } from "../../services/action-creators/ingredients-action-creators";
+import { fetchAllIngredients } from "../../services/action-creators/ingredients-action-creators"; // требует типизации типа 
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import appStyles from "./app.module.css";
@@ -23,7 +23,7 @@ import {
 } from "../../services/actions";
 
 import Main from "../../pages/main";
-import { Login } from "../../pages/login";
+import Login from "../../pages/login";
 import Register from "../../pages/register";
 import ForgotPassword from "../../pages/forgot-password";
 import ResetPassword from "../../pages/reset-password";
@@ -40,7 +40,7 @@ import IngredientPage from "../ingredient-page/ingredient-page";
 
 const { page } = appStyles;
 
-function App() {
+const App: FunctionComponent = () => {
   const [width, height] = useWindowSize();
 
   const dispatch = useDispatch();
@@ -62,19 +62,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchAllIngredients());
+    dispatch<any>(fetchAllIngredients());
   }, []);
 
-  const isPerformed = useSelector((state) => state.order.isPerformed);
+  const isPerformed = useSelector((state: any) => state.order.isPerformed);
 
   const areIngredientsShown = useSelector(
-    (state) => state.ingredients.areIngredientsShown
+    (state: any) => state.ingredients.areIngredientsShown
   );
 
   const location = useLocation();
 
   const isMobileMenuOpened = useSelector(
-    (store) => store.mobile.isMobileMenuOpened
+    (state: any) => state.mobile.isMobileMenuOpened
   );
 
   function closeIsPerformed() {
@@ -140,7 +140,31 @@ function App() {
     });
   };
 
-  const locateModal = location?.state && location?.state?.locate;
+  //const locateModal = location?.state && location?.state?.locate;
+  const locateModal = location?.state;
+
+  type TypeFn =() => number; 
+  
+  function calc(numb1: number) : number {
+    return numb1 / 0;
+  }
+
+  function identity<T>(val: T) :T {
+    return val;
+    }
+    
+    interface MyArray<T> {
+      [n: number] : T
+     }
+
+     // const tsArrGeneric = [1,2,3,4];  без дженерика
+     const tsArrGeneric: MyArray<number> = [1,2,3,4];
+
+  useEffect(() => {
+    calc(4);
+    identity(1);
+    identity<number>(1);
+  },[]);
 
   return (
     <>
@@ -165,7 +189,7 @@ function App() {
           </ProtectedRouteNotLogged>
 
           <ProtectedPass path="/reset-password">
-            <ResetPassword />
+            {/* <ResetPassword /> */}
           </ProtectedPass>
 
           <ProtectedRouteLogged exact path="/profile">

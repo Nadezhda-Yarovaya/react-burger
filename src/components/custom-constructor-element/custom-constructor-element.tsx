@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, FC, SyntheticEvent } from 'react';
 import CustomConstructorStyles from './custom-constructor-element.module.css';
 
 import PropTypes from 'prop-types';
 
 import {
-  ConstructorElement,
-  DragIcon,
+   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
@@ -21,7 +20,10 @@ import {
   CLEAR_FINALS,
 } from '../../services/actions';
 import { ifItsMobile } from '../../services/selectors';
-import { ingredientType } from '../../utils/types';
+import { ingredientType, TIngredientUnique, TRectangle } from '../../utils/types';
+import { SynthesizedComment } from 'typescript';
+
+import { ConstructorElement } from '../../utils/typesLibrary';
 
 const {
   constructor__item,
@@ -31,31 +33,39 @@ const {
   stuffings__item,
 } = CustomConstructorStyles;
 
-function CustomConstructorElement(props) {
-  const { text, price, thumbnail, isLocked, type, item } = props;
+type TCustomElementProps = {
+   text : string;
+    price: number;
+     thumbnail: string;
+      isLocked?: boolean;
+      type?: string;
+      item : TIngredientUnique
+};
+
+const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbnail, isLocked, type, item } ) => {
 
   const isMobile = useSelector(ifItsMobile);
 
   const dispatch = useDispatch();
 
   const currentTouchedItem = useSelector(
-    (state) => state.mobile.currentTouchedItem
+    (state: any) => state.mobile.currentTouchedItem
   );
 
-  const initialX = useSelector((state) => state.mobile.offsets.initials.x);
-  const finalX = useSelector((state) => state.mobile.offsets.finals.x);
-  const initialY = useSelector((state) => state.mobile.offsets.initials.y);
-  const finalY = useSelector((state) => state.mobile.offsets.finals.y);
+  const initialX = useSelector((state: any) => state.mobile.offsets.initials.x);
+  const finalX = useSelector((state: any) => state.mobile.offsets.finals.x);
+  const initialY = useSelector((state: any) => state.mobile.offsets.initials.y);
+  const finalY = useSelector((state: any) => state.mobile.offsets.finals.y);
   const rectangleTop = useSelector(
-    (state) => state.mobile.offsets.rectangle.top
+    (state: any) => state.mobile.offsets.rectangle.top
   );
   const rectangleRight = useSelector(
-    (state) => state.mobile.offsets.rectangle.right
+    (state: any) => state.mobile.offsets.rectangle.right
   );
-  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
-  const currentTouchedItemRef = useRef();
-  const [currentRectangle, setCurrentRectangle] = useState({});
-  const itemContainerRef = useRef();
+  const direction = useSelector((state: any) => state.dragAndDrop.dropDirection);
+  const currentTouchedItemRef = useRef<HTMLDivElement>(null);
+  const [currentRectangle, setCurrentRectangle] = useState<TRectangle>({top: 0, left: 0, bottom: 0, right: 0});
+  const itemContainerRef = useRef<HTMLDivElement>(null);
   const diffx = finalX - initialX;
   const diffy = finalY - initialY;
   const [
@@ -84,8 +94,8 @@ function CustomConstructorElement(props) {
     });
   };
 
-  const handleTouchStart = (e) => {
-    const initialx1 = e.nativeEvent.touches[0].clientX;
+  const handleTouchStart = (e: TouchEvent) => {
+    const initialx1 = e?.nativeEvent?.touches[0].clientX;
     const initialy1 = Math.floor(
       itemContainerRef.current?.getBoundingClientRect().top
     );
@@ -111,7 +121,7 @@ function CustomConstructorElement(props) {
     });
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: SyntheticEvent) => {
     const finalx1 = e.nativeEvent.touches[0].clientX;
     const finaly1 = e.nativeEvent.touches[0].clientY;
 
@@ -124,7 +134,7 @@ function CustomConstructorElement(props) {
     });
   };
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = (e: SyntheticEvent) => {
     const differx = finalX - initialX;
     dispatch({
       type: CLEAR_TOUCHEDITEM,
@@ -196,7 +206,7 @@ function CustomConstructorElement(props) {
         <div
           className={delete_mobile}
           style={{
-            height: `${currentRectangle.bottom - currentRectangle.top}px`,
+            height: `${currentRectangle?.bottom - currentRectangle?.top}px`,
             width:
               item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
                 ? `${-diffx}px`
@@ -213,6 +223,7 @@ function CustomConstructorElement(props) {
   );
 }
 
+/*
 CustomConstructorElement.propTypes = {
   type: PropTypes.string,
   isLocked: PropTypes.bool,
@@ -220,6 +231,6 @@ CustomConstructorElement.propTypes = {
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
   item: ingredientType.isRequired,
-};
+};*/
 
 export default CustomConstructorElement;
