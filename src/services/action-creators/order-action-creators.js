@@ -3,7 +3,7 @@ import {
   GET_ORDERDATA_REQUEST,
   GET_ORDERDATA_FAILURE,
 } from '../actions';
-import api from '../../utils/api';
+import { makeOrder } from '../../utils/api';
 
 export function fetchOrderNumber(ingredientsInOrder) {
   return (dispatch, getState) => {
@@ -11,8 +11,7 @@ export function fetchOrderNumber(ingredientsInOrder) {
       type: GET_ORDERDATA_REQUEST,
     });
 
-    api
-      .makeOrder({ ingredients: ingredientsInOrder })
+    makeOrder({ ingredients: ingredientsInOrder })
       .then((res) => {
         console.log('res: ', res);
         dispatch({

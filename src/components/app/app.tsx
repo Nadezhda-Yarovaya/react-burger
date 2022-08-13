@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useWindowSize } from '../../hooks/resize.js';
+import { useWindowSize } from '../../hooks/resize';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { fetchAllIngredients } from '../../services/action-creators/ingredients-action-creators'; // требует типизации типа
 import Modal from '../modal/modal';

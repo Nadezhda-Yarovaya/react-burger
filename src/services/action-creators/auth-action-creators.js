@@ -5,20 +5,30 @@ import {
   SET_LOGGED,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
-} from "../actions";
+} from '../actions';
 
-import { authApi, getCookie, setCookie } from "../../utils/auth";
+import {
+  requestResetPassword,
+  resetPassword,
+  register,
+  login,
+  getUser,
+  updateUser,
+  refreshToken,
+  logout,
+  setCookie,
+  getCookie,
+} from '../../utils/auth';
 
 export function performRegister(name, email, pass, history) {
   return (dispatch, getState) => {
-    authApi
-      .register(email, pass, name)
+    register(email, pass, name)
       .then((res) => {
         if (res.success) {
           dispatch({
             type: SHOW_APIMESSAGE,
             payload: {
-              message: "Успешная регистрация. Перенаправляем на страницу входа",
+              message: 'Успешная регистрация. Перенаправляем на страницу входа',
               success: true,
             },
           });
@@ -27,7 +37,7 @@ export function performRegister(name, email, pass, history) {
             dispatch({
               type: CLEAR_APIMESSAGE,
             });
-            history.push("./login");
+            history.push('./login');
           }, 2000);
         }
       })
@@ -38,18 +48,17 @@ export function performRegister(name, email, pass, history) {
 
 export function performLogin(email, pass, history) {
   return (dispatch, getState) => {
-    const cameFrom = history.location?.state?.from || "/";
-    authApi
-      .login(email, pass)
+    const cameFrom = history.location?.state?.from || '/';
+    login(email, pass)
       .then((res) => {
         if (res && res.accessToken) {
           updateCookie(res);
-          localStorage.setItem("refreshToken", res.refreshToken); // не меняется, только access менеятся
+          localStorage.setItem('refreshToken', res.refreshToken); // не меняется, только access менеятся
         }
         if (res && res.success) {
           dispatch({
             type: SHOW_APIMESSAGE,
-            payload: { message: "Успешный вход в систему", success: true },
+            payload: { message: 'Успешный вход в систему', success: true },
           });
 
           setTimeout(() => {
@@ -60,22 +69,22 @@ export function performLogin(email, pass, history) {
               type: CLEAR_APIMESSAGE,
             });
 
-            history.push({ pathname: cameFrom, state: { from: "/login" } });
+            history.push({ pathname: cameFrom, state: { from: '/login' } });
           }, 1500);
         } else {
-          handleApiMessageError(dispatch, "Ошибка e-mail или пароля");
+          handleApiMessageError(dispatch, 'Ошибка e-mail или пароля');
         }
       })
 
       .catch((err) => {
-        console.log("Ошибка: ", err);
+        console.log('Ошибка: ', err);
       });
   };
 }
 
 function handleGetUser(accessToken) {
   return (dispatch, getState) => {
-    authApi.getUser(accessToken).then((res) => {
+    getUser(accessToken).then((res) => {
       dispatch({ type: GET_USER, payload: res.user });
     });
   };
@@ -84,8 +93,7 @@ function handleGetUser(accessToken) {
 export function handleUpdateUser(email, name, pass, accessToken) {
   return (dispatch, getState) => {
     if (accessToken) {
-      authApi
-        .updateUser(email, name, pass, accessToken)
+      updateUser(email, name, pass, accessToken)
         .then((res) => {
           dispatch({
             type: GET_USER,
@@ -94,7 +102,7 @@ export function handleUpdateUser(email, name, pass, accessToken) {
           dispatch({
             type: SHOW_APIMESSAGE,
             payload: {
-              message: "Данные профиля успешно обновлены",
+              message: 'Данные профиля успешно обновлены',
               success: true,
             },
           });
@@ -116,11 +124,11 @@ export function handleUpdateUser(email, name, pass, accessToken) {
 }
 export function loadUser() {
   return (dispatch, getState) => {
-    if (getCookie("token")) {
-      const accessToken = getCookie("token");
+    if (getCookie('token')) {
+      const accessToken = getCookie('token');
       return dispatch(handleGetUser(accessToken));
     } else {
-      const refeshSaved = localStorage.getItem("refreshToken");
+      const refeshSaved = localStorage.getItem('refreshToken');
       return dispatch(handleRefreshToken(refeshSaved, handleGetUser));
     }
   };
@@ -128,12 +136,12 @@ export function loadUser() {
 
 export function patchUser(email, name, pass) {
   return (dispatch, getState) => {
-    const accessToken = getCookie("token");
+    const accessToken = getCookie('token');
 
-    if (getCookie("token")) {
+    if (getCookie('token')) {
       return dispatch(handleUpdateUser(email, name, pass, accessToken));
     } else {
-      const refeshSaved = localStorage.getItem("refreshToken");
+      const refeshSaved = localStorage.getItem('refreshToken');
       return dispatch(
         handleRefreshToken(refeshSaved, handleUpdateUser, email, name, pass)
       );
@@ -143,13 +151,13 @@ export function patchUser(email, name, pass) {
 
 function handleRefreshToken(refeshSaved, handleUser, ...rest) {
   return (dispatch, getState) => {
-    authApi.refreshToken(refeshSaved).then((res) => {
-      localStorage.removeItem("refreshToken");
-      localStorage.setItem("refreshToken", res.refreshToken);
+    refreshToken(refeshSaved).then((res) => {
+      localStorage.removeItem('refreshToken');
+      localStorage.setItem('refreshToken', res.refreshToken);
       let authToken;
-      authToken = res.accessToken.split("Bearer ")[1];
+      authToken = res.accessToken.split('Bearer ')[1];
       if (authToken) {
-        setCookie("token", authToken, { expires: 20 }); // expires in minutes
+        setCookie('token', authToken, { expires: 20 }); // expires in minutes
       }
 
       if (rest.length > 0) {
@@ -167,15 +175,14 @@ function handleRefreshToken(refeshSaved, handleUser, ...rest) {
 
 export function performLogout(refreshToken, history) {
   return (dispatch, getState) => {
-    authApi
-      .logout(refreshToken)
+    logout(refreshToken)
       .then((res) => {
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem('refreshToken');
         //dispatch null user
         dispatch({
           type: SET_LOGGEDOUT,
         });
-        history.push("/login");
+        history.push('/login');
       })
       .catch((err) => console.log(err));
   };
@@ -183,22 +190,21 @@ export function performLogout(refreshToken, history) {
 
 function updateCookie(res) {
   let authToken;
-  authToken = res.accessToken.split("Bearer ")[1];
+  authToken = res.accessToken.split('Bearer ')[1];
   if (authToken) {
-    setCookie("token", authToken, { expires: 1 }); // expires in minutes
+    setCookie('token', authToken, { expires: 1 }); // expires in minutes
   }
 }
 
 export function handleRequestResetPassword(email, history) {
   return (dispatch, getState) => {
-    return authApi
-      .requestResetPassword(email)
+    return requestResetPassword(email)
       .then((res) => {
         if (res.success) {
           // переадресация
           history.push({
-            pathname: "/reset-password",
-            state: { from: "forgot-password" },
+            pathname: '/reset-password',
+            state: { from: 'forgot-password' },
           });
         }
       })
@@ -208,13 +214,12 @@ export function handleRequestResetPassword(email, history) {
 
 export function resetPass(pass, token, history) {
   return (dispatch, getState) => {
-    authApi
-      .resetPassword(pass, token)
+    resetPassword(pass, token)
       .then((res) => {
         if (res.success) {
           dispatch({
             type: SHOW_APIMESSAGE,
-            payload: { message: "Успешное обновление пароля", success: true },
+            payload: { message: 'Успешное обновление пароля', success: true },
           });
 
           setTimeout(() => {
@@ -222,7 +227,7 @@ export function resetPass(pass, token, history) {
               type: CLEAR_APIMESSAGE,
             });
 
-            history.push("./login");
+            history.push('./login');
           }, 1500);
         } else {
           dispatch({

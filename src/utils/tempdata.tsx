@@ -1,4 +1,4 @@
-const initialTempOrderList = [
+const initialTempOrderList  = [
   {
     name: 'Бессмертный альфа-сахаридный экзо-плантаго бургер',
     order: { number: 2547 },
@@ -11,7 +11,7 @@ const initialTempOrderList = [
       '60d3b41abdacab0026a733c6',
     ],
     sum: 14450,
-    date: Date("2022-03-25"),
+    date: Date(),
     _id: '1112222333344455566',
   },
   {
@@ -30,7 +30,7 @@ const initialTempOrderList = [
       '60d3b41abdacab0026a733c6',
     ],
     sum: 3050,
-    date: Date("2022-04-25"),
+    date: Date(),
     _id: '1112222333344455568',
   },
   {
@@ -46,7 +46,7 @@ const initialTempOrderList = [
       '60d3b41abdacab0026a733c7',
     ],
     sum: 2100,
-    date: Date("2022-04-25"),
+    date: Date(),
     _id: '1112222333344455567',
   },
   {
@@ -62,7 +62,7 @@ const initialTempOrderList = [
       '60d3b41abdacab0026a733c7',
     ],
     sum: 10520,
-    date: Date("2022-04-25"),
+    date: Date(),
     _id: '1112222333344455569',
   },
 ];

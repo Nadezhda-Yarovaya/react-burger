@@ -89,7 +89,7 @@ const Form: FC<TFormProps> = ({
     }
   }
 
-  function handleFormClick(e: SyntheticEvent) {
+  function handleFormClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     onSubmit();
   }
@@ -127,25 +127,23 @@ const Form: FC<TFormProps> = ({
   const buttonToRender = name === 'editprofileform' ? twoButtons : oneButton;
 
   return (
-    <>
-      <div className={container}>
-        <form
-          name={name}
-          className={form}
-          style={{ margin: title ? '180px 0 0 0' : '120px 0 0 0' }}
-          onSubmit={handleFormClick}
-          noValidate
-        >
-          {title ? <h1 className={form__title}>{title}</h1> : <></>}
-          {children}
-          {buttonText ? buttonToRender : <></>}
-        </form>
-        <p style={{ color: apiSuccess ? 'lime' : 'red' }} className={message}>
-          {apiMessage}
-        </p>
-        {title ? <div className={links}>{linksContent}</div> : <></>}
-      </div>
-    </>
+    <div className={container}>
+      <form
+        name={name}
+        className={form}
+        style={{ margin: title ? '180px 0 0 0' : '120px 0 0 0' }}
+        onSubmit={handleFormClick}
+        noValidate
+      >
+        {title ? <h1 className={form__title}>{title}</h1> : <></>}
+        {children}
+        {buttonText ? buttonToRender : <></>}
+      </form>
+      <p style={{ color: apiSuccess ? 'lime' : 'red' }} className={message}>
+        {apiMessage}
+      </p>
+      {title ? <div className={links}>{linksContent}</div> : <></>}
+    </div>
   );
 };
 
