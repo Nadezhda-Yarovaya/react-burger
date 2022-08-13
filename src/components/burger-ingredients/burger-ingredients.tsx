@@ -19,9 +19,9 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
   const allIngredients = useSelector(getAllIngredients);
 
-  const bunsRef = useRef<HTMLDivElement>(null);
-  const sauceRef = useRef<HTMLDivElement>(null);
-  const stuffingRef = useRef<HTMLDivElement>(null);
+  const bunsRef = useRef<HTMLElement>(null);
+  const sauceRef = useRef<HTMLElement>(null);
+  const stuffingRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -44,12 +44,12 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
   function scroll() {
     let scrollYinitial = Math.floor(
-      listRef.current?.getBoundingClientRect().top
+      listRef.current!.getBoundingClientRect().top
     );
     let sauceOffset =
-      Math.floor(sauceRef.current?.getBoundingClientRect().top) - 100;
+      Math.floor(sauceRef.current!.getBoundingClientRect().top) - 100;
     let stuffingOffset =
-      Math.floor(stuffingRef.current?.getBoundingClientRect().top) - 180;
+      Math.floor(stuffingRef.current!.getBoundingClientRect().top) - 180;
 
     if (sauceOffset < scrollYinitial && sauceOffset > -280) {
       setCurrent('two');

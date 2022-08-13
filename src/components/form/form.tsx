@@ -26,8 +26,8 @@ type TFormProps = {
   isDisabled? : boolean;
   title?: string;
   onSubmit: () => void;
-  toggleDisabled : () => void;
-  disableFields: () => void;
+  toggleDisabled? : () => void;
+  disableFields?: () => void;
   children: React.ReactNode;
 }
 
@@ -76,8 +76,10 @@ const Form: FC<TFormProps>= ({name, buttonText, isDisabled, title, onSubmit, tog
 
   function handleCancelEdit(e : SyntheticEvent) {
     e.preventDefault();
+    if (toggleDisabled && disableFields) {
     toggleDisabled();
     disableFields();
+    }
   }
 
   function handleFormClick(e : SyntheticEvent) {

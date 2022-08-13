@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import ordersIdStyles from "./orders-id.module.css";
 import initialTempOrderList from "../../../utils/tempdata";
 import { useParams } from "react-router-dom"; // импортируем хук
@@ -20,14 +20,14 @@ const {
   list__priceinfo,
 } = ordersIdStyles;
 
-function OrdersId() {
+const OrdersId: FC = () => {
   const [currentOrderShown, setCurrentOrderShown] = useState(
     initialTempOrderList[0]
   );
 
-  const { id } = useParams();
+  const { id } = useParams<string>();
 
-  const orderList = useSelector((state) => state.order.orderFullList);
+  const orderList = useSelector((state: any) => state.order.orderFullList);
 
   useEffect(() => {
     const current = orderList.find((item) => item._id === id);

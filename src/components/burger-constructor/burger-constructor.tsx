@@ -116,7 +116,7 @@ const BurgerConstructor: FC = () => {
             <p className={constructor__title}>Заказ</p>
             <button
               onClick={() => {
-                dispatch({
+                dispatch<any>({
                   type: SET_IFMOBILEORDERED,
                   payload: false,
                 });

@@ -78,25 +78,25 @@ const App: FunctionComponent = () => {
   );
 
   function closeIsPerformed() {
-    dispatch({
+    dispatch<any>({
       type: CLEAR_ORDERDATA,
     });
 
-    dispatch({
+    dispatch<any>({
       type: CLEAR_BUN,
     });
 
-    dispatch({
+    dispatch<any>({
       type: CLEAR_STUFFINGLIST,
     });
   }
 
   function closeModalIngredientsShown() {
-    dispatch({
+    dispatch<any>({
       type: REMOVE_CURRENT,
     });
 
-    dispatch({
+    dispatch<any>({
       type: REMOVE_MODALINGREDIENTS,
     });
     history.goBack();
@@ -104,26 +104,26 @@ const App: FunctionComponent = () => {
 
   const handleSetMobile = () => {
     if (width < 790) {
-      dispatch({
+      dispatch<any>({
         type: SET_IFMOBILE,
 
         payload: true,
       });
     } else {
-      dispatch({
+      dispatch<any>({
         type: SET_IFMOBILE,
 
         payload: false,
       });
 
-      dispatch({
+      dispatch<any>({
         type: SET_IFMOBILEORDERED,
 
         payload: false,
       });
 
       if (isMobileMenuOpened) {
-        dispatch({
+        dispatch<any>({
           type: CLOSE_MOBILEMENU,
         });
       }
@@ -131,7 +131,7 @@ const App: FunctionComponent = () => {
   };
 
   const handleSetWindowData = () => {
-    dispatch({
+    dispatch<any>({
       type: SET_WINDOWDATA,
       payload: {
         width: width,
