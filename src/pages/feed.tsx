@@ -1,6 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect } from 'react';
 
-import feedStyles from "./feed.module.css";
+import feedStyles from './feed.module.css';
 
 const { container, feed } = feedStyles;
 
@@ -14,5 +14,5 @@ const Feed: FC = () => {
       </div>
     </>
   );
-}
+};
 export default Feed;

@@ -1,53 +1,55 @@
-import React, { FC, SyntheticEvent, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import modalStyles from "./modal.module.css";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import ModalOverlay from "../modal-overlay/modal-overlay";
-import { useSelector } from "react-redux";
+import React, { FC, useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import modalStyles from './modal.module.css';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../modal-overlay/modal-overlay';
+import { useSelector } from 'react-redux';
 
 const { modal, modal__button, container } = modalStyles;
 
-const modalRoot = document.getElementById("modal") as HTMLElement;
+const modalRoot = document.getElementById('modal') as HTMLElement;
 
 type TModalProps = {
-  isOpen? : boolean;
+  isOpen?: boolean;
   closeModal: () => void;
-  type? : string;
-  children? : React.ReactNode;
+  type?: string;
+  children?: React.ReactNode;
+};
 
-}
-
-const Modal: FC<TModalProps> = ({isOpen, closeModal, type, children }) => {
+const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
   const [isOpened, setIsOpened] = useState(isOpen);
 
   const isMobile = useSelector((store: any) => store.mobile.isMobile);
-  const windowWidth = useSelector((store: any) => store.mobile.windowData.width);
-  const windowHeight = useSelector((store: any) => store.mobile.windowData.height);
+  const windowWidth = useSelector(
+    (store: any) => store.mobile.windowData.width
+  );
+  const windowHeight = useSelector(
+    (store: any) => store.mobile.windowData.height
+  );
 
   useEffect(() => {
-    function closeByEscape(evt : KeyboardEvent) {
-      if (evt.key === "Escape") {
+    function closeByEscape(evt: KeyboardEvent) {
+      if (evt.key === 'Escape') {
         closeModal();
         setIsOpened(false);
       }
     }
     if (isOpened) {
-      document.addEventListener("keydown", closeByEscape);
+      document.addEventListener('keydown', closeByEscape);
       return () => {
-        document.removeEventListener("keydown", closeByEscape);
+        document.removeEventListener('keydown', closeByEscape);
       };
     }
   }, [isOpened]);
 
-  const modalHeight = type === "orderPerformed" ? 650 : 538;
+  const modalHeight = type === 'orderPerformed' ? 650 : 538;
 
-  const topPosition = ((windowHeight - modalHeight) / 2).toString() + "px";
+  const topPosition = ((windowHeight - modalHeight) / 2).toString() + 'px';
   const leftPosition =
     (
       (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
       2
-    ).toString() + "px";
+    ).toString() + 'px';
 
   return ReactDOM.createPortal(
     <>
@@ -58,7 +60,7 @@ const Modal: FC<TModalProps> = ({isOpen, closeModal, type, children }) => {
       >
         <div className={`${container}`}>
           <button className={modal__button} onClick={closeModal}>
-            <CloseIcon type="primary" />
+            <CloseIcon type='primary' />
           </button>
           {children}
         </div>
@@ -66,12 +68,6 @@ const Modal: FC<TModalProps> = ({isOpen, closeModal, type, children }) => {
     </>,
     modalRoot
   );
-}
-
-Modal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  type: PropTypes.string,
 };
 
 export default Modal;

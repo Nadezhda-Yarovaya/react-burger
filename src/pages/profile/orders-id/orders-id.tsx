@@ -1,10 +1,10 @@
-import React, { useState, useEffect, FC } from "react";
-import ordersIdStyles from "./orders-id.module.css";
-import initialTempOrderList from "../../../utils/tempdata";
-import { useParams } from "react-router-dom"; // импортируем хук
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, FC } from 'react';
+import ordersIdStyles from './orders-id.module.css';
+import initialTempOrderList from '../../../utils/tempdata';
+import { useParams } from 'react-router-dom'; // импортируем хук
+import { useSelector } from 'react-redux';
 
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const {
   container,
@@ -25,19 +25,6 @@ const OrdersId: FC = () => {
     initialTempOrderList[0]
   );
 
-  const { id } = useParams<string>();
-
-  const orderList = useSelector((state: any) => state.order.orderFullList);
-
-  useEffect(() => {
-    const current = orderList.find((item) => item._id === id);
-    if (current) {
-      setCurrentOrderShown(current);
-    }
-  }, [id]);
-
-  console.log(currentOrderShown);
-
   return (
     <>
       <div className={container}>
@@ -46,24 +33,11 @@ const OrdersId: FC = () => {
           <p className={name}>{currentOrderShown.name}</p>
           <p className={`${status}`}>{currentOrderShown.status}</p>
           <p className={title}>Состав :</p>
-          <ul className={list}>
-            {currentOrderShown.positions.map((element, ind) => (
-              <li key={ind} className={list__item}>
-                <div className={list__iteminfo}>
-                  <img src={element.image} alt={element.name}/>
-                  <p>{element.name}</p>
-                </div>
-                <div className={list__priceinfo}>
-                  <p className={price}>1 x {element.price}</p>
-                  <CurrencyIcon type="primary" />
-                </div>
-              </li>
-            ))}
-          </ul>
+          <ul className={list}></ul>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default OrdersId;

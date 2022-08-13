@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import Form from "../components/form/form";
+import { FC, SyntheticEvent, useState } from 'react';
+import Form from '../components/form/form';
 import {
   HideIcon,
   ShowIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useFormAndValidation } from "../hooks/useFormAndValidation";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
 import {
   handleApiMessageError,
   resetPass,
-} from "../services/action-creators/auth-action-creators";
+} from '../services/action-creators/auth-action-creators';
 
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import formStyles from "../components/form/form.module.css";
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import formStyles from '../components/form/form.module.css';
+import { intitialValuesResetPass } from '../utils/utils';
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useHistory<any>();
   const [isPassShown, setIsPassShown] = useState(true);
-  const { values, handleChange, errors, isValid } = useFormAndValidation({
-    password: "",
-    token: "",
-  });
+  const { values, handleChange, errors, isValid } = useFormAndValidation(
+    intitialValuesResetPass
+  );
 
   const { password, token } = values;
 
@@ -31,39 +31,39 @@ const ResetPassword = () => {
     if (isValid) {
       dispatch<any>(resetPass(password, token, history));
     } else {
-      handleApiMessageError(dispatch, "Заполните все поля формы корректно");
+      handleApiMessageError(dispatch, 'Заполните все поля формы корректно');
     }
   }
 
-  function toggleShowPass(e) {
+  const toggleShowPass = (e: SyntheticEvent) => {
     e.preventDefault();
     setIsPassShown(!isPassShown);
-  }
+  };
 
   return (
     <Form
-      title="Восстановление пароля"
-      name="resetform"
-      buttonText="Сохранить"
+      title='Восстановление пароля'
+      name='resetform'
+      buttonText='Сохранить'
       onSubmit={handleResetPass}
     >
       <div className={form__element}>
         <input
-          type={isPassShown ? "password" : "text"}
-          placeholder="Задайте новый пароль"
+          type={isPassShown ? 'password' : 'text'}
+          placeholder='Задайте новый пароль'
           className={form__input}
           value={password}
-          name="password"
+          name='password'
           required
-          minLength="2"
-          maxLength="25"
+          minLength={2}
+          maxLength={25}
           onChange={handleChange}
         />
         <div className={form__icon} onClick={(e) => toggleShowPass(e)}>
           {isPassShown ? (
-            <ShowIcon type="primary" />
+            <ShowIcon type='primary' />
           ) : (
-            <HideIcon type="primary" />
+            <HideIcon type='primary' />
           )}
         </div>
         <p className={validationError}>{errors.password}</p>
@@ -71,19 +71,19 @@ const ResetPassword = () => {
 
       <div className={form__element}>
         <input
-          type="text"
-          placeholder="Введите код из письма"
+          type='text'
+          placeholder='Введите код из письма'
           className={form__input}
           value={token}
-          name="token"
+          name='token'
           onChange={handleChange}
           required
-          minLength="2"
+          minLength={2}
         />
         <p className={validationError}>{errors.token}</p>
       </div>
     </Form>
   );
-}
+};
 
 export default ResetPassword;

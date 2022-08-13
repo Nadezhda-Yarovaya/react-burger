@@ -1,39 +1,21 @@
-import React, { FC, useEffect } from "react";
-import { Route, Redirect, useHistory, useLocation } from "react-router-dom";
+import React, { FC } from 'react';
+import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
+import { TLocation } from '../../utils/types';
 
-type TPassProps = {
-  children? : Array<React.ReactNode>;
-  path? : string;
-}
-
-type TLocation = {
-  state? : {
-    from: string
-  };
-  from: string
-}
-
-
-const ProtectedPass: FC<TPassProps> = ({ children, ...rest }) => {
-// function ProtectedPass({ children, ...rest }) {
-  const history = useHistory();
+const ProtectedPass: FC<RouteProps> = ({ children, ...rest }) => {
   const location = useLocation<TLocation>();
 
   const cameFrom = location.state?.from;
-  
 
   return (
-    <Route
-      {...rest}
-      render={() =>
-        cameFrom === "forgot-password" ? (
-          children
-        ) : (
-          <Redirect to="/forgot-password" />
-        )
-      }
-    />
+    <Route {...rest}>
+      {cameFrom === 'forgot-password' ? (
+        children
+      ) : (
+        <Redirect to='/forgot-password' />
+      )}
+    </Route>
   );
-}
+};
 
 export default ProtectedPass;

@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import React, { FC } from "react";
+import React, { FC, useState, useEffect, useRef } from 'react';
 
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '../../utils/typesLibrary';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +10,7 @@ import { TIngredient } from '../../utils/types';
 
 const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
-  const BurgerIngredients: FC = () => {
+const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState('one');
 
@@ -19,10 +18,10 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
   const allIngredients = useSelector(getAllIngredients);
 
-  const bunsRef = useRef<HTMLElement>(null);
-  const sauceRef = useRef<HTMLElement>(null);
-  const stuffingRef = useRef<HTMLElement>(null);
-  const listRef = useRef<HTMLElement>(null);
+  const bunsRef = useRef<HTMLDivElement>(null);
+  const sauceRef = useRef<HTMLDivElement>(null);
+  const stuffingRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (allIngredients) {
@@ -38,7 +37,7 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
     }
   }, [allIngredients]);
 
-  function filterByType(arr : Array<TIngredient>, type: string) {
+  function filterByType(arr: Array<TIngredient>, type: string) {
     return arr.filter((item) => item.type === type);
   }
 
@@ -60,9 +59,12 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
     }
   }
 
-  function handleTabClick(currentRef: HTMLElement) {
-    currentRef.current.scrollIntoView({ behavior: 'smooth' });
-  }
+  const handleTabClick = (currentRef: React.RefObject<HTMLDivElement>) => {
+    console.log(typeof currentRef, ' obj: ', Object.entries(currentRef));
+    (
+      currentRef as React.MutableRefObject<HTMLDivElement>
+    ).current.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -125,6 +127,6 @@ const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
       )}
     </>
   );
-}
+};
 
 export default BurgerIngredients;

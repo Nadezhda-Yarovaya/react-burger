@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect, FC } from 'react';
 import constructorListStyles from './constructor-list.module.css';
-
 import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -26,12 +24,12 @@ const {
   empty,
 } = constructorListStyles;
 
-
-
 const ConstructorList: FC = () => {
   const dispatch = useDispatch();
   const isMobile = useSelector(ifItsMobile);
-  const direction = useSelector((state: any) => state.dragAndDrop.dropDirection);
+  const direction = useSelector(
+    (state: any) => state.dragAndDrop.dropDirection
+  );
   const currentBun = useSelector((state: any) => state.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
 
@@ -39,12 +37,14 @@ const ConstructorList: FC = () => {
     (store: any) => store.dragAndDrop.initialIngredOffset
   );
 
-  const stuffingListDropped = useSelector((state: any) => state.dragAndDrop.droppedElements);
+  const stuffingListDropped = useSelector(
+    (state: any) => state.dragAndDrop.droppedElements
+  );
 
-  const thisRef = useRef();
+  const thisRef = useRef<HTMLLIElement>(null);
   type TItem = {
-    item: TIngredient
-  }
+    item: TIngredient;
+  };
 
   const handleBunDrop = (currentItem: TItem): void => {
     dispatch<any>({
@@ -67,17 +67,17 @@ const ConstructorList: FC = () => {
 
   const [{ isBunHover }, dropContainerBunTop] = useDrop({
     accept: 'bun',
-    drop(item ) {
+    drop(item: TItem) {
       handleBunDrop(item);
     },
-    collect: (monitor) => ({
+    collect: (monitor: any) => ({
       isBunHover: monitor.isOver(),
     }),
   });
 
   const [{ isBunBottomHover }, dropContainerBunBottom] = useDrop({
     accept: 'bun',
-    drop(item) {
+    drop(item: TItem) {
       handleBunDrop(item);
     },
     collect: (monitor) => ({
@@ -87,10 +87,11 @@ const ConstructorList: FC = () => {
 
   const [{ isHover }, dropContainerRef] = useDrop({
     accept: 'ingredient',
-
     hover(item, monitor) {
-      const hoverBoundingRect = thisRef.current?.getBoundingClientRect();
-      const currentOffset = Math.floor(monitor.getClientOffset().y);
+      const hoverBoundingRect = (
+        thisRef as React.MutableRefObject<HTMLLIElement>
+      ).current.getBoundingClientRect();
+      const currentOffset = Math.floor((monitor as any).getClientOffset().y);
       const hoverBoundingRectTop = Math.floor(hoverBoundingRect.top);
 
       const currentItemOffset = initialIngredOffset.y;
@@ -105,20 +106,40 @@ const ConstructorList: FC = () => {
       });
     },
     drop(item) {
-      dropElementWithinConstructor(item.item, dispatch, direction);
+      dropElementWithinConstructor((item as TItem).item, dispatch, direction);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
   });
 
-  const heightOfCont = (stuffingListDropped.length + 1) * 100 + 'px';
+  const stuffingsStyles: React.CSSProperties = {
+    padding: isHover ? '0 8px 80px 0' : '0 8px 0 0',
+    backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
+    border: isHover ? '1px dashed white' : '0',
+    position: 'relative',
+    minHeight: (stuffingListDropped.length + 1) * 30 + 'px',
+  };
 
-  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
+  const bunTopStyle: React.CSSProperties = {
+    backgroundColor: isBunHover ? 'rgba(0,0,0,0.91)' : 'transparent',
+    border: isBunHover ? '1px dashed white' : '0',
+  };
+
+  const bunBottomStyle: React.CSSProperties = {
+    backgroundColor: isBunBottomHover ? 'rgba(0,0,0,0.91)' : 'transparent',
+    border: isBunBottomHover ? '1px dashed white' : '0',
+  };
+
+  const isMobileOrdered = useSelector(
+    (store: any) => store.mobile.isMobileOrdered
+  );
 
   useEffect(() => {
     if (isMobileOrdered) {
-      const rectangle = thisRef.current?.getBoundingClientRect();
+      const rectangle = (
+        thisRef as React.MutableRefObject<HTMLLIElement>
+      ).current?.getBoundingClientRect();
       dispatch({
         type: SET_OFFSETS,
         payload: {
@@ -130,89 +151,73 @@ const ConstructorList: FC = () => {
   }, [isMobile, isMobileOrdered, stuffingListDropped]);
 
   return (
-      <ul className={`${list} ${isMobile ? '' : list_flex}`}>
-        {isLoading ? (
-          <li style={{ alignSelf: 'flex-start' }}>
-            <p className='text text_type_main-small'>Загрузка...</p>
+    <ul className={`${list} ${isMobile ? '' : list_flex}`}>
+      {isLoading ? (
+        <li style={{ alignSelf: 'flex-start' }}>
+          <p className='text text_type_main-small'>Загрузка...</p>
+        </li>
+      ) : (
+        <>
+          <li
+            className={`${item} ${item_type_bun}`}
+            ref={dropContainerBunTop}
+            style={bunTopStyle}
+          >
+            <CustomConstructorElement
+              type='top'
+              isLocked={true}
+              text={`${currentBun.name} ${
+                currentBun.price !== 0 ? ' (верх)' : ''
+              }`}
+              price={currentBun.price}
+              thumbnail={currentBun.image}
+              item={currentBun}
+            />
           </li>
-        ) : (
-          <>
-            <li
-              className={`${item} ${item_type_bun}`}
-              ref={dropContainerBunTop}
-              style={{
-                backgroundColor: isBunHover
-                  ? 'rgba(0,0,0,0.91)'
-                  : 'transparent',
-                border: isBunHover ? '1px dashed white' : '0',
-              }}
+          <li className={`${item_type_stuffing}`} ref={thisRef}>
+            <div
+              className={`${stuffings} ${
+                stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
+              }`}
+              style={stuffingsStyles}
+              ref={dropContainerRef}
             >
-              <CustomConstructorElement
-                type='top'
-                isLocked={true}
-                text={`${currentBun.name} ${
-                  currentBun.price !== 0 ? ' (верх)' : ''
-                }`}
-                price={currentBun.price}
-                thumbnail={currentBun.image}
-                item={currentBun}
-              />
-            </li>
-            <li className={`${item_type_stuffing}`} ref={thisRef}>
-              <div
-                className={`${stuffings} ${
-                  stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
-                }`}
-                style={{
-                  padding: isHover ? '0 8px 80px 0' : '0 8px 0 0',
-                  backgroundColor: isHover ? 'rgba(0,0,0,0.91)' : 'transparent',
-                  border: isHover ? '1px dashed white' : '0',
-                  position: 'relative',
-                  minHeight: { heightOfCont },
-                }}
-                ref={dropContainerRef}
-              >
-                {stuffingListDropped.length === 0 ? (
-                  <p className={stuffings__empty}>{stuffingsEmptyText}</p>
-                ) : (
-                  <></>
-                )}
-                {stuffingListDropped.map((item : TIngredientUnique) => (
-                  <CustomConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    item={item}
-                    key={item.uniqueId}
-                  />
-                ))}
-              </div>
-            </li>
-            <li
-              className={`${item} ${item_type_bun} mt-4`}
-              ref={dropContainerBunBottom}
-              style={{
-                backgroundColor: isBunBottomHover
-                  ? 'rgba(0,0,0,0.91)'
-                  : 'transparent',
-                border: isBunBottomHover ? '1px dashed white' : '0',
-              }}
-            >
-              <CustomConstructorElement
-                type='bottom'
-                isLocked={true}
-                text={`${currentBun.name} ${
-                  currentBun.price !== 0 ? ' (низ)' : ''
-                }`}
-                price={currentBun.price}
-                thumbnail={currentBun.image}
-                item={currentBun}
-              />
-            </li>
-          </>
-        )}
-      </ul>
+              {stuffingListDropped.length === 0 ? (
+                <p className={stuffings__empty}>{stuffingsEmptyText}</p>
+              ) : (
+                <></>
+              )}
+              {stuffingListDropped.map((item: TIngredientUnique) => (
+                <CustomConstructorElement
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                  item={item}
+                  key={item.uniqueId}
+                />
+              ))}
+            </div>
+          </li>
+          <li
+            className={`${item} ${item_type_bun} mt-4`}
+            ref={dropContainerBunBottom}
+            style={bunBottomStyle}
+          >
+            <CustomConstructorElement
+              type='bottom'
+              isLocked={true}
+              text={`${currentBun.name} ${
+                currentBun.price !== 0 ? ' (низ)' : ''
+              }`}
+              price={currentBun.price}
+              thumbnail={currentBun.image}
+              item={currentBun}
+            />
+          </li>
+        </>
+      )}
+    </ul>
   );
-}
+};
 
 export default ConstructorList;

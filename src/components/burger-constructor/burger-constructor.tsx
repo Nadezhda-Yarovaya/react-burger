@@ -1,18 +1,18 @@
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from 'react';
 
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import constructorStyles from "./burger-constructor.module.css";
-import ConstructorList from "../constructor-list/constructor-list";
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import constructorStyles from './burger-constructor.module.css';
+import ConstructorList from '../constructor-list/constructor-list';
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { SET_TOTALSUM, SET_IFMOBILEORDERED } from "../../services/actions";
+import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
 
-import TotalSum from "../total-sum/total-sum";
-import { ifItsMobile, loadIngredients } from "../../services/selectors";
-import { fetchOrderNumber } from "../../services/action-creators/order-action-creators";
-import { useHistory } from "react-router-dom";
-import { TIngredient } from "../../utils/types";
+import TotalSum from '../total-sum/total-sum';
+import { ifItsMobile, loadIngredients } from '../../services/selectors';
+import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
+import { useHistory } from 'react-router-dom';
+import { TIngredient } from '../../utils/types';
 
 const {
   constructor__title,
@@ -24,18 +24,21 @@ const {
   container,
 } = constructorStyles;
 
-
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store : any) => {
+  const listOfIngredients = useSelector((store: any) => {
     return store.ingredients.listOfIngredients;
   });
   const createdStuffingsList = useSelector(
-    (store : any) => store.dragAndDrop.droppedElements
+    (store: any) => store.dragAndDrop.droppedElements
   );
   const isMobile = useSelector(ifItsMobile);
-  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
-  const bunSelectedFromStore = useSelector((store: any) => store.ingredients.bun);
+  const isMobileOrdered = useSelector(
+    (store: any) => store.mobile.isMobileOrdered
+  );
+  const bunSelectedFromStore = useSelector(
+    (store: any) => store.ingredients.bun
+  );
   const isLoading = useSelector(loadIngredients);
 
   const history = useHistory();
@@ -49,16 +52,8 @@ const BurgerConstructor: FC = () => {
   }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
 
   const calculateAllPrices = (stuffings: Array<TIngredient>): void => {
-    /*let allPrices: Array<TIngredient> = [];
-    stuffings.forEach((item: TIngredient, index : number) => {
-      console.log('ingred: ', stuffings[0]);
-      
-      allPrices[index] = item.price;
-      console.log('item price', allPrices[index]);
-    });*/
+    const allPr1 = stuffings.map((item: TIngredient) => item.price);
 
-    const allPr1 = stuffings.map((item : TIngredient) => item.price);
-    console.log (allPr1);
     const finalNumber =
       allPr1.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
@@ -67,13 +62,13 @@ const BurgerConstructor: FC = () => {
       bunSelectedFromStore.price * 2;
 
     dispatch({ type: SET_TOTALSUM, totalSum: finalNumber });
-  }
+  };
 
   function makeListOfOrder() {
     const ingredientsFormed = [];
     ingredientsFormed.push(bunSelectedFromStore._id);
 
-    createdStuffingsList.forEach((item : TIngredient) => {
+    createdStuffingsList.forEach((item: TIngredient) => {
       ingredientsFormed.push(item._id);
     });
 
@@ -83,13 +78,14 @@ const BurgerConstructor: FC = () => {
 
   function handlePerformOrder() {
     const thisOrderList: Array<string> = makeListOfOrder();
-    console.log(thisOrderList);
-    console.log("made list: ", thisOrderList);
     if (isLogged) {
       dispatch<any>(fetchOrderNumber(thisOrderList));
     } else {
-      localStorage.setItem("listOfOrder", JSON.stringify({list: thisOrderList}));
-      history.push("/login");
+      localStorage.setItem(
+        'listOfOrder',
+        JSON.stringify({ list: thisOrderList })
+      );
+      history.push('/login');
     }
   }
 
@@ -123,7 +119,7 @@ const BurgerConstructor: FC = () => {
               }}
               className={constructor__button}
             >
-              <CloseIcon type="primary" />
+              <CloseIcon type='primary' />
             </button>
           </div>
         ) : (
@@ -142,6 +138,6 @@ const BurgerConstructor: FC = () => {
       )}
     </>
   );
-}
+};
 
 export default BurgerConstructor;

@@ -1,12 +1,11 @@
-import ingredientStyles from "./ingredient-details.module.css";
-
-import { useSelector } from "react-redux";
-import { FC } from "react";
+import { FC } from 'react';
+import ingredientStyles from './ingredient-details.module.css';
+import { useSelector } from 'react-redux';
 
 const { text, details, image, nutrients, nutrient, container } =
   ingredientStyles;
 
-  const IngredientDetails: FC = () => {
+const IngredientDetails: FC = () => {
   const selectedCard = useSelector(
     (state: any) => state.ingredients.currentIngredient
   );
@@ -23,12 +22,12 @@ const { text, details, image, nutrients, nutrient, container } =
             src={selectedCard.image}
             alt={selectedCard.name}
           />
-          <p className="text text_type_main-medium mt-4 mb-8">
+          <p className='text text_type_main-medium mt-4 mb-8'>
             {selectedCard.name}
           </p>
           <ul className={`${nutrients}`}>
             <li className={nutrient}>
-              {" "}
+              {' '}
               <p className={`text text_type_main-small ${text}`}>
                 Калории, ккал
               </p>
@@ -37,21 +36,21 @@ const { text, details, image, nutrients, nutrient, container } =
               </p>
             </li>
             <li className={nutrient}>
-              {" "}
+              {' '}
               <p className={`text text_type_main-small ${text}`}>Белки, г</p>
               <p className={`text text_type_digits-default ${text}`}>
                 {selectedCard.proteins}
               </p>
             </li>
             <li className={nutrient}>
-              {" "}
+              {' '}
               <p className={`text text_type_main-small ${text}`}>Жиры, г</p>
               <p className={`text text_type_digits-default ${text}`}>
                 {selectedCard.fat}
               </p>
             </li>
             <li className={nutrient}>
-              {" "}
+              {' '}
               <p className={`text text_type_main-small ${text}`}>Углеводы, г</p>
               <p className={`text text_type_digits-default ${text}`}>
                 {selectedCard.carbohydrates}
@@ -64,6 +63,6 @@ const { text, details, image, nutrients, nutrient, container } =
       )}
     </>
   );
-}
+};
 
 export default IngredientDetails;

@@ -1,29 +1,34 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { FunctionComponent, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import headerItemStyles from "./header-item.module.css";
-import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import headerItemStyles from './header-item.module.css';
+import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { TLocation } from '../../utils/types';
 
 type THeaderItemProps = {
   text: string;
   sub?: boolean;
   id?: number;
-  icon?: any; // temporary setting any
-}
+  icon?: any;
+};
 
-const HeaderItem: FunctionComponent<THeaderItemProps> = ({ text, sub, id, icon}) : JSX.Element => {
+const HeaderItem: FunctionComponent<THeaderItemProps> = ({
+  text,
+  sub,
+  id,
+  icon,
+}): JSX.Element => {
   const [menuItems, setmenuItems] = useState([
-    { path: "/", id: 1, type: "" },
-    { path: "/feed", id: 2, type: "" },
-    { path: "/profile", id: 3, type: "" },
+    { path: '/', id: 1, type: '' },
+    { path: '/feed', id: 2, type: '' },
+    { path: '/profile', id: 3, type: '' },
   ]);
 
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   const indexToShow: number = id ? id - 1 : 0;
   const Icon = icon ? icon : BurgerIcon;
-  const text2 = text ? text : "";
+  const text2 = text ? text : '';
 
   const currentPath = location.pathname;
 
@@ -31,11 +36,11 @@ const HeaderItem: FunctionComponent<THeaderItemProps> = ({ text, sub, id, icon})
     return menuItems.filter((item) => {
       if (
         currentPath === item.path ||
-        (currentPath === "/profile/orders" && item.path === "/profile")
+        (currentPath === '/profile/orders' && item.path === '/profile')
       ) {
-        item.type = "primary";
+        item.type = 'primary';
       } else {
-        item.type = "secondary";
+        item.type = 'secondary';
       }
       return item;
     });
@@ -48,7 +53,7 @@ const HeaderItem: FunctionComponent<THeaderItemProps> = ({ text, sub, id, icon})
 
   return (
     <>
-      {" "}
+      {' '}
       {sub ? (
         <></>
       ) : (
@@ -59,12 +64,6 @@ const HeaderItem: FunctionComponent<THeaderItemProps> = ({ text, sub, id, icon})
       <p className={`mb-2 text text_type_main-default`}>{text2}</p>
     </>
   );
-}
-
-/*HeaderItem.propTypes = {
-  text: PropTypes.string.isRequired,
-  sub: PropTypes.bool,
-  id: PropTypes.number,
-};*/
+};
 
 export default HeaderItem;

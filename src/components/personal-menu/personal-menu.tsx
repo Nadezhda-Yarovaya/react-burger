@@ -1,20 +1,20 @@
-import personalMenuStyles from "./personal-menu.module.css";
-import { NavLink, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { performLogout } from "../../services/action-creators/auth-action-creators";
-import { FC, SyntheticEvent } from "react";
+import personalMenuStyles from './personal-menu.module.css';
+import { NavLink, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { performLogout } from '../../services/action-creators/auth-action-creators';
+import { FC, SyntheticEvent } from 'react';
 const { menu, menu__item, navigation, par, menu__item_active } =
   personalMenuStyles;
 
-const PersonalMenu: FC = ({}) : JSX.Element => {
+const PersonalMenu: FC = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
 
-  function handleLogout(e :SyntheticEvent) {
+  function handleLogout(e: SyntheticEvent) {
     e.preventDefault();
-    const refreshToken = localStorage.getItem("refreshToken");
-    // dispatch(performLogout(refreshToken, history));
+    const refreshToken = localStorage.getItem('refreshToken');
+    dispatch<any>(performLogout(refreshToken, history));
   }
 
   return (
@@ -22,7 +22,7 @@ const PersonalMenu: FC = ({}) : JSX.Element => {
       <nav className={menu}>
         <NavLink
           exact
-          to="/profile"
+          to='/profile'
           className={menu__item}
           activeClassName={menu__item_active}
         >
@@ -30,7 +30,7 @@ const PersonalMenu: FC = ({}) : JSX.Element => {
         </NavLink>
 
         <NavLink
-          to="/profile/orders"
+          to='/profile/orders'
           className={menu__item}
           activeClassName={menu__item_active}
         >
@@ -47,6 +47,6 @@ const PersonalMenu: FC = ({}) : JSX.Element => {
       </p>
     </div>
   );
-}
+};
 
 export default PersonalMenu;

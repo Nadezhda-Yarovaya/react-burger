@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useRef, FC, SyntheticEvent } from 'react';
 import CustomConstructorStyles from './custom-constructor-element.module.css';
-
-import PropTypes from 'prop-types';
-
-import {
-   DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
 
@@ -20,7 +15,7 @@ import {
   CLEAR_FINALS,
 } from '../../services/actions';
 import { ifItsMobile } from '../../services/selectors';
-import { ingredientType, TIngredientUnique, TRectangle } from '../../utils/types';
+import { TIngredientUnique, TRectangle } from '../../utils/types';
 import { SynthesizedComment } from 'typescript';
 
 import { ConstructorElement } from '../../utils/typesLibrary';
@@ -34,16 +29,22 @@ const {
 } = CustomConstructorStyles;
 
 type TCustomElementProps = {
-   text : string;
-    price: number;
-     thumbnail: string;
-      isLocked?: boolean;
-      type?: string;
-      item : TIngredientUnique
+  text: string;
+  price: number;
+  thumbnail: string;
+  isLocked?: boolean;
+  type?: 'top' | 'bottom';
+  item: TIngredientUnique;
 };
 
-const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbnail, isLocked, type, item } ) => {
-
+const CustomConstructorElement: FC<TCustomElementProps> = ({
+  text,
+  price,
+  thumbnail,
+  isLocked,
+  type,
+  item,
+}) => {
   const isMobile = useSelector(ifItsMobile);
 
   const dispatch = useDispatch();
@@ -62,10 +63,15 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
   const rectangleRight = useSelector(
     (state: any) => state.mobile.offsets.rectangle.right
   );
-  const direction = useSelector((state: any) => state.dragAndDrop.dropDirection);
+  const direction = useSelector(
+    (state: any) => state.dragAndDrop.dropDirection
+  );
   const currentTouchedItemRef = useRef<HTMLDivElement>(null);
-  const [currentRectangle, setCurrentRectangle] = useState<TRectangle>({top: 0, left: 0, bottom: 0, right: 0});
+  const [currentRectangle, setCurrentRectangle] = useState<TRectangle>(
+    { top: 0, left: 0, bottom: 0, right: 0 } || null
+  );
   const itemContainerRef = useRef<HTMLDivElement>(null);
+
   const diffx = finalX - initialX;
   const diffy = finalY - initialY;
   const [
@@ -94,13 +100,17 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
     });
   };
 
-  const handleTouchStart = (e: TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
     const initialx1 = e?.nativeEvent?.touches[0].clientX;
     const initialy1 = Math.floor(
-      itemContainerRef.current?.getBoundingClientRect().top
+      itemContainerRef.current!.getBoundingClientRect().top
     );
 
-    setCurrentRectangle(currentTouchedItemRef.current?.getBoundingClientRect());
+    setCurrentRectangle(
+      (
+        currentTouchedItemRef as React.MutableRefObject<HTMLDivElement>
+      ).current.getBoundingClientRect() || 0
+    );
     dispatch({
       type: SET_INITIALS,
       payload: {
@@ -121,7 +131,7 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
     });
   };
 
-  const handleTouchMove = (e: SyntheticEvent) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLElement>) => {
     const finalx1 = e.nativeEvent.touches[0].clientX;
     const finaly1 = e.nativeEvent.touches[0].clientY;
 
@@ -151,22 +161,36 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
       handleDeleting();
     }
   };
+  const top: number = currentRectangle?.top || 0;
+  const bottom: number = currentRectangle?.bottom || 0;
+  const diff1: number = bottom - top;
 
   const marginOnDirection =
     direction && direction === 'top' ? '90px 16px 0 0' : '0 16px 90px 0';
+
+  const stuffingItemStyle: React.CSSProperties = {
+    transform:
+      item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
+        ? `translate(${diffx + 'px'}, 0px)`
+        : 'translate(0px,0px)',
+    boxSizing: 'border-box',
+    margin: isItemDragging ? marginOnDirection : '0',
+  };
+
+  const mobileItemStyle: React.CSSProperties = {
+    height: `${currentRectangle ? diff1 ?? 0 : 0}px`,
+    width:
+      item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
+        ? `${-diffx}px`
+        : '0',
+    top: `${initialY - rectangleTop}px`,
+  };
 
   return (
     <>
       <div
         className={`${stuffings__item} mr-2`}
-        style={{
-          transform:
-            item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
-              ? `translate(${diffx + 'px'}, 0px)`
-              : 'translate(0px,0px)',
-          boxSizing: 'border-box',
-          margin: isItemDragging ? marginOnDirection : '0',
-        }}
+        style={stuffingItemStyle}
         ref={isMobile ? null : draggedWithinConstructorRef}
       >
         <div className={`${constructor__item} mb-4`} ref={itemContainerRef}>
@@ -203,17 +227,7 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
       {isMobile &&
       diffx < 0 &&
       currentTouchedItem.uniqueId === item.uniqueId ? (
-        <div
-          className={delete_mobile}
-          style={{
-            height: `${currentRectangle?.bottom - currentRectangle?.top}px`,
-            width:
-              item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
-                ? `${-diffx}px`
-                : '0',
-            top: `${initialY - rectangleTop}px`,
-          }}
-        >
+        <div className={delete_mobile} style={mobileItemStyle}>
           <div className={delete_image}></div>
         </div>
       ) : (
@@ -221,16 +235,6 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({ text, price, thumbn
       )}
     </>
   );
-}
-
-/*
-CustomConstructorElement.propTypes = {
-  type: PropTypes.string,
-  isLocked: PropTypes.bool,
-  text: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  item: ingredientType.isRequired,
-};*/
+};
 
 export default CustomConstructorElement;

@@ -1,11 +1,21 @@
-import singleOrderIngredientsStyles from "./single-order-ingredients.module.css";
+import { FC } from 'react';
+import { TIngredientUnique } from '../../utils/types';
+import singleOrderIngredientsStyles from './single-order-ingredients.module.css';
 
 const { list__item, list__image, list__image_more, par, list__item_more } =
   singleOrderIngredientsStyles;
 
-function SingleOrderIngredients(props) {
-  const { index, ingredient, positions } = props;
+type TSingleOrderProps = {
+  index: number;
+  ingredient: TIngredientUnique;
+  positions: Array<string | number>;
+};
 
+const SingleOrderIngredients: FC<TSingleOrderProps> = ({
+  index,
+  ingredient,
+  positions,
+}) => {
   let imageClass =
     index < 5 ? `${list__image}` : `${list__image} ${list__image_more}`;
   let listItemClass =
@@ -24,5 +34,5 @@ function SingleOrderIngredients(props) {
       </div>
     </li>
   );
-}
+};
 export default SingleOrderIngredients;

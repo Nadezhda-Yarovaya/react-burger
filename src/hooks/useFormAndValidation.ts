@@ -9,6 +9,7 @@ export function useFormAndValidation(initialState : TForm) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log('etarget: ', e.target);
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
     setValidities({ ...validities, [name]: e.target.validity.valid });

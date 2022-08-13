@@ -1,37 +1,32 @@
-import React, { useState, FunctionComponent, FC } from "react";
-import ingredientStyles from "./ingredient.module.css";
-import { useDrag } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { FC } from 'react';
+import ingredientStyles from './ingredient.module.css';
+import { useDrag } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   CurrencyIcon,
   Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { ifItsMobile } from "../../services/selectors";
+import { ifItsMobile } from '../../services/selectors';
 
-import { ingredientType } from "../../utils/types";
+import { TIngredientUnique, TLocation } from '../../utils/types';
 
 import {
   SET_CURRENT,
   SET_MODALINGREDIENTS,
   REPLACE_BUN,
-} from "../../services/actions";
-import { dropElement } from "../../services/action-creators/dnd-action-creators";
-import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-
-interface IItem {
-  item: {[key: string]: string | number }
-};
+} from '../../services/actions';
+import { dropElement } from '../../services/action-creators/dnd-action-creators';
+import { Link, useLocation } from 'react-router-dom';
 
 type TIngredientProps = {
-  item: {[key: string]: string}
-}
+  item: TIngredientUnique;
+};
 
-const Ingredient: FC<TIngredientProps> = ({item}) => {
+const Ingredient: FC<TIngredientProps> = ({ item }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   const {
     price,
@@ -42,8 +37,7 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
     list__item,
   } = ingredientStyles;
 
-
-  const bunCount = useSelector((store) => {
+  const bunCount = useSelector((store: any) => {
     let totalCount = 0;
     if (store.ingredients.bun._id === item._id) {
       totalCount++;
@@ -51,9 +45,9 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
     return totalCount;
   });
 
-  const ingredientCount = useSelector((store) => {
+  const ingredientCount = useSelector((store: any) => {
     let totalCount = 0;
-    store.dragAndDrop.droppedElements.forEach((curItem) => {
+    store.dragAndDrop.droppedElements.forEach((curItem: TIngredientUnique) => {
       if (curItem._id === item._id) {
         totalCount++;
       }
@@ -63,26 +57,25 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
   const isMobile = useSelector(ifItsMobile);
 
   const [, draggedIngredientRef] = useDrag({
-    type: "ingredient",
+    type: 'ingredient',
     item: { item },
   });
 
   const [, draggedBun] = useDrag({
-    type: "bun",
+    type: 'bun',
     item: { item },
   });
 
-  const handleBunDrop = (currentItem : IItem) => {
-    console.log("indrop mobile", currentItem._id);
+  const handleBunDrop = (currentItem: TIngredientUnique) => {
     dispatch({
       type: REPLACE_BUN,
       bun: currentItem,
     });
   };
 
-  const currentCounter = item.type === "bun" ? bunCount : ingredientCount;
+  const currentCounter = item.type === 'bun' ? bunCount : ingredientCount;
 
-  const openModalIngredient = (currentItem : IItem) => {
+  const openModalIngredient = (currentItem: TIngredientUnique) => {
     dispatch({
       type: SET_CURRENT,
       currentIngredient: currentItem,
@@ -91,14 +84,14 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
     dispatch({
       type: SET_MODALINGREDIENTS,
     });
-  }
+  };
 
   return (
     <li
       ref={
         isMobile
           ? null
-          : item.type === "bun"
+          : item.type === 'bun'
           ? draggedBun
           : draggedIngredientRef
       }
@@ -116,9 +109,9 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
         >
           <img src={item.image} alt={item.name} />
           <div className={`mt-2 mb-2 ${price}`}>
-            {" "}
-            <p className="text text_type_digits-default mr-2">{item.price}</p>
-            <CurrencyIcon type="primary" />
+            {' '}
+            <p className='text text_type_digits-default mr-2'>{item.price}</p>
+            <CurrencyIcon type='primary' />
           </div>
           <p className={`text text_type_main-default ${item__name}`}>
             {item.name}
@@ -126,7 +119,7 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
 
           {currentCounter > 0 ? (
             <div className={`${counter}`}>
-              <Counter count={currentCounter} size="default" />
+              <Counter count={currentCounter} size='default' />
             </div>
           ) : (
             <></>
@@ -137,7 +130,7 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
             className={item__mobilebutton}
             onClick={(e) => {
               e.preventDefault();
-              if (item.type === "bun") {
+              if (item.type === 'bun') {
                 handleBunDrop(item);
               } else {
                 dropElement(item, dispatch);
@@ -152,10 +145,6 @@ const Ingredient: FC<TIngredientProps> = ({item}) => {
       </div>
     </li>
   );
-}
-/*
-Ingredient.propTypes = {
-  item: ingredientType.isRequired,
-};*/
+};
 
 export default Ingredient;

@@ -1,8 +1,5 @@
-import PropTypes from 'prop-types';
-import {
-  Button,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button } from '../../utils/typesLibrary';
 
 import totalSumStyles from './total-sum.module.css';
 
@@ -18,17 +15,20 @@ const { container, sum, button_visible, button_hidden } = totalSumStyles;
 type TTotalSumProps = {
   handleToggleIfMobile: () => void;
   handlePerformOrder: () => void;
+};
 
-}
-
-const TotalSum: FC<TTotalSumProps> = ( { handleToggleIfMobile, handlePerformOrder }) => {
-  
+const TotalSum: FC<TTotalSumProps> = ({
+  handleToggleIfMobile,
+  handlePerformOrder,
+}) => {
   const stuffingsList = useSelector(
-    (state : any) => state.dragAndDrop.droppedElements
+    (state: any) => state.dragAndDrop.droppedElements
   );
   const bunSelected = useSelector((state: any) => state.ingredients.bun);
 
-  const isMobileOrdered = useSelector((store: any) => store.mobile.isMobileOrdered);
+  const isMobileOrdered = useSelector(
+    (store: any) => store.mobile.isMobileOrdered
+  );
 
   const totalSumOrder = useSelector((store: any) => store.order.totalSum);
 
@@ -78,11 +78,6 @@ const TotalSum: FC<TTotalSumProps> = ( { handleToggleIfMobile, handlePerformOrde
       )}
     </div>
   );
-}
-
-TotalSum.propTypes = {
-  handleToggleIfMobile: PropTypes.func.isRequired,
-  handlePerformOrder: PropTypes.func.isRequired,
 };
 
 export default TotalSum;

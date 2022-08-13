@@ -1,19 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
+import { TLocation } from '../../utils/types';
 
-function ProtectedRouteNotLogged({ children, ...rest }) {
-  const location = useLocation();
-  const cameFrom = location?.state?.from || "/";
-  const isLogged = useSelector((state) => state.auth.isLogged);
+const ProtectedRouteNotLogged: FC<RouteProps> = ({ children, ...rest }) => {
+  const location = useLocation<TLocation>();
+  const cameFrom = location?.state?.from || '/';
+  const isLogged = useSelector((state: any) => state.auth.isLogged);
 
   return (
-    <Route
-      {...rest}
-      render={() => (!isLogged ? children : <Redirect to={cameFrom} />)}
-    />
+    <Route {...rest}>{!isLogged ? children : <Redirect to={cameFrom} />}</Route>
   );
-}
+};
 
 export default ProtectedRouteNotLogged;

@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-
-import feedStyles from "./feed.module.css";
-import IngredientDetails from "../components/ingredient-details/ingredient-details";
+import feedStyles from './feed.module.css';
+import IngredientDetails from '../components/ingredient-details/ingredient-details';
 
 const { container, feed } = feedStyles;
 
@@ -15,5 +13,5 @@ const ModalPage = () => {
       </div>
     </>
   );
-}
+};
 export default ModalPage;

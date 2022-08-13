@@ -1,15 +1,19 @@
-import React, { FC, useEffect } from "react";
-import PropTypes from 'prop-types';
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { FC } from 'react';
+import { Button } from '../../utils/typesLibrary';
 
 type TButtonProps = {
-  handleClick : () => void;
+  handleClick: () => void;
   isDisabled: boolean;
-  btnText : string;
-  size?: string;
-}
+  btnText?: string;
+  size: 'small' | 'medium' | 'large';
+};
 
-const TotalSumButton: FC<TButtonProps> = ({handleClick, isDisabled, btnText, size}) => {
+const TotalSumButton: FC<TButtonProps> = ({
+  handleClick,
+  isDisabled,
+  btnText,
+  size,
+}) => {
   return (
     <>
       <Button
@@ -17,18 +21,12 @@ const TotalSumButton: FC<TButtonProps> = ({handleClick, isDisabled, btnText, siz
         size={size}
         onClick={handleClick}
         disabled={isDisabled}
+        name='totalsumbtn'
       >
         {btnText}
       </Button>
     </>
   );
-}
-/*
-TotalSumButton.propTypes = {
-  handleClick: PropTypes.func.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  btnText: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-}; */
+};
 
 export default TotalSumButton;
