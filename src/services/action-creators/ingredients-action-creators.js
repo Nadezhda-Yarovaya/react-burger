@@ -3,15 +3,14 @@ import {
   SET_ALLINGREDIENTS_SUCCESS,
   SET_ALLINGREDIENTS_FAILURE,
 } from '../actions';
-import api from '../../utils/api';
+import { getIngredients } from '../../utils/api';
 
 export function fetchAllIngredients() {
   return (dispatch, getState) => {
     dispatch({
       type: SET_ALLINGREDIENTS_REQUEST,
     });
-    api
-      .getIngredients()
+    getIngredients()
       .then((res) => {
         dispatch({
           type: SET_ALLINGREDIENTS_SUCCESS,
