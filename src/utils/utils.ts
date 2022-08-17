@@ -59,3 +59,5 @@ export const intitialValuesResetPass: TForm = {
     token: false,
   },
 };
+
+export const numberslist: Array<number> = [55566, 77984, 56464];

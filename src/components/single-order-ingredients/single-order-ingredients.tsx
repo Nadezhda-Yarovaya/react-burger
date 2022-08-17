@@ -8,7 +8,7 @@ const { list__item, list__image, list__image_more, par, list__item_more } =
 type TSingleOrderProps = {
   index: number;
   ingredient: TIngredientUnique;
-  positions: Array<string | number>;
+  positions: Array<TIngredientUnique>;
 };
 
 const SingleOrderIngredients: FC<TSingleOrderProps> = ({
@@ -16,13 +16,14 @@ const SingleOrderIngredients: FC<TSingleOrderProps> = ({
   ingredient,
   positions,
 }) => {
+  // console.log('ingred:', ingredient);
   let imageClass =
     index < 5 ? `${list__image}` : `${list__image} ${list__image_more}`;
   let listItemClass =
     index < 5 ? `${list__item}` : `${list__item} ${list__item_more}`;
 
-  return (
-    <li
+  return (<>
+    {(ingredient && ingredient.image) && (<li
       className={listItemClass}
       style={{ left: `${index * 42}px`, zIndex: `${positions.length - index}` }}
     >
@@ -33,6 +34,9 @@ const SingleOrderIngredients: FC<TSingleOrderProps> = ({
         {index < 5 ? <></> : <p className={par}>+{positions.length - 5}</p>}
       </div>
     </li>
-  );
+    )}
+    </>
+   );
+  
 };
 export default SingleOrderIngredients;

@@ -1,7 +1,7 @@
 const initialTempOrderList  = [
   {
     name: 'Бессмертный альфа-сахаридный экзо-плантаго бургер',
-    order: { number: 2547 },
+    order:  {number: 2547 },
     status: 'Создан',
     positions: [
       '60d3b41abdacab0026a733c6',
@@ -11,9 +11,10 @@ const initialTempOrderList  = [
       '60d3b41abdacab0026a733c6',
     ],
     sum: 14450,
-    date: Date(),
+    date: '2022-05-06',
     _id: '1112222333344455566',
-  },
+  }
+  ,
   {
     name: 'Бессмертный space краторный фалленианский а экзо-плантаго бургер',
     order: { number: 2633 },
@@ -30,7 +31,7 @@ const initialTempOrderList  = [
       '60d3b41abdacab0026a733c6',
     ],
     sum: 3050,
-    date: Date(),
+    date: '2022-05-05',
     _id: '1112222333344455568',
   },
   {
@@ -46,7 +47,7 @@ const initialTempOrderList  = [
       '60d3b41abdacab0026a733c7',
     ],
     sum: 2100,
-    date: Date(),
+    date: '2022-05-04',
     _id: '1112222333344455567',
   },
   {
@@ -62,9 +63,10 @@ const initialTempOrderList  = [
       '60d3b41abdacab0026a733c7',
     ],
     sum: 10520,
-    date: Date(),
+    date: '2022-05-03',
     _id: '1112222333344455569',
   },
+  
 ];
 
 export default initialTempOrderList;

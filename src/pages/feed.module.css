@@ -12,3 +12,32 @@
     width: 100%;
     min-height: 60vh;
 }
+
+.section {
+    width: 50%;
+    border: 1px solid grey;
+}
+
+.numberOrdersList {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.numberOrderItem {
+    color: green;
+}
+
+.numbersShown {
+    min-height: 200px;
+    border: 2px solid purple;
+    width: 100%;
+}
+
+.feedSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

@@ -61,3 +61,33 @@ export type TForm = {
     token?: boolean;
   };
 };
+
+
+export type TOrderItem = {
+  name: string;
+  order: {number: number};
+  status: string;
+  positions: Array<string>;
+  sum: number;
+  date: string;
+  _id: string,
+};
+
+export type TOrderFull = {
+  name: string;
+  order: {number: number};
+  status: string;
+  positions: Array<TIngredientUnique>;
+  sum: number;
+  date: string;
+  _id: string,
+}
+
+
+export type TOrdersId = {
+  makeAllPositionsList: (currentList: Array<string>) => Array<TIngredientUnique>;
+}
+
+export type TOrderProps = {
+  item: TOrderFull;
+};

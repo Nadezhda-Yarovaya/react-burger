@@ -8,6 +8,9 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import appStyles from './app.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllIngredients } from '../../services/selectors';
+import { SET_POSITIONSDATA } from '../../services/actions';
+import initialTempOrderList from '../../utils/tempdata';
 
 import {
   SET_IFMOBILE,
@@ -35,7 +38,7 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TLocation } from '../../utils/types';
+import { TIngredientUnique, TLocation, TOrderItem, TOrderFull } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 
 const { page } = appStyles;
@@ -45,6 +48,11 @@ const App: FunctionComponent = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const tempOrderslist: Array<TOrderItem> = initialTempOrderList;
+
+  const allIngredients12 = useSelector(getAllIngredients);
+
+  //console.log('ALL INGRED 12', allIngredients12);
 
   useEffect(() => {
     handleSetMobile();
@@ -64,6 +72,39 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     dispatch<any>(fetchAllIngredients());
   }, []);
+
+  useEffect(() => {  
+      if (allIngredients12[0].name) {
+        const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
+        console.log('FILTERED list:', filteredTempOrdersList);
+      dispatch({
+        type: SET_POSITIONSDATA,
+        payload: filteredTempOrdersList,
+      });
+    }
+  }, [allIngredients12]);
+
+  const newListAfterFilter = (arr1: Array<TOrderItem>): Array<TOrderFull> => {
+    return arr1.map((item) => {
+      console.log('подается на фильтрацию: ', item.positions);
+      const newPositions = item.positions.map((elementId) => {
+        const newArrayItem = allIngredients12.find(
+          (ingredient: TOrderItem) => ingredient._id === elementId
+        );
+
+        if (newArrayItem) {
+          return newArrayItem;
+        }
+        return elementId;
+      });
+      console.log('результат фильтрации:', newPositions);
+
+      return {
+        ...item,
+        positions: newPositions,
+      };
+    });
+  };
 
   const isPerformed = useSelector((state: any) => state.order.isPerformed);
 
@@ -137,7 +178,24 @@ const App: FunctionComponent = () => {
   };
 
   const locateModal = location?.state && location?.state?.locate;
+  const allIngredients = useSelector(
+    (state: any) => state.ingredients.listOfIngredients
+  );
 
+  /*
+  const makeAllPositionsList = (
+    currentList: Array<string>
+  ): Array<TIngredientUnique> => {
+    let allPositionsList = [];
+    for (let i = 0; i < currentList.length; i++) {
+      allPositionsList[i] = allIngredients.find(
+        (item: TIngredientUnique) => item._id === currentList[i]
+      );
+      // console.log('position: ', allPositionsList[i] );
+    }
+    return allPositionsList;
+  };
+*/
   return (
     <>
       <div className={page}>
@@ -172,15 +230,19 @@ const App: FunctionComponent = () => {
             <IngredientPage />
           </Route>
 
-          <ProtectedRouteLogged path='/feed' exact>
+          <Route path='/feed' exact>
             <Feed />
-          </ProtectedRouteLogged>
+          </Route>
+
+          <Route path='/feed/:id' exact>
+            <OrdersId />
+          </Route>
 
           <ProtectedRouteLogged path='/profile/orders' exact>
             <Orders />
           </ProtectedRouteLogged>
 
-          <ProtectedRouteLogged path='/profile/orders/:id' exact>
+          <ProtectedRouteLogged path='/profile/orders/:id'>
             <OrdersId />
           </ProtectedRouteLogged>
           <Route>
