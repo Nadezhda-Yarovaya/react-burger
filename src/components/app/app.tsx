@@ -38,7 +38,7 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TIngredientUnique, TLocation, TOrderItem, TOrderFull } from '../../utils/types';
+import { TLocation, TOrderItem, TOrderFull } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 
 const { page } = appStyles;
@@ -51,8 +51,6 @@ const App: FunctionComponent = () => {
   const tempOrderslist: Array<TOrderItem> = initialTempOrderList;
 
   const allIngredients12 = useSelector(getAllIngredients);
-
-  //console.log('ALL INGRED 12', allIngredients12);
 
   useEffect(() => {
     handleSetMobile();
@@ -73,10 +71,10 @@ const App: FunctionComponent = () => {
     dispatch<any>(fetchAllIngredients());
   }, []);
 
-  useEffect(() => {  
-      if (allIngredients12[0].name) {
-        const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
-        console.log('FILTERED list:', filteredTempOrdersList);
+  useEffect(() => {
+    if (allIngredients12[0].name) {
+      const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
+      console.log('FILTERED list:', filteredTempOrdersList);
       dispatch({
         type: SET_POSITIONSDATA,
         payload: filteredTempOrdersList,
@@ -178,24 +176,7 @@ const App: FunctionComponent = () => {
   };
 
   const locateModal = location?.state && location?.state?.locate;
-  const allIngredients = useSelector(
-    (state: any) => state.ingredients.listOfIngredients
-  );
 
-  /*
-  const makeAllPositionsList = (
-    currentList: Array<string>
-  ): Array<TIngredientUnique> => {
-    let allPositionsList = [];
-    for (let i = 0; i < currentList.length; i++) {
-      allPositionsList[i] = allIngredients.find(
-        (item: TIngredientUnique) => item._id === currentList[i]
-      );
-      // console.log('position: ', allPositionsList[i] );
-    }
-    return allPositionsList;
-  };
-*/
   return (
     <>
       <div className={page}>

@@ -1,10 +1,9 @@
+import React, { FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, useEffect, useState } from 'react';
 import SingleOrderIngredients from '../single-order-ingredients/single-order-ingredients';
 import { Link } from 'react-router-dom';
 import orderStyles from './order.module.css';
-import { TIngredientUnique, TOrderItem, TOrderProps } from '../../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
+import { TOrderProps } from '../../utils/types';
 
 const {
   order,
@@ -20,14 +19,10 @@ const {
 
 type TOrderPropsOrder = TOrderProps & {
   listType: string;
-}
+};
 
 const Order: FC<TOrderPropsOrder> = ({ item, listType }) => {
-  // ! console.log('item positions: ', item.positions);
-  //const [positionsList, setPositionsList] = useState<Array<TIngredientUnique>>([]);
-  //const allIngredients = useSelector((state: any) => state.ingredients.listOfIngredients);
-  const orderPage = (listType === 'feed') ? '/feed/' : '/profile/orders/'; 
-  //console.log('item positions :', item.positions);
+  const orderPage = listType === 'feed' ? '/feed/' : '/profile/orders/';
 
   return (
     <>
@@ -41,25 +36,28 @@ const Order: FC<TOrderPropsOrder> = ({ item, listType }) => {
         <p className={`${status} mb-6`}>{item.status}</p>
         <div className={ingredients}>
           <ul className={list}>
-            {item && (item.positions.slice(0, 6).map((ingredient, index) => (
-              <SingleOrderIngredients
-                key={index}
-                index={index}
-                positions={item.positions}
-                ingredient={ingredient}
-              />
-            )))}
+            {item &&
+              item.positions
+                .slice(0, 6)
+                .map((ingredient, index) => (
+                  <SingleOrderIngredients
+                    key={index}
+                    index={index}
+                    positions={item.positions}
+                    ingredient={ingredient}
+                  />
+                ))}
           </ul>
 
           <div className={`${sumcontainer}`}>
-            {" "}
+            {' '}
             <p className={`mr-2 text text_type_digits-small`}>
               {item.sum}
-            </p>{" "}
-            <CurrencyIcon type="primary" />
+            </p>{' '}
+            <CurrencyIcon type='primary' />
           </div>
         </div>
-        {/* close order */}{" "}
+        {/* close order */}{' '}
       </div>
     </>
   );
