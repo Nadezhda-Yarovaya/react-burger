@@ -19,6 +19,8 @@ const {
   list__item,
   list__iteminfo,
   list__priceinfo,
+  image,
+  status_performed
 } = ordersIdStyles;
 
 const OrdersId: FC = () => {
@@ -47,20 +49,20 @@ const OrdersId: FC = () => {
     <>
       <div className={container}>
         <div className={box}>
-          <p className={number}>#{currentOrderShown.order.number}</p>
-          <p className={name}>{currentOrderShown.name}</p>
-          <p className={`${status}`}>{currentOrderShown.status}</p>
-          <p className={title}>Состав :</p>
+          <p className={`${number} text text_type_digits-default mb-10`}>#{currentOrderShown.order.number}</p>
+          <p className='text text_type_main-medium mb-3'>{currentOrderShown.name}</p>
+          <p className={`${status} ${status_performed} text text_type_main-default`}>{currentOrderShown.status}</p>
+          <p className='text text_type_main-medium mb-6'>Состав :</p>
           <ul className={list}>
             {currentOrderShown.positions[0] &&
               currentOrderShown.positions.map((element, ind) => (
                 <li key={ind} className={list__item}>
                   <div className={list__iteminfo}>
-                    <img src={element.image} alt={element.name} />
+                    <img src={element.image} alt={element.name} className={image} />
                     <p>{element.name}</p>
                   </div>
                   <div className={list__priceinfo}>
-                    <p className={price}>1 x {element.price}</p>
+                    <p className={`${price} text text_type_digits-default`}>1 x {element.price}</p>
                     <CurrencyIcon type='primary' />
                   </div>
                 </li>

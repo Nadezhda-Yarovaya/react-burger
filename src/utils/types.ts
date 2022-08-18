@@ -20,18 +20,24 @@ export type TIngredientUnique = TIngredient & {
   uniqueId: string;
 };
 
-export type TLocation = {
-  state?: {
-    from: string;
-  };
-  from: string;
-  locate?: {
+type TLocate = 
+  {
     hash: string;
     key: string;
     pathname: string;
     search: string;
     state?: string;
   };
+
+
+export type TLocation = {
+  state?: {
+    from: string;
+  };
+  from: string;
+  locate?:TLocate;
+  feedLocate?: TLocate;
+  ordersLocate? : TLocate;
 };
 
 export type TRectangle = {
@@ -91,3 +97,6 @@ export type TOrdersId = {
 export type TOrderProps = {
   item: TOrderFull;
 };
+
+
+AppActions, AppDispatch, RootState 

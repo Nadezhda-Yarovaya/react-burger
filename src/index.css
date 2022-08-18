@@ -8,6 +8,7 @@
   --text-color: #f2f2f3;
   --secondary-text: #8585ad;
   --accent: #4c4cff;
+  --accent-order: #00CCCC;
 }
 
 .constructor-element__action {

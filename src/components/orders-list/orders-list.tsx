@@ -17,8 +17,6 @@ const OrdersList: FC<TOrderstype> = ({ listType }) => {
 
   return (
     <div className={`${orders} pr-2`}>
-      <p className={maintitle}>История заказов</p>
-
       {orderList.map((item: TOrderFull, ind: number) => (
         <Order key={ind} item={item} listType={listType} />
       ))}

@@ -84,7 +84,7 @@ const App: FunctionComponent = () => {
 
   const newListAfterFilter = (arr1: Array<TOrderItem>): Array<TOrderFull> => {
     return arr1.map((item) => {
-      console.log('подается на фильтрацию: ', item.positions);
+      //console.log('подается на фильтрацию: ', item.positions);
       const newPositions = item.positions.map((elementId) => {
         const newArrayItem = allIngredients12.find(
           (ingredient: TOrderItem) => ingredient._id === elementId
@@ -95,7 +95,7 @@ const App: FunctionComponent = () => {
         }
         return elementId;
       });
-      console.log('результат фильтрации:', newPositions);
+      //console.log('результат фильтрации:', newPositions);
 
       return {
         ...item,
@@ -175,7 +175,37 @@ const App: FunctionComponent = () => {
     });
   };
 
+  const closeModalFromFeed = () => {
+    /*
+    dispatch<any>({
+      type: REMOVE_CURRENT, //order from feed 
+    });
+
+    dispatch<any>({
+      type: REMOVE_MODALINGREDIENTS,
+    });*/
+    history.goBack();
+
+  }
+
+  const closeModalFromProileOrders = () => {
+     /*
+    dispatch<any>({
+      type: REMOVE_CURRENT, //order profiles
+    });
+
+    dispatch<any>({
+      type: REMOVE_MODALINGREDIENTS,
+    });*/
+    history.goBack();
+  }
+
   const locateModal = location?.state && location?.state?.locate;
+
+  const locateFeedModal = location?.state && location.state?.feedLocate;
+
+  const locateProfileOrdersModal  = location?.state && location.state?.ordersLocate;
+
 
   return (
     <>
@@ -219,6 +249,7 @@ const App: FunctionComponent = () => {
             <OrdersId />
           </Route>
 
+     
           <ProtectedRouteLogged path='/profile/orders' exact>
             <Orders />
           </ProtectedRouteLogged>
@@ -247,6 +278,22 @@ const App: FunctionComponent = () => {
           {' '}
           <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+      {locateFeedModal && (
+        <Route path='/feed/:id'>
+          {' '}
+          <Modal closeModal={closeModalFromFeed} isOpen={true}>
+          <OrdersId />
+          </Modal>
+        </Route>
+      )}
+       {locateProfileOrdersModal && (
+        <Route path='/profile/orders/:id'>
+          {' '}
+          <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
+          <OrdersId />
           </Modal>
         </Route>
       )}

@@ -10,6 +10,7 @@ const {
   numberOrderItem,
   numbersShown,
   feedSection,
+  mainTitle,
 } = feedStyles;
 
 const { main, ingredients, section_flex } = appStyles;
@@ -30,31 +31,44 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
 
 const Feed: FC = () => {
   return (
-    <main className={`${main} mb-10`}>
-      <section className={`mr-10} ${ingredients} ${section_flex}`}>
-        <OrdersList listType='feed' />
-      </section>
-      <section className={`${feedSection}`}>
-        <div style={{ display: 'flex' }}>
-          <div className={section}>
-            <p>Готовы:</p>
-            <ul className={numberOrdersList}>
-              {numberslist.map((item: number, ind: number) => (
-                <li key={ind} className={numberOrderItem}>
-                  {item}
-                </li>
-              ))}
-            </ul>
+    <>
+      <main
+        className={`${main} mb-10`}
+        style={{
+          flexDirection: 'column',
+        }}
+      >
+        <h1 className={mainTitle}>Лента заказов</h1>
+        <div style ={{display: 'flex'}}>
+        <section
+          className={`mr-10} ${ingredients} ${section_flex} ${feedStyles.ordersList}`}
+        >
+          <OrdersList listType='feed' />
+        </section>
+        <section className={`${feedSection}`}>
+          <div style={{ display: 'flex' }}>
+            <div className={section}>
+              <p>Готовы:</p>
+              <ul className={numberOrdersList}>
+                {numberslist.map((item: number, ind: number) => (
+                  <li key={ind} className={numberOrderItem}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={section}>
+              <p>Готовятся: </p>
+              <div className={numberOrdersList}></div>
+            </div>
           </div>
-          <div className={section}>
-            <p>Готовятся: </p>
-            <div className={numberOrdersList}></div>
-          </div>
+          <Numbers title='Выполнено за всё время: ' number={45526} />
+          <Numbers title='Выполнено за сегодня: ' number={120} />
+        </section>
         </div>
-        <Numbers title='Выполнено за всё время: ' number={45526} />
-        <Numbers title='Выполнено за сегодня: ' number={120} />
-      </section>
-    </main>
+      </main>
+      
+    </>
   );
 };
 export default Feed;

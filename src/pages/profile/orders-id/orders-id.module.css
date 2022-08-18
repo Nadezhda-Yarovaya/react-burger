@@ -4,6 +4,8 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+  /*margin:0 0 50px 0;*/
+  margin: 0;
 }
 
 .box {
@@ -13,61 +15,91 @@
   max-width: 620px;
   min-height: 300px;
   border: 1px solid green;
-  margin: 122px 0 0 0;
+  /*margin: 122px 0 0 0;*/
+  margin: 0;
   font-family: 'JetBrains Mono', sans-serif;
 }
 
 .number {
-  font-size: 18px;
-  line-height: 24px;
   width: 100%;
   text-align: center;
   padding: 0;
-  margin: 0 0 40px 0;
   box-sizing: border-box;
 }
 
 .name {
-  font-size: 24px;
-  line-height: 30px;
   width: 100%;
   text-align: left;
   padding: 0;
-  margin: 0;
   box-sizing: border-box;
 }
 
 .status {
-  font-size: 16px;
-  line-height: 24px;
   padding: 0;
-  margin: 12px 0 60px 0;
+  margin: 0 0 60px 0;
 }
 
+.status_performed {
+  color: var(--accent-order);
+}
 .title {
   font-size: 24px;
   line-height: 28px;
   padding: 0;
-  margin: 0 0 24px 0;
+  /*margin: 0 0 24px 0;*/
+  margin: 0 0 8px 0;
 }
 
+.image {
+  width:64px;
+  height: 64px;
+  object-fit: cover;
+  margin: 0 16px 0 0;
+}
 .list {
   display: flex;
   flex-direction: column;
   width: 100%;
   list-style-type: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+
+  max-height: 304px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
+
+
+.list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  outline: 0;
+}
+
 
 .list__item {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-between;  
+  align-items: center !important;
 }
 
 .list__iteminfo {
   display: flex;
   width: 100%;
   justify-content: flex-start;
+  align-items: center !important;
 }
 
 .list__priceinfo {

@@ -8,13 +8,15 @@ import {
   CLEAR_APIMESSAGE
 } from "../actions";
 
+import type { TAuthActions } from '../actions/auth-actions';
+
 const initialState = {
   user: { email: "", name: "" },
   isLogged: false,
   apiData: {message: '', success: false},
 };
 
-export function authReducer(state = initialState, action) {
+export function authReducer(state = initialState, action: TAuthActions) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return {

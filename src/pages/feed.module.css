@@ -37,7 +37,39 @@
 }
 
 .feedSection {
-    display: flex;
+    width: 100%;
+    max-width: calc(((1260 - 80) / 2) * 100%);
     flex-direction: column;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.ordersList {
+    max-height: 694px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    margin: 0 60px 0 0;
+}
+
+.mainTitle {
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 30px;
     width: 100%;
 }
+
+
+.ordersList::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .ordersList::-webkit-scrollbar-track {
+    background-color: #2f2f37;
+    width: 8px;
+  }
+  
+  .ordersList::-webkit-scrollbar-thumb {
+    background-color: #8585ad;
+    outline: 0;
+  }
+  
