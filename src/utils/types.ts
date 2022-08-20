@@ -1,4 +1,6 @@
 import React from 'react';
+import { TAuthActions } from './auth-types';
+import { TSocketActions } from '../services/actions/socket-actions';
 
 export type TNewItem = { [key: string]: string | number };
 
@@ -98,5 +100,8 @@ export type TOrderProps = {
   item: TOrderFull;
 };
 
+export type TMessage = {
+  text: string;
+}
 
-AppActions, AppDispatch, RootState 
+export type AppActions = | TAuthActions | TSocketActions;

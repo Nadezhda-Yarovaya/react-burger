@@ -9,10 +9,15 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { rootReducer } from "./services/reducers";
+import { socketMiddleware } from "./services/middlewares/socketMiddleware";
 
 //const composeEnhancers = composeWithDevTools();
-const enhancer = composeWithDevTools(applyMiddleware(thunk));
+const wsUrl='wss://norma.nomoreparties.space/orders/all';
+const enhancer = composeWithDevTools(applyMiddleware(thunk, socketMiddleware(wsUrl)));
 const store = createStore(rootReducer, enhancer);
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

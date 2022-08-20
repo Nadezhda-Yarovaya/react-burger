@@ -74,7 +74,7 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     if (allIngredients12[0].name) {
       const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
-      console.log('FILTERED list:', filteredTempOrdersList);
+      // console.log('FILTERED list:', filteredTempOrdersList);
       dispatch({
         type: SET_POSITIONSDATA,
         payload: filteredTempOrdersList,

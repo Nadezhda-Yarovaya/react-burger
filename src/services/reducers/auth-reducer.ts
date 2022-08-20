@@ -8,7 +8,7 @@ import {
   CLEAR_APIMESSAGE
 } from "../actions";
 
-import type { TAuthActions } from '../actions/auth-actions';
+import type { TAuthActions } from '../../utils/auth-types';
 
 const initialState = {
   user: { email: "", name: "" },
