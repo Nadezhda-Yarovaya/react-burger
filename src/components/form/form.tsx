@@ -1,9 +1,9 @@
 import buttonStyles from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/button.module.css';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import formStyles from './form.module.css';
 import { FC, HTMLInputTypeAttribute, SyntheticEvent } from 'react';
 import { Button } from '../../utils/typesLibrary';
+import { useSelector } from '../../hooks/hooks';
 
 const {
   container,
@@ -93,10 +93,10 @@ const Form: FC<TFormProps> = ({
     e.preventDefault();
     onSubmit();
   }
-  const apiMessage = useSelector((state: any) => {
+  const apiMessage = useSelector((state) => {
     return state.auth.apiData.message;
   });
-  const apiSuccess = useSelector((state: any) => state.auth.apiData.success);
+  const apiSuccess = useSelector((state) => state.auth.apiData.success);
 
   const oneButton = (
     <input

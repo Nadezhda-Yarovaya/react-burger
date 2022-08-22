@@ -10,10 +10,16 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { rootReducer } from "./services/reducers";
 import { socketMiddleware } from "./services/middlewares/socketMiddleware";
+import { getCookie } from './utils/auth';
+import { feedWsActions } from './services/actions/socket-actions';
 
 //const composeEnhancers = composeWithDevTools();
-const wsUrl='wss://norma.nomoreparties.space/orders/all';
-const enhancer = composeWithDevTools(applyMiddleware(thunk, socketMiddleware(wsUrl)));
+const wsUrl='wss://norma.nomoreparties.space/orders/';
+const accessToken = getCookie('token');
+console.log('token: ', accessToken);
+const ourWsMiddleware = socketMiddleware(feedWsActions);
+const ourWsMiddleware2 = socketMiddleware();
+const enhancer = composeWithDevTools(applyMiddleware(thunk, ourWsMiddleware, ourWsMiddleware2));
 const store = createStore(rootReducer, enhancer);
 
 export type AppDispatch = typeof store.dispatch;

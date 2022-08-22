@@ -20,8 +20,13 @@ import {
   getCookie,
 } from '../../utils/auth';
 
-export function performRegister(name, email, pass, history) {
-  return (dispatch, getState) => {
+import { AppDispatch } from '../..';
+import { AppThunk } from '../../utils/types';
+
+
+
+export const performRegister: AppThunk =
+  (name, email, pass, history) => (dispatch: AppDispatch) => {
     register(email, pass, name)
       .then((res) => {
         if (res.success) {
@@ -44,15 +49,21 @@ export function performRegister(name, email, pass, history) {
 
       .catch((err) => console.log(err));
   };
-}
 
-export function performLogin(email, pass, history) {
-  return (dispatch, getState) => {
+export const performLogin: AppThunk =
+  (email, pass, history) => (dispatch: AppDispatch, getState) => {
     const cameFrom = history.location?.state?.from || '/';
     login(email, pass)
       .then((res) => {
         if (res && res.accessToken) {
-          updateCookie(res);
+          // updateCookie(res);
+
+          let authToken = res.accessToken.split('Bearer ')[1];
+          console.log('when perform login authtoken: ', authToken);
+          if (authToken) {
+            console.log('set cookie upon login ' );
+            setCookie('token', authToken, { expires: 1 }); // expires in minutes
+          }
           localStorage.setItem('refreshToken', res.refreshToken); // не меняется, только access менеятся
         }
         if (res && res.success) {
@@ -72,7 +83,7 @@ export function performLogin(email, pass, history) {
             history.push({ pathname: cameFrom, state: { from: '/login' } });
           }, 1500);
         } else {
-          handleApiMessageError(dispatch, 'Ошибка e-mail или пароля');
+          handleApiMessageError(dispatch, 'Ошибка email или пароля');
         }
       })
 
@@ -80,18 +91,16 @@ export function performLogin(email, pass, history) {
         console.log('Ошибка: ', err);
       });
   };
-}
 
-function handleGetUser(accessToken) {
-  return (dispatch, getState) => {
+const handleGetUser: AppThunk =
+  (accessToken) => (dispatch: AppDispatch, getState) => {
     getUser(accessToken).then((res) => {
       dispatch({ type: GET_USER, payload: res.user });
     });
   };
-}
 
-export function handleUpdateUser(email, name, pass, accessToken) {
-  return (dispatch, getState) => {
+export const handleUpdateUser: AppThunk =
+  (email, name, pass, accessToken) => (dispatch: AppDispatch, getState) => {
     if (accessToken) {
       updateUser(email, name, pass, accessToken)
         .then((res) => {
@@ -121,21 +130,19 @@ export function handleUpdateUser(email, name, pass, accessToken) {
         });
     }
   };
-}
-export function loadUser() {
-  return (dispatch, getState) => {
-    if (getCookie('token')) {
-      const accessToken = getCookie('token');
-      return dispatch(handleGetUser(accessToken));
-    } else {
-      const refeshSaved = localStorage.getItem('refreshToken');
-      return dispatch(handleRefreshToken(refeshSaved, handleGetUser));
-    }
-  };
-}
 
-export function patchUser(email, name, pass) {
-  return (dispatch, getState) => {
+export const loadUser: AppThunk = () => (dispatch: AppDispatch, getState) => {
+  if (getCookie('token')) {
+    const accessToken = getCookie('token');
+    return dispatch(handleGetUser(accessToken));
+  } else {
+    const refeshSaved = localStorage.getItem('refreshToken');
+    return dispatch(handleRefreshToken(refeshSaved, handleGetUser));
+  }
+};
+
+export const patchUser: AppThunk =
+  (email, name, pass) => (dispatch: AppDispatch, getState) => {
     const accessToken = getCookie('token');
 
     if (getCookie('token')) {
@@ -147,10 +154,10 @@ export function patchUser(email, name, pass) {
       );
     }
   };
-}
 
-function handleRefreshToken(refeshSaved, handleUser, ...rest) {
-  return (dispatch, getState) => {
+const handleRefreshToken: AppThunk =
+  (refeshSaved, handleUser, ...rest) =>
+  (dispatch: AppDispatch, getState) => {
     refreshToken(refeshSaved).then((res) => {
       localStorage.removeItem('refreshToken');
       localStorage.setItem('refreshToken', res.refreshToken);
@@ -171,10 +178,9 @@ function handleRefreshToken(refeshSaved, handleUser, ...rest) {
       return dispatch(handleUser(authToken));
     });
   };
-}
 
-export function performLogout(refreshToken, history) {
-  return (dispatch, getState) => {
+export const performLogout: AppThunk =
+  (refreshToken, history) => (dispatch: AppDispatch, getState) => {
     logout(refreshToken)
       .then((res) => {
         localStorage.removeItem('refreshToken');
@@ -186,18 +192,9 @@ export function performLogout(refreshToken, history) {
       })
       .catch((err) => console.log(err));
   };
-}
 
-function updateCookie(res) {
-  let authToken;
-  authToken = res.accessToken.split('Bearer ')[1];
-  if (authToken) {
-    setCookie('token', authToken, { expires: 1 }); // expires in minutes
-  }
-}
-
-export function handleRequestResetPassword(email, history) {
-  return (dispatch, getState) => {
+export const handleRequestResetPassword: AppThunk =
+  (email, history) => () => {
     return requestResetPassword(email)
       .then((res) => {
         if (res.success) {
@@ -210,10 +207,9 @@ export function handleRequestResetPassword(email, history) {
       })
       .catch((err) => console.log(err));
   };
-}
 
-export function resetPass(pass, token, history) {
-  return (dispatch, getState) => {
+export const resetPass: AppThunk =
+  (pass, token, history) => (dispatch: AppDispatch, getState) => {
     resetPassword(pass, token)
       .then((res) => {
         if (res.success) {
@@ -243,18 +239,18 @@ export function resetPass(pass, token, history) {
       })
       .catch((err) => console.log(err));
   };
-}
 
-export function handleApiMessageError(dispatch, message) {
-  dispatch({
-    type: SHOW_APIMESSAGE,
-    payload: {
-      message: message,
-      success: false,
-    },
-  });
 
-  setTimeout(() => {
-    dispatch({ type: CLEAR_APIMESSAGE });
-  }, 2500);
-}
+  export function handleApiMessageError(dispatch: AppDispatch, message: string) {
+    dispatch({
+      type: SHOW_APIMESSAGE,
+      payload: {
+        message: message,
+        success: false,
+      },
+    });
+  
+    setTimeout(() => {
+      dispatch({ type: CLEAR_APIMESSAGE });
+    }, 2500);
+  }

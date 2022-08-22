@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, FC } from 'react';
 import constructorListStyles from './constructor-list.module.css';
 import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
-import { useSelector, useDispatch } from 'react-redux';
 
 import {
   SET_DROPDIRECTION,
@@ -12,6 +11,8 @@ import { useDrop } from 'react-dnd';
 import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 import { TIngredient, TIngredientUnique } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
+
 
 const {
   stuffings,
@@ -30,15 +31,15 @@ const ConstructorList: FC = () => {
   const direction = useSelector(
     (state: any) => state.dragAndDrop.dropDirection
   );
-  const currentBun = useSelector((state: any) => state.ingredients.bun);
+  const currentBun = useSelector((state) => state.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
 
   const initialIngredOffset = useSelector(
-    (store: any) => store.dragAndDrop.initialIngredOffset
+    (store) => store.dragAndDrop.initialIngredOffset
   );
 
   const stuffingListDropped = useSelector(
-    (state: any) => state.dragAndDrop.droppedElements
+    (state) => state.dragAndDrop.droppedElements
   );
 
   const thisRef = useRef<HTMLLIElement>(null);

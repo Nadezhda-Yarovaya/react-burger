@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import ingredientStyles from './ingredient.module.css';
 import { useDrag } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   CurrencyIcon,
@@ -19,6 +18,7 @@ import {
 } from '../../services/actions';
 import { dropElement } from '../../services/action-creators/dnd-action-creators';
 import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 type TIngredientProps = {
   item: TIngredientUnique;
@@ -37,7 +37,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     list__item,
   } = ingredientStyles;
 
-  const bunCount = useSelector((store: any) => {
+  const bunCount = useSelector((store) => {
     let totalCount = 0;
     if (store.ingredients.bun._id === item._id) {
       totalCount++;
@@ -45,7 +45,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     return totalCount;
   });
 
-  const ingredientCount = useSelector((store: any) => {
+  const ingredientCount = useSelector((store) => {
     let totalCount = 0;
     store.dragAndDrop.droppedElements.forEach((curItem: TIngredientUnique) => {
       if (curItem._id === item._id) {

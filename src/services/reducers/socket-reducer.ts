@@ -3,10 +3,11 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-  WS_GET_ORDERS
-} from "../action-types/socket-action-types";
+  WS_GET_ORDERS,
+  WS_SET_ORDERSLIST
+} from "../actions/socket-actions";
 
-import type { TSocketActions } from "../actions/socket-actions";
+import type { TSocketActions } from "../action-types/socket-action-types";
 import { TMessage } from "../../utils/types";
 // лучше создать отдельный файл типов и оттуда брать */
 
@@ -19,10 +20,11 @@ const initialState = {
   wsConnected: false,
   error: undefined,
   orders: '',
+  ordersArray: [],
 };
 
 // Создадим редьюсер для WebSocket
-export const wsReducer = (state = initialState, action: TSocketActions) => {
+export const wsReducer = (state: TWSState = initialState, action: TSocketActions) => {
   switch (action.type) {
     // Опишем обработку экшена с типом WS_CONNECTION_SUCCESS
     // Установим флаг wsConnected в состояние true
@@ -64,6 +66,13 @@ export const wsReducer = (state = initialState, action: TSocketActions) => {
       ...state,
       error: undefined,
       orders: action.payload
+    }
+
+    case WS_SET_ORDERSLIST: 
+    return {
+      ...state,
+      error: undefined,
+      ordersArray: action.payload
     }
     default:
       return state;

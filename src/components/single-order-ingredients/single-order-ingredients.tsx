@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { TIngredientUnique } from '../../utils/types';
+import { TIngredient } from '../../utils/types';
 import singleOrderIngredientsStyles from './single-order-ingredients.module.css';
 
 const { list__item, list__image, list__image_more, par, list__item_more } =
@@ -7,8 +7,8 @@ const { list__item, list__image, list__image_more, par, list__item_more } =
 
 type TSingleOrderProps = {
   index: number;
-  ingredient: TIngredientUnique;
-  positions: Array<TIngredientUnique>;
+  ingredient: TIngredient;
+  positions: Array<TIngredient>;
 };
 
 const SingleOrderIngredients: FC<TSingleOrderProps> = ({

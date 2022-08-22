@@ -1,6 +1,11 @@
 import React from 'react';
-import { TAuthActions } from './auth-types';
-import { TSocketActions } from '../services/actions/socket-actions';
+import { TAuthActions } from '../services/action-types/auth-action-types';
+import { TSocketActions } from '../services/action-types/socket-action-types';
+
+import { Action, ActionCreator } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { AppDispatch, RootState } from '../';
+import { TIngedientsActions } from '../services/action-types/ingredients-action-types';
 
 export type TNewItem = { [key: string]: string | number };
 
@@ -91,6 +96,35 @@ export type TOrderFull = {
   _id: string,
 }
 
+export type TOrder = {
+  createdAt: string;
+  ingredients: Array<string>;  
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;  
+  _id: string,
+}
+
+export type TOrderWithIngredients = {
+  createdAt: string;
+  ingredients: Array<TIngredient>;  
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;  
+  _id: string,
+}
+
+export type TByCategory = {
+  buns: Array<TIngredient>;
+  sauce: Array<TIngredient>;
+  main: Array<TIngredient>;
+}
+
+export type TDefaultIngred = {
+ name: string; price: number; image: string;};
+            
 
 export type TOrdersId = {
   makeAllPositionsList: (currentList: Array<string>) => Array<TIngredientUnique>;
@@ -104,4 +138,8 @@ export type TMessage = {
   text: string;
 }
 
-export type AppActions = | TAuthActions | TSocketActions;
+export type TAppActions = | TAuthActions | TSocketActions | TIngedientsActions;
+
+
+// Типизация thunk'ов в нашем приложении
+export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TAppActions>>;

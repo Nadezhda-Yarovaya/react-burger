@@ -106,6 +106,7 @@ const setCookie = (
   value: any,
   props: TSetCookieProps | undefined
 ) => {
+  console.log('set cookie?? ', name, value, props);
   props = props || {};
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
@@ -129,6 +130,7 @@ const setCookie = (
 };
 
 const getCookie = (name: string) => {
+  console.log('cookie: ', document.cookie);
   const matches = document.cookie.match(
     new RegExp(
       '(?:^|; )' +
@@ -136,6 +138,7 @@ const getCookie = (name: string) => {
         '=([^;]*)'
     )
   );
+  console.log('matshces: ', matches);
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 

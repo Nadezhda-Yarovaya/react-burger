@@ -1,3 +1,4 @@
+import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
   GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
@@ -18,17 +19,18 @@ const initialState = {
     status: '',
     positions: [],
     sum: 0,
-    date: Date("2022-03-25"),
+    date: '2022',
     _id: '',
   }]
 };
 
-export function orderInfoReducer(state = initialState, action) {
+export function orderInfoReducer(state = initialState, action : TOrderInfoActions) {
   switch (action.type) {
     case GET_ORDERDATA_REQUEST:
       return {
         ...state,
-        isOrderLoading: false,
+        isOrderLoading: true,
+        isPerformed: true,
       };
     case GET_ORDERDATA_SUCCESS:
       return {
@@ -38,8 +40,7 @@ export function orderInfoReducer(state = initialState, action) {
           number: action.createdOrder.number,
           positions: action.createdOrder.positions,
         },
-        isOrderLoading: false,
-        isPerformed: true,
+        isOrderLoading: false,        
       };
     case CLEAR_ORDERDATA:
       return {

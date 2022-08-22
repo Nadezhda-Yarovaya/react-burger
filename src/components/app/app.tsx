@@ -7,7 +7,6 @@ import { fetchAllIngredients } from '../../services/action-creators/ingredients-
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import appStyles from './app.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { getAllIngredients } from '../../services/selectors';
 import { SET_POSITIONSDATA } from '../../services/actions';
 import initialTempOrderList from '../../utils/tempdata';
@@ -40,6 +39,8 @@ import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
 import { TLocation, TOrderItem, TOrderFull } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
+import { useDispatch } from '../../hooks/hooks';
+import { useSelector } from 'react-redux';
 
 const { page } = appStyles;
 

@@ -1,57 +1,79 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
 
-import type { AppActions } from '../../utils/types';
-import type { AppDispatch, RootState
- } from '../..';
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, 
-  WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_GET_ORDERS, WS_SEND_MESSAGE } from '../action-types/socket-action-types';
-import { TSocketActions } from '../actions/socket-actions';
+import type { TAppActions } from '../../utils/types';
+import type { AppDispatch, RootState } from '../..';
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+  WS_GET_ORDERS,
+  WS_SEND_MESSAGE,
+} from '../actions/socket-actions';
+import { TSocketActions } from '../action-types/socket-action-types';
 
-export const socketMiddleware = (wsUrl: string): Middleware => {
-    return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
-        let socket: WebSocket | null = null;
+type TWsActions = {
+  wsConnect: typeof WS_CONNECTION_START;
+  onSuccess: typeof WS_CONNECTION_SUCCESS,
+  onError: typeof WS_CONNECTION_ERROR,  
+  onClose: typeof WS_CONNECTION_CLOSED,
+  onMessage: typeof WS_GET_MESSAGE,
+  onSendMessage: typeof WS_SEND_MESSAGE,
+  onGetOrders: typeof WS_GET_ORDERS,  
+  // onSetOrdersList: typeof WS_SET_ORDERSLIST
+};
 
-    return next => (action: TSocketActions) => {
-      const { dispatch, getState } = store;
-      const { type, payload } = action;
+export const socketMiddleware = ( wsActions: TWsActions) => {
+  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
       
- 
-      if (type === WS_CONNECTION_START) {
-            // объект класса WebSocket
-        socket = new WebSocket(wsUrl);
+  let socket: WebSocket | null = null;
+  let url = '';
+
+  return (next) => (action) => {
+  const {dispatch} = store;
+      const {
+        wsConnect,
+        onSuccess,
+        onError,
+        onClose,
+        onMessage,
+      } = wsActions;
+
+      if (action.type === wsConnect) {
+        url = action.payload;
+        socket = new WebSocket(url);
+        dispatch({ type: wsConnect });
       }
+
+
       if (socket) {
-
-                // функция, которая вызывается при открытии сокета
-        socket.onopen = event => {
-          
-          dispatch({ type: WS_CONNECTION_SUCCESS, payload: event });
+        socket.onopen = () => {
+          dispatch({ type: onSuccess });
         };
 
-                // функция, которая вызывается при ошибке соединения
-        socket.onerror = event => {
-          dispatch({ type: WS_CONNECTION_ERROR, payload: event });
+        socket.onclose = (event) => {
+          if (event.code !== 1000) {
+            dispatch({ type: onError, payload: event.code.toString });
+          } else {
+            dispatch({ type: onClose });
+          }
         };
 
-                // функция, которая вызывается при получения события от сервера
-        socket.onmessage = event => {
+        socket.onerror = (event) => {
+          dispatch({ type: onError, payload: JSON.stringify(event) });
+        };
+
+        socket.onmessage = (event) => {
           const { data } = event;
-          // console.log('event: ', event);
-          dispatch({ type: WS_GET_ORDERS, payload: data });
-        };
-                // функция, которая вызывается при закрытии соединения
-        socket.onclose = event => {
-          dispatch({ type: WS_CONNECTION_CLOSED, payload: event });
+          dispatch({ type: onMessage, payload: JSON.parse(data) });
         };
 
-        if (type === WS_SEND_MESSAGE) {
-          const message = payload;
-                    // функция для отправки сообщения на сервер
-          socket.send(JSON.stringify(message));
-        }
+     /*   if (action.type === wsDisconnect) {
+          socket.close();
+        }*/
       }
 
-      next(action);
-    };
-    }) as Middleware;
+    } // close next action
+  } // close store
 };

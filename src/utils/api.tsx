@@ -21,11 +21,29 @@ const getIngredients = () => {
 };
 
 const makeOrder = (ingredients: Array<string>) => {
+  console.log('ingred make Order: ', ingredients);
+  console.log('ingred make Order: ', JSON.stringify(ingredients));
+  const ingred1 = JSON.stringify(ingredients);
+
   return fetch(`${config.BASE_URL}/orders`, {
     method: 'POST',
     headers: config.headers,
+    body: ingred1,
+  }).then(_getResponse);
+};
+
+const makeOrderWithToken = (ingredients: Array<string>, accessToken: string) => {
+  console.log('ingred: ', ingredients);
+  console.log('acces tok: ', accessToken);
+  return fetch(`${config.BASE_URL}/orders`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + accessToken,
+    },
     body: JSON.stringify(ingredients),
   }).then(_getResponse);
 };
 
-export { getIngredients, makeOrder };
+
+export { getIngredients, makeOrder, makeOrderWithToken };

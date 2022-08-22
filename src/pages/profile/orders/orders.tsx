@@ -10,7 +10,7 @@ const Orders: FC = () => {
     <>
       <div className={container}>
         <PersonalMenu />
-        <OrdersList listType='profile' />
+        <OrdersList />
       </div>
     </>
   );

@@ -6,8 +6,7 @@
   }
   
   .number {
-    font-size: 28px;
-    line-height: 24px;
+    color: var(--text-color);
     width: 100%;
     max-width: 100px;
     margin: 0;
@@ -16,9 +15,11 @@
   }
   
   .name {
-    font-size: 24px;
-    line-height: 30px;
-    padding: 0;
+    color: var(--text-color);
+  }
+
+  .sum {
+    color: var(--text-color);
   }
   .status {
       font-size: 16px;

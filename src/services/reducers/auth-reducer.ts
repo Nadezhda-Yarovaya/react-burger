@@ -8,9 +8,18 @@ import {
   CLEAR_APIMESSAGE
 } from "../actions";
 
-import type { TAuthActions } from '../../utils/auth-types';
+import type { TAuthActions } from '../action-types/auth-action-types';
 
-const initialState = {
+type TAuthType = {
+  user: {
+    email: string;
+    name: string;
+  };
+  isLogged: boolean;
+  apiData: {message: string; success: boolean;};
+}
+
+const initialState: TAuthType = {
   user: { email: "", name: "" },
   isLogged: false,
   apiData: {message: '', success: false},

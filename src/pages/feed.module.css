@@ -24,16 +24,31 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
+    flex-wrap: wrap;
+    height: 250px;
 }
 
 .numberOrderItem {
-    color: green;
+    color: var(--accent-order);
+}
+
+.numberOrderItemPending{
+    color: var(--text-color);
+}
+
+.par {
+    color: var(--text-color);
+    font-weight: 400;
+    margin: 0;
+}
+
+.number {
+    margin: 0;
 }
 
 .numbersShown {
-    min-height: 200px;
-    border: 2px solid purple;
     width: 100%;
+    margin: 0 0 60px 0;
 }
 
 .feedSection {

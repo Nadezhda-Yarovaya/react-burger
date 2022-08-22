@@ -4,15 +4,15 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import ConstructorList from '../constructor-list/constructor-list';
 
-import { useSelector, useDispatch } from 'react-redux';
 
 import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
 
 import TotalSum from '../total-sum/total-sum';
 import { ifItsMobile, loadIngredients } from '../../services/selectors';
-import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
+import { fetchOrderNumber, placeOrder } from '../../services/action-creators/order-action-creators';
 import { useHistory } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const {
   constructor__title,
@@ -26,18 +26,18 @@ const {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store: any) => {
+  const listOfIngredients = useSelector((store) => {
     return store.ingredients.listOfIngredients;
   });
   const createdStuffingsList = useSelector(
-    (store: any) => store.dragAndDrop.droppedElements
+    (store) => store.dragAndDrop.droppedElements
   );
   const isMobile = useSelector(ifItsMobile);
   const isMobileOrdered = useSelector(
-    (store: any) => store.mobile.isMobileOrdered
+    (store) => store.mobile.isMobileOrdered
   );
   const bunSelectedFromStore = useSelector(
-    (store: any) => store.ingredients.bun
+    (store) => store.ingredients.bun
   );
   const isLoading = useSelector(loadIngredients);
 
@@ -79,7 +79,8 @@ const BurgerConstructor: FC = () => {
   function handlePerformOrder() {
     const thisOrderList: Array<string> = makeListOfOrder();
     if (isLogged) {
-      dispatch<any>(fetchOrderNumber(thisOrderList));
+     // dispatch<any>(fetchOrderNumber({ingredients: thisOrderList}));
+     dispatch<any>(placeOrder({ingredients: thisOrderList}));
     } else {
       localStorage.setItem(
         'listOfOrder',

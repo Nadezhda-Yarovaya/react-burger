@@ -3,10 +3,10 @@ import React, { FC, useState, useEffect, useRef } from 'react';
 import { Tab } from '../../utils/typesLibrary';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
-import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTSBYCAT } from '../../services/actions';
 import { getAllIngredients, loadIngredients } from '../../services/selectors';
 import { TIngredient } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 

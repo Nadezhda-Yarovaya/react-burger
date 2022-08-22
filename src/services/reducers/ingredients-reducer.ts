@@ -10,6 +10,7 @@ import {
   REMOVE_MODALINGREDIENTS,
   CLEAR_BUN,
 } from '../actions';
+import {TIngedientsActions} from '../action-types/ingredients-action-types';
 
 const initialState = {
   listOfIngredients: [{ name: '', price: 0, image: '' }],
@@ -29,7 +30,7 @@ const initialState = {
   areIngredientsShown: false,
 };
 
-export function ingredientsReducer(state = initialState, action) {
+export function ingredientsReducer(state = initialState, action: TIngedientsActions) {
   switch (action.type) {
     case SET_ALLINGREDIENTS_REQUEST:
       return {

@@ -1,3 +1,4 @@
+import { TMobileActions } from '../action-types/mobile-types';
 import {
   SET_IFMOBILE,
   SET_IFMOBILEORDERED,
@@ -29,7 +30,7 @@ const initialState = {
   },
 };
 
-export function mobileReducer(state = initialState, action) {
+export function mobileReducer(state = initialState, action: TMobileActions) {
   switch (action.type) {
     case SET_IFMOBILE:
       return {

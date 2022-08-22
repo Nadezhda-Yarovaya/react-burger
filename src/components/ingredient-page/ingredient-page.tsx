@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -7,10 +6,11 @@ import { SET_CURRENT } from '../../services/actions';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import NotFound from '../../pages/not-found';
 import { TLocation, TNewItem } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const IngredientPage: FC = () => {
   const allIngredients = useSelector(
-    (store: any) => store.ingredients.listOfIngredients
+    (store) => store.ingredients.listOfIngredients
   );
 
   type TParams = {
