@@ -14,7 +14,7 @@ import { TFeedWsActions } from '../action-types/feed-ws-action-types';
 
 export type TWSState = {
   wsConnected: boolean;
-  error?: Event;
+  error?: string | undefined;
   orders: string;
   ordersArray?: Array<TOrderWithIngredients>;
 };

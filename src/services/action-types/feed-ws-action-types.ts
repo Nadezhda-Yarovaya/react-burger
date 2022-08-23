@@ -20,7 +20,7 @@ export interface IConnectionSuccess {
 
   export interface IConnectionError {
     readonly type: typeof WS_CONNECTION_ERROR;
-    readonly payload: Event;
+    readonly payload: string;
   }
 
   export interface IConnectionClosed {

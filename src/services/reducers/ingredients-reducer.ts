@@ -97,7 +97,7 @@ export function ingredientsReducer(
     case REMOVE_CURRENT:
       return {
         ...state,
-        currentIngredient: initialState.currentIngredient,
+        currentIngredient: action.currentIngredient,
       };
 
     case SET_MODALINGREDIENTS:

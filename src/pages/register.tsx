@@ -13,7 +13,7 @@ import {
 } from '../services/action-creators/auth-action-creators';
 import { useHistory } from 'react-router-dom';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
-import { intitialValuesRegister } from '../utils/utils';
+import { initialValues1 } from '../utils/utils';
 import { useDispatch } from '../hooks/hooks';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
@@ -24,10 +24,10 @@ const Register: FC = () => {
   const [isPassShown, setIsPassShown] = useState(true);
 
   const { values, handleChange, errors, isValid } = useFormAndValidation(
-    intitialValuesRegister
+    initialValues1
   );
 
-  const { email, password, name } = values;
+  const { name, email, password } = values;
 
   function handleRegister() {
     if (isValid) {

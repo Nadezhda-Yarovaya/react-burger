@@ -56,9 +56,9 @@ type TLocate = {
 
 export type TLocation = {
   state?: {
-    from: string;
+    from?: string;
   };
-  from: string;
+  from?: string;
   locate?: TLocate;
   feedLocate?: TLocate;
   ordersLocate?: TLocate;
@@ -71,26 +71,122 @@ export type TRectangle = {
   right?: number;
 };
 
+
+
+export type TInputsLogin = {
+  
+    email: string,
+    password: string,
+};
+
+export type TInputsPass = {  
+  email: string,
+};
+
+export type TInputsRegister = {
+  name: string,
+    email: string,
+    password: string,
+};
+
+export type TInputs = TInputsRegister;
+
+export type TInputsBool = TInputsBoolLogin | TInputsBoolPass | TInputsBoolRegister;
+
+export type TInputsBoolLogin =
+  {
+    
+    email: boolean;
+    password: boolean;
+    
+  };
+
+
+  export type TInputsBoolPass =
+  {
+    
+    email: boolean;
+  };
+
+  export type TInputsBoolRegister =
+  {
+    name: boolean;
+    email: boolean;
+    password: boolean;
+    
+  };
+
+  export type TInputs1 = {
+    name: string;
+    email: string;
+    password: string;
+    token: string
+  }
+
+  export type TInputsBool1 = {
+    name: boolean;
+    email: boolean;
+    password: boolean;
+    token: boolean;
+  }
+
 export type TForm = {
+  values: TInputs1;
+  errors: TInputs1;
+  validities: TInputsBool1;
+};
+
+
+
+export type TFormLogin = {
   values: {
-    name?: string;
-    email?: string;
-    password?: string;
-    token?: string;
+    email: string;
+    password: string;    
   };
   errors: {
-    name?: string;
-    email?: string;
-    password?: string;
-    token?: string;
+    email: string;
+    password: string;
   };
   validities: {
-    name?: boolean;
-    email?: boolean;
-    password?: boolean;
-    token?: boolean;
+    email: boolean;
+    password: boolean;
+    
   };
 };
+
+
+export type TFormPass = {
+  values: {
+    email: string;   
+  };
+  errors: {
+    email: string;
+  };
+  validities: {
+    email: boolean;    
+  };
+};
+
+export type TFormRegister = {
+  values: {
+    name: string;
+    email: string;
+    password: string;      
+  };
+  errors: {
+    name: string;
+    email: string;
+    password: string;
+  };
+  validities: {
+    name: boolean;
+    email: boolean;
+    password: boolean;
+    
+  };
+};
+
+export type TFormUnion = TFormRegister | TFormLogin;
 
 export type TOrderItem = {
   name: string;
@@ -102,12 +198,21 @@ export type TOrderItem = {
   _id: string;
 };
 
+export type TOrderFull1 = {
+  name: string;
+  order: { number: number };
+  status: string;
+  positions: Array<TIngredientUnique | string | TIngredient>;
+  sum: number;
+  date: string;
+  _id: string;
+};
 
 export type TOrderFull = {
   name: string;
   order: { number: number };
   status: string;
-  positions: Array<TIngredientUnique | string | TIngredient>;
+  positions: Array<TIngredientUnique | TIngredient>;
   sum: number;
   date: string;
   _id: string;
@@ -243,6 +348,6 @@ export type TAppActions =
   | TOrdersWsActions
   | TOrderInfoActions;
 
-export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, RootState, TAppActions>
->;
+export type AppThunk<TReturn = void> = 
+  ThunkAction<TReturn, RootState, never, TAppActions>
+;

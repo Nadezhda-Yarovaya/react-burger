@@ -23,7 +23,7 @@ export interface IConnectionSuccess {
 
 export interface IConnectionError {
   readonly type: typeof WS_CONNECTION_ORD_ERROR;
-  readonly payload: Event;
+  readonly payload: string;
   // readonly error: string ;
   // readonly wsConnected: boolean;
 }

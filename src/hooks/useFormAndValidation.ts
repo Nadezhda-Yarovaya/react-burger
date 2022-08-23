@@ -1,11 +1,26 @@
-import { useState, useCallback } from "react";
-import { TForm } from "../utils/types";
+import React, { useState, useCallback } from "react";
+import { TForm, TFormLogin, TFormUnion, TInputs, TInputsBool } from "../utils/types";
+
+type TUseFormHook = {
+  
+    values : TInputs;
+    handleChange: (e : React.ChangeEvent<HTMLInputElement>) => void;
+    errors: TInputs;
+    validities : TInputsBool;
+    isValid : boolean;
+    resetForm: () => void;
+    setValues: () => void;
+    setIsValid: () => void;
+  
+}; 
 
 export function useFormAndValidation(initialState : TForm) {
   const [values, setValues] = useState(initialState.values);
   const [errors, setErrors] = useState(initialState.errors);
   const [validities, setValidities] = useState(initialState.validities);
   const [isValid, setIsValid] = useState(false);
+
+  console.log('vlues hook: ', values);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +47,5 @@ export function useFormAndValidation(initialState : TForm) {
     validities,
     isValid,
     resetForm,
-    setValues,
-    setIsValid,
   };
 }

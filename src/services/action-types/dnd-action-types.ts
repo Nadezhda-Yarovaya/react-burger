@@ -23,7 +23,6 @@ type TCreatedOrder = {
 
 export interface IIncreaseDropElement {
   readonly type: typeof INCREASE_DROPPEDELEMENT;
-  readonly droppedElements: Array<TIngredientUnique>;
   readonly element: TIngredient;
   readonly uniqueId: string;
 }
@@ -39,13 +38,11 @@ export interface ISetDraggedConstructor {
 
 export interface IGoUpPosition {
   readonly type: typeof GOUP_POSITION;
-  readonly droppedElements: Array<TIngredientUnique>;
   readonly element: TIngredientUnique;
 }
 
 export interface IGoDownPosition {
   readonly type: typeof GODOWN_POSITION;
-  readonly droppedElements: Array<TIngredientUnique>;
   readonly element: TIngredientUnique;
 }
 

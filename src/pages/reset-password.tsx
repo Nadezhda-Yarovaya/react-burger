@@ -14,7 +14,7 @@ import {
 
 import { useHistory } from 'react-router';
 import formStyles from '../components/form/form.module.css';
-import { intitialValuesResetPass } from '../utils/utils';
+import { initialValues1 } from '../utils/utils';
 import { useDispatch } from '../hooks/hooks';
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -23,7 +23,7 @@ const ResetPassword: FC = () => {
   const history = useHistory<any>();
   const [isPassShown, setIsPassShown] = useState(true);
   const { values, handleChange, errors, isValid } = useFormAndValidation(
-    intitialValuesResetPass
+    initialValues1
   );
 
   const { password, token } = values;

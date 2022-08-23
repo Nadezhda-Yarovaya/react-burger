@@ -13,7 +13,7 @@ import {
   CLEAR_INITIALS,
   CLEAR_FINALS,
 } from '../../services/actions';
-import { ifItsMobile } from '../../services/selectors';
+
 import {
   TIngredient,
   TIngredientUniq2,
@@ -85,7 +85,7 @@ export const CustomConstructorElement: FC<TCustomElementProps> = ({
   type,
   item,
 }) => {
-  const isMobile = useSelector(ifItsMobile);
+  const isMobile = useSelector(state => state.mobile.isMobile);
 
   const dispatch = useDispatch();
 

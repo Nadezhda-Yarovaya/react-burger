@@ -1,21 +1,25 @@
+import { AppDispatch } from '../..';
+import { TIngredient, TIngredientUnique } from '../../utils/types';
 import {
   INCREASE_DROPPEDELEMENT,
   GOUP_POSITION,
   GODOWN_POSITION,
 } from '../actions';
 
-function _dropIngredient(currentItem, dispatch) {
+const _dropIngredient = (currentItem: TIngredient, dispatch: AppDispatch) => {
+  const uniqId: string = (Math.floor(Date.now())).toString();
   dispatch({
     type: INCREASE_DROPPEDELEMENT,
     element: currentItem,
-    uniqueId: Math.floor(Date.now()),
+    uniqueId: uniqId,
   });
 }
-export function dropElement(currentItem, dispatch) {
+
+export function dropElement(currentItem: TIngredient, dispatch: AppDispatch) {
   _dropIngredient(currentItem, dispatch);
 }
 
-export function dropElementWithinConstructor(currentItem, dispatch, direction) {
+export function dropElementWithinConstructor(currentItem: TIngredientUnique, dispatch: AppDispatch, direction: string) {
   if (currentItem.uniqueId) {
     if (direction === 'top') {
       dispatch({

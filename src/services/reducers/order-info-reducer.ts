@@ -1,4 +1,4 @@
-import { firstorder, TOrderFromServer, TOrderFull } from '../../utils/types';
+import { firstorder, TOrderFromServer, TOrderFull, TOrderFull1 } from '../../utils/types';
 import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
   GET_ORDERDATA_SUCCESS,
@@ -14,7 +14,7 @@ export type TOrderState = {
   isOrderLoading: boolean;
   isPerformed: boolean;
   totalSum: number;
-  orderFullList: Array<TOrderFull>;
+  orderFullList: Array<TOrderFull1>;
 };
 
 

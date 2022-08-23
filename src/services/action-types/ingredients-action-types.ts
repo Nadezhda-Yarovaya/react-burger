@@ -16,8 +16,7 @@ import {
   
   export interface ISetAllIngredientsReq {
     readonly type: typeof SET_ALLINGREDIENTS_REQUEST;
-      readonly isLoading: boolean;
-  }
+        }
   
   export interface ISetAllIngredientsSuccess {
       readonly type: typeof SET_ALLINGREDIENTS_SUCCESS;
@@ -26,7 +25,7 @@ import {
 
     export interface ISetAllIngredientsFailure {
         readonly type: typeof SET_ALLINGREDIENTS_FAILURE;
-          readonly isLoading: boolean;
+          
       }
 
       export interface IClearBun {
@@ -74,6 +73,7 @@ import {
         | IClearBun
         |ISetByCategory 
         | IReplaceBun
-        | IRemoveCurrent
+        | ISetCurrent
         | ISetModal
-        | IRemoveModal;
+        | IRemoveModal
+        |IRemoveCurrent;

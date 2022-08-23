@@ -7,7 +7,6 @@ import { fetchAllIngredients } from '../../services/action-creators/ingredients-
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import appStyles from './app.module.css';
-import { getAllIngredients } from '../../services/selectors';
 import { SET_POSITIONSDATA } from '../../services/actions';
 import initialTempOrderList from '../../utils/tempdata';
 
@@ -37,7 +36,7 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TLocation, TOrderItem, TOrderFull, TIngredient } from '../../utils/types';
+import { TLocation, TOrderItem, TOrderFull, TIngredient, firstIngred, TOrderFull1 } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 
@@ -82,7 +81,7 @@ const App: FunctionComponent = () => {
     }
   }, [allIngredients12]);
 
-  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull> => {
+  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull1> => {
     return arr1.map((item) => {
       console.log('подается на фильтрацию: ', item);
       const newPositions = item.positions.map((elementId) => {
@@ -129,6 +128,7 @@ const App: FunctionComponent = () => {
   function closeModalIngredientsShown() {
     dispatch({
       type: REMOVE_CURRENT,
+      currentIngredient: firstIngred
     });
 
     dispatch({

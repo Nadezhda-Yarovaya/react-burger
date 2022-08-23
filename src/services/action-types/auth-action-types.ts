@@ -1,5 +1,5 @@
 import {REGISTER_SUCCESS, LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS,GET_USER
-    , SET_LOGGED, SET_LOGGEDOUT, SHOW_APIMESSAGE, CLEAR_APIMESSAGE
+    , SET_LOGGED, SET_LOGGEDOUT, SHOW_APIMESSAGE, CLEAR_APIMESSAGE, GET_USER_REQUEST
     } from '../actions/auth-actions';
     
     type TUser ={
@@ -14,6 +14,11 @@ import {REGISTER_SUCCESS, LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, RESET_PAS
     export interface ILoginSuccess {
         readonly type: typeof LOGIN_SUCCESS;
         readonly payload: { user: TUser };
+      }
+
+      export interface IGetUserReq {
+        readonly type: typeof GET_USER_REQUEST;
+       
       }
           
     export interface IGetUser {
@@ -49,7 +54,8 @@ import {REGISTER_SUCCESS, LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, RESET_PAS
     export type TAuthActions = 
         | IRegisterSuccess
         | ILoginSuccess
-        | IGetUser
+        | IGetUserReq
+               | IGetUser
         | ISetLogged
         | ISetLoggedOut
         | IShowApiMessage

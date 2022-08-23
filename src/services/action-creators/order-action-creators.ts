@@ -8,7 +8,7 @@ import { AppThunk } from '../../utils/types';
 import { AppDispatch } from '../..';
 import { getCookie } from '../../utils/auth';
 
-export const fetchOrderNumber: AppThunk = (ingredientsInOrder) =>
+export const fetchOrderNumber = (ingredientsInOrder : Array<string>): AppThunk =>
    (dispatch : AppDispatch, getState) => {
     dispatch({
       type: GET_ORDERDATA_REQUEST,
@@ -36,7 +36,7 @@ export const fetchOrderNumber: AppThunk = (ingredientsInOrder) =>
 
 
   
-export const placeOrder: AppThunk = (ingredientsInOrder) =>
+export const placeOrder = (ingredientsInOrder : Array<string>): AppThunk =>
 (dispatch : AppDispatch, getState) => {
  dispatch({
    type: GET_ORDERDATA_REQUEST,

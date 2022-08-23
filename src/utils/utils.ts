@@ -1,6 +1,28 @@
-import { TForm } from './types';
+import { TForm, TFormLogin, TFormPass, TFormRegister } from './types';
 
-export const intitialValuesLogin: TForm = {
+export const initialValues1 : TForm = {
+  values: {
+    email: '',
+    password: '',
+    name: '',
+    token: '',
+  },
+  errors: {
+    email: '',
+    password: '',
+    name: '',
+    token: '',
+  },
+  validities: {
+    email: false,
+    password: false,
+    name: false,
+    token: false, 
+  },
+
+} 
+/*
+export const intitialValuesLogin: TFormLogin = {
   values: {
     email: '',
     password: '',
@@ -15,7 +37,7 @@ export const intitialValuesLogin: TForm = {
   },
 };
 
-export const intitialValuesPass: TForm = {
+export const intitialValuesPass: TFormPass = {
   values: {
     email: '',
   },
@@ -27,7 +49,7 @@ export const intitialValuesPass: TForm = {
   },
 };
 
-export const intitialValuesRegister: TForm = {
+export const intitialValuesRegister: TFormRegister = {
   values: {
     name: '',
     email: '',
@@ -43,8 +65,8 @@ export const intitialValuesRegister: TForm = {
     email: false,
     password: false,
   },
-};
-
+}; */
+/*
 export const intitialValuesResetPass: TForm = {
   values: {
     password: '',
@@ -58,7 +80,7 @@ export const intitialValuesResetPass: TForm = {
     password: false,
     token: false,
   },
-};
+}; */
 
 export const numberslist: Array<number> = [55566, 77984, 56464];
 

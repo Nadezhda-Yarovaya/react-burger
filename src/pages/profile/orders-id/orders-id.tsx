@@ -1,11 +1,12 @@
 import React, { useState, useEffect, FC } from 'react';
 import ordersIdStyles from './orders-id.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TOrderItem, TOrderFull } from '../../../utils/types';
+import { TOrderItem, TOrderFull, TOrderFull1 } from '../../../utils/types';
 import { initialElement } from '../../../utils/utils';
+import { useSelector } from '../../../hooks/hooks';
 
 const {
   container,
@@ -25,7 +26,7 @@ const {
 
 const OrdersId: FC = () => {
   const [currentOrderShown, setCurrentOrderShown] =
-    useState<TOrderFull>(initialElement);
+    useState<TOrderFull1>(initialElement);
 
   console.log('current order: ', currentOrderShown);
 
@@ -35,7 +36,7 @@ const OrdersId: FC = () => {
 
   const { id } = useParams<TParams>();
 
-  const orderList = useSelector((state: any) => state.order.orderFullList);
+  const orderList = useSelector((state) => state.order.orderFullList);
   console.log('orderList: ', orderList);
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const OrdersId: FC = () => {
     }
   }, [id, orderList]);
 
+  
   return (
     <>
       <div className={container}>
@@ -54,8 +56,9 @@ const OrdersId: FC = () => {
           <p className={`${status} ${status_performed} text text_type_main-default`}>{currentOrderShown.status}</p>
           <p className='text text_type_main-medium mb-6'>Состав :</p>
           <ul className={list}>
-            {currentOrderShown.positions[0] &&
+            {currentOrderShown.positions[0]  &&
               currentOrderShown.positions.map((element, ind) => (
+                
                 <li key={ind} className={list__item}>
                   <div className={list__iteminfo}>
                     <img src={element.image} alt={element.name} className={image} />
@@ -66,6 +69,7 @@ const OrdersId: FC = () => {
                     <CurrencyIcon type='primary' />
                   </div>
                 </li>
+                
               ))}
           </ul>
         </div>

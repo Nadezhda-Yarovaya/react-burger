@@ -7,8 +7,6 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { ifItsMobile } from '../../services/selectors';
-
 import { TIngredient, TIngredientUnique, TLocation } from '../../utils/types';
 
 import {
@@ -54,7 +52,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     });
     return totalCount;
   });
-  const isMobile = useSelector(ifItsMobile);
+  const isMobile = useSelector(state => state.mobile.isMobile);
 
   const [, draggedIngredientRef] = useDrag({
     type: 'ingredient',

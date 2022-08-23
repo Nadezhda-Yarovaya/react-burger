@@ -13,10 +13,11 @@ import {
   WS_SET_ORDERSLIST,
   WS_CONNECTION_CLOSED,
 } from '../services/actions/feed-ws-actions';
-import { useSelector } from 'react-redux';
+
 import { TIngredient, TOrder, TOrderWithIngredients } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
 import { AppDispatch } from '..';
+import { useSelector } from '../hooks/hooks';
 
 const {
   section,
@@ -50,9 +51,9 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
 };
 
 const Feed: FC = () => {
-  const allOrdersFromWS = useSelector((state: any) => state.feedWs.orders);
+  const allOrdersFromWS = useSelector((state) => state.feedWs.orders);
   const allOrdersFromWSArray = useSelector(
-    (state: any) => state.feedWs.ordersArray
+    (state) => state.feedWs.ordersArray
   );
   const [total, setTotal] = useState<number>(0);
   const [totalToday, setTotalToday] = useState<number>(0);
@@ -60,11 +61,14 @@ const Feed: FC = () => {
   const [numbersPending, setNumbersPending] = useState<Array<number>>([0]);
 
   function makeOrderNumbers(status: string): Array<number> {
+    if (allOrdersFromWSArray) {
     return allOrdersFromWSArray.map((order: TOrderWithIngredients) => {
       if (order.status === status) {
         return order.number;
-      } else return;
+      } else return 0;
     });
+  }
+  return numberslist;
   }
 
   useEffect(() => {

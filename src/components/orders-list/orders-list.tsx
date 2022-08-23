@@ -76,6 +76,9 @@ const OrdersList: FC = () => {
 
     if (allOrdersFromWS) {
       const allOrdersArray = JSON.parse(allOrdersFromWS).orders;
+      console.log('all ords: ', allOrdersFromWS);
+      console.log('all ords: ', allOrdersArray);
+      if (allOrdersArray) {
       const allOrdersWithIngredients = makeOrderIngredientsFull(allOrdersArray);
       if (isFeed) {
         dispatch({
@@ -89,6 +92,7 @@ const OrdersList: FC = () => {
         });
       }
     }
+  }
   
   }, [allOrdersFromWS, allIngredients]);
 

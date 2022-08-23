@@ -5,7 +5,8 @@ import {
   SET_LOGGED,
   SET_LOGGEDOUT,
   SHOW_APIMESSAGE,
-  CLEAR_APIMESSAGE
+  CLEAR_APIMESSAGE,
+  GET_USER_REQUEST
 } from "../actions";
 
 import type { TAuthActions } from '../action-types/auth-action-types';
@@ -17,12 +18,14 @@ export type TAuthType = {
   };
   isLogged: boolean;
   apiData: {message: string; success: boolean;};
+  isUserLoding: boolean;
 }
 
 const initialState: TAuthType = {
   user: { email: "", name: "" },
   isLogged: false,
   apiData: {message: '', success: false},
+  isUserLoding: false,
 };
 
 export function authReducer(state: TAuthType = initialState, action: TAuthActions): TAuthType {
@@ -34,6 +37,10 @@ export function authReducer(state: TAuthType = initialState, action: TAuthAction
         ...state,
   user: action.payload,
       }; */
+
+    case GET_USER_REQUEST:
+    return {...state,
+    isUserLoding: true}
     case GET_USER:
       return {
         ...state,

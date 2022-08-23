@@ -7,7 +7,6 @@ import {
   SET_OFFSETS,
 } from '../../services/actions';
 import { useDrop } from 'react-dnd';
-import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 import { TIngredient, TIngredientUnique } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
@@ -27,7 +26,7 @@ const {
 
 const ConstructorList: FC = () => {
   const dispatch = useDispatch();
-  const isMobile = useSelector(ifItsMobile);
+  const isMobile = useSelector(state => state.mobile.isMobile);
   const direction = useSelector(
     (state) => state.dragAndDrop.dropDirection
   );
@@ -44,7 +43,7 @@ const ConstructorList: FC = () => {
 
   const thisRef = useRef<HTMLLIElement>(null);
   type TItem = {
-    item: TIngredient;
+    item: TIngredientUnique;
   };
 
   const handleBunDrop = (currentItem: TItem): void => {

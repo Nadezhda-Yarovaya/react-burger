@@ -4,9 +4,11 @@ import {
   SET_ALLINGREDIENTS_FAILURE,
 } from '../actions';
 import { getIngredients } from '../../utils/api';
+import { AppThunk } from '../../utils/types';
+import { AppDispatch } from '../..';
 
-export function fetchAllIngredients() {
-  return (dispatch, getState) => {
+export function fetchAllIngredients(): AppThunk {
+  return (dispatch: AppDispatch, getState) => {
     dispatch({
       type: SET_ALLINGREDIENTS_REQUEST,
     });

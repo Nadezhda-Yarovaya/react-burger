@@ -59,6 +59,7 @@ import {
   SET_LOGGEDOUT,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
+  GET_USER_REQUEST,
 } from "./auth-actions";
 
 export {
@@ -110,4 +111,5 @@ export {
   SET_LOGGEDOUT,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
+  GET_USER_REQUEST
 };

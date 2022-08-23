@@ -5,7 +5,6 @@ import totalSumStyles from './total-sum.module.css';
 
 import currencyBig from '../../images/currency36x36.svg';
 
-import { ifItsMobile } from '../../services/selectors';
 import TotalSumButton from '../total-sum-button/total-sum-button';
 import { FC } from 'react';
 import { useSelector } from '../../hooks/hooks';
@@ -32,7 +31,7 @@ const TotalSum: FC<TTotalSumProps> = ({
 
   const totalSumOrder = useSelector((store) => store.order.totalSum);
 
-  const isMobile = useSelector(ifItsMobile);
+  const isMobile = useSelector(state => state.mobile.isMobile);
 
   const isDisabled = stuffingsList.length === 0 || bunSelected._id === '1';
 

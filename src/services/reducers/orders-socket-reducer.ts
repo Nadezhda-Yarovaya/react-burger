@@ -12,7 +12,7 @@ import {
 
 export type TWSState = {
   wsConnected: boolean;
-  error?: Event;
+  error?: string | undefined;
   orders: string;
   ordersArray?: Array<TOrderWithIngredients>;
 };
