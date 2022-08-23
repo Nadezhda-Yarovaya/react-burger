@@ -1,3 +1,5 @@
+import { TIngredientUnique } from '../../utils/types';
+import { TDndActions } from '../action-types/dnd-action-types';
 import {
   INCREASE_DROPPEDELEMENT,
   DELETE_ITEM,
@@ -14,7 +16,7 @@ const initialState = {
   initialIngredOffset: {},
 };
 
-export function dndReducer(state = initialState, action) {
+export function dndReducer(state = initialState, action: TDndActions) {
   switch (action.type) {
     case INCREASE_DROPPEDELEMENT:
       return {
@@ -44,25 +46,27 @@ export function dndReducer(state = initialState, action) {
     case GOUP_POSITION:
       return {
         ...state,
-        droppedElements: arraymoveUp(
+        droppedElements: moveArray(
           [...state.droppedElements],
-          state.droppedElements.indexOf(action.element)
+          action.element,
+          'top'
         ),
       };
 
     case GODOWN_POSITION:
       return {
         ...state,
-        droppedElements: arraymoveDown(
+        droppedElements: moveArray(
           [...state.droppedElements],
-          state.droppedElements.indexOf(action.element)
+          action.element,
+          'down'
         ),
       };
 
     case DELETE_ITEM:
       return {
         ...state,
-        droppedElements: [...state.droppedElements].filter((item) => {
+        droppedElements: [...state.droppedElements].filter((item : TIngredientUnique) => {
           if (item.uniqueId === action.element.uniqueId) {
           } else {
             return item;
@@ -80,7 +84,7 @@ export function dndReducer(state = initialState, action) {
       return state;
   }
 }
-
+/*
 function arraymoveUp(arr, fromIndex) {
   let element = arr[fromIndex];
   arr.splice(fromIndex, 1);
@@ -93,4 +97,19 @@ function arraymoveDown(arr, fromIndex) {
   arr.splice(fromIndex, 1);
   arr.splice(fromIndex + 1, 0, element);
   return arr;
+}
+*/
+
+
+function moveArray(arr : Array<TIngredientUnique> , fromIndex1: TIngredientUnique, direction:string): Array<TIngredientUnique> {
+let fromIndex = arr.indexOf(fromIndex1);
+  let element = arr[fromIndex];
+  arr.splice(fromIndex, 1);
+  if (direction === 'top') {
+    arr.splice(fromIndex - 1, 0, element);
+  } else {
+  arr.splice(fromIndex + 1, 0, element);
+  }
+  return arr;
+
 }

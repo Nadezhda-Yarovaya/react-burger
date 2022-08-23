@@ -54,10 +54,10 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({
     (state: any) => state.mobile.currentTouchedItem
   );
 
-  const initialX = useSelector((state) => state.mobile.offsets.initials.x);
-  const finalX = useSelector((state) => state.mobile.offsets.finals.x);
-  const initialY = useSelector((state) => state.mobile.offsets.initials.y);
-  const finalY = useSelector((state) => state.mobile.offsets.finals.y);
+  const initialX = useSelector((state : any) => state.mobile.offsets.initials.x);
+  const finalX = useSelector((state : any)  => state.mobile.offsets.finals.x);
+  const initialY = useSelector((state : any)  => state.mobile.offsets.initials.y);
+  const finalY = useSelector((state : any)  => state.mobile.offsets.finals.y);
   const rectangleTop = useSelector(
     (state: any) => state.mobile.offsets.rectangle.top
   );

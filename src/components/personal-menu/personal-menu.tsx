@@ -14,7 +14,7 @@ const PersonalMenu: FC = () => {
   function handleLogout(e: SyntheticEvent) {
     e.preventDefault();
     const refreshToken = localStorage.getItem('refreshToken');
-    dispatch<any>(performLogout(refreshToken, history));
+    dispatch(performLogout(refreshToken, history));
   }
 
   return (

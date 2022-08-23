@@ -4,11 +4,12 @@ import OrdersList from '../components/orders-list/orders-list';
 import feedStyles from './feed.module.css';
 import { numberslist } from '../utils/utils';
 import { useDispatch } from 'react-redux';
-import { WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_GET_ORDERS, WS_SET_ORDERSLIST } 
-from '../services/actions/socket-actions';
+import { WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_GET_ORDERS, WS_SET_ORDERSLIST, WS_CONNECTION_CLOSED } 
+from '../services/actions/feed-ws-actions';
 import { useSelector } from 'react-redux';
 import { TIngredient, TOrder, TOrderWithIngredients } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
+import { AppDispatch } from '..';
 
 const {
   section,
@@ -38,69 +39,20 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
 };
 
 const Feed: FC = () => {
+  
   const dispatch = useDispatch();
 
-  const wsconnected = useSelector((state: any) => {
-   
-    return state.ws.wsConnected;});
-
-    const allIngredients = useSelector((state: any) => state.ingredients.listOfIngredients);
-
-    const allOrdersFromWS = useSelector((state: any) => {
-      // console.log(state.ws);
-      return state.ws.orders;});
-
-      const allOrdersFromWSArray = useSelector((state: any) => {
-        // console.log(state.ws);
-        return state.ws.ordersArray;});
-
-      const [allorders, setAllOrders] = React.useState([]);
-
-    //const editedOrders = JSON.parse(allOrdersFromWS) || {};
-
-    // console.log('only line: ', allOrdersFromWS);
-    // console.log(' all ord pars: ', allorders);
-
-    useEffect(() => {
-      dispatch({type: WS_CONNECTION_START});      
-      if (wsconnected) {
-      dispatch({type: WS_CONNECTION_SUCCESS});
-      dispatch({type: WS_GET_ORDERS  });
-      
-    } else {
-      dispatch({type: WS_CONNECTION_ERROR});
-    }
-      /* if (allOrdersFromWS ) { 
-        console.log('all orders exist: ', allOrdersFromWS);
-       
-        setAllOrders(allOrders1);
-        console.log('allOrders: ', allOrders1);
-
-      } else {
-        dispatch({type: WS_CONNECTION_ERROR});
-      } */
-  
-    },[wsconnected]);
-    
+    const allOrdersFromWS = useSelector((state: any) =>  state.feedWs.orders);
+    const allOrdersFromWSArray = useSelector((state: any) => state.feedWs.ordersArray);
+    //const [allorders, setAllOrders] = React.useState([]);  
     const [total, setTotal] = useState<number>(0);    
     const [totalToday, setTotalToday] = useState<number>(0);
 
-
     useEffect(() => {
-      // console.log('all ord ws: ', allOrdersFromWS);
       if (allOrdersFromWS) {
-        // console.log('all ord ws If exist: ', allOrdersFromWS);
-      const allOrders1 = JSON.parse(allOrdersFromWS).orders;
-      const allOrders2 = makeOrderIngredientsFull(allOrders1);
-      // console.log('all orders1: ', allOrders2);тут уже финальные 
-      dispatch({type: WS_SET_ORDERSLIST, payload: allOrders2});    
-
       setTotal(JSON.parse(allOrdersFromWS).total);
       setTotalToday(JSON.parse(allOrdersFromWS).totalToday);
-    }
-
-
-      
+    }      
     },[allOrdersFromWS]);
 
     const [numbersDone, setNumbersDone] = useState<Array<number>>([0]);
@@ -122,19 +74,6 @@ const Feed: FC = () => {
 
     }, [allOrdersFromWSArray]);
 
-    function makeOrderIngredientsFull(orders: Array<TOrder>) : Array<TOrderWithIngredients> {
-return orders.map((order) => {
-  let finalIngredients: TIngredient[] = [];
-  order.ingredients.forEach((ingredient : string,ind: number) => {
-    finalIngredients[ind] = allIngredients.find((item2: TIngredient) => item2._id === ingredient);
-    });
-
-  return {
-    ...order,
-    ingredients: finalIngredients,
-  }
-})
-    }
 
   return (
     <>

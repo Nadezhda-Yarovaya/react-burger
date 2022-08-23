@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const IngredientPage: FC = () => {
   const allIngredients = useSelector(
-    (store) => store.ingredients.listOfIngredients
+    (store : any)  => store.ingredients.listOfIngredients
   );
 
   type TParams = {

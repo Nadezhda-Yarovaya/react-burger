@@ -1,11 +1,14 @@
 import React from 'react';
 import { TAuthActions } from '../services/action-types/auth-action-types';
-import { TSocketActions } from '../services/action-types/socket-action-types';
+import { TSocketActions } from '../services/action-types/feed-ws-action-types';
 
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AppDispatch, RootState } from '../';
 import { TIngedientsActions } from '../services/action-types/ingredients-action-types';
+import { TDndActions } from '../services/action-types/dnd-action-types';
+import { TMobileActions } from '../services/action-types/mobile-types';
+import { TOrdersWsActions } from '../services/action-types/orders-ws-action-types';
 
 export type TNewItem = { [key: string]: string | number };
 
@@ -138,8 +141,19 @@ export type TMessage = {
   text: string;
 }
 
-export type TAppActions = | TAuthActions | TSocketActions | TIngedientsActions;
+export type TMonitor = {
+  x: number;
+  y: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
 
+export type TItem = {
+  item: TIngredient;
+};
 
-// Типизация thunk'ов в нашем приложении
+export type TAppActions = | TAuthActions | TSocketActions | TIngedientsActions | TDndActions | TMobileActions | TOrdersWsActions;
+
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TAppActions>>;

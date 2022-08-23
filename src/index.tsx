@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./components/app/app";
@@ -6,24 +6,30 @@ import { BrowserRouter as Router } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import thunk, { ThunkDispatch } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { rootReducer } from "./services/reducers";
 import { socketMiddleware } from "./services/middlewares/socketMiddleware";
 import { getCookie } from './utils/auth';
-import { feedWsActions } from './services/actions/socket-actions';
+import { feedWsActions } from './services/actions/feed-ws-actions';
+// import { TAppActions } from './utils/types';
+import { ordersWsActions } from './services/actions/orders-ws-actions';
 
 //const composeEnhancers = composeWithDevTools();
-const wsUrl='wss://norma.nomoreparties.space/orders/';
+const baseUrl='wss://norma.nomoreparties.space/orders';
+
 const accessToken = getCookie('token');
 console.log('token: ', accessToken);
-const ourWsMiddleware = socketMiddleware(feedWsActions);
-const ourWsMiddleware2 = socketMiddleware();
+const ourWsMiddleware = socketMiddleware(`${baseUrl}/all`, feedWsActions);
+const ourWsMiddleware2 = socketMiddleware(`${baseUrl}?token=${accessToken}`, ordersWsActions);;
 const enhancer = composeWithDevTools(applyMiddleware(thunk, ourWsMiddleware, ourWsMiddleware2));
 const store = createStore(rootReducer, enhancer);
 
 export type AppDispatch = typeof store.dispatch;
+
 export type RootState = ReturnType<typeof store.getState>;
+
+//export type AppDispatch = Dispatch<TAppActions | never | RootState | void>;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

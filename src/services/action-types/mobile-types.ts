@@ -66,7 +66,7 @@ import {
     readonly payload : {currentTouchedItem: {}};
   }
 
-
+/*
   case SET_OFFSETS:
     return {
       ...state,
@@ -111,7 +111,7 @@ import {
       },
     };
 
-
+*/
   export type TMobileActions = 
   | ISetIfMobile
   | ISetIfMobileOrdered

@@ -12,7 +12,7 @@ const ProtectedRouteLogged: FC<RouteProps> = ({ children, ...rest }) => {
 
   useEffect(() => {
     if (localStorage.getItem('refreshToken')) {
-      dispatch<any>({
+      dispatch({
         type: SET_LOGGED,
       });
     }

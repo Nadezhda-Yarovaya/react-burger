@@ -91,10 +91,8 @@ const AppHeader: FunctionComponent = () => {
 
   function handleLogout(e: SyntheticEvent): void {
     e.preventDefault();
-
     const refreshToken = localStorage.getItem('refreshToken');
-
-    dispatch<any>(performLogout(refreshToken, history));
+    dispatch(performLogout(refreshToken, history));
   }
 
   const headerDivStyles: React.CSSProperties = {

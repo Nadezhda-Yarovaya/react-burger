@@ -37,7 +37,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     list__item,
   } = ingredientStyles;
 
-  const bunCount = useSelector((store) => {
+  const bunCount = useSelector((store : any)  => {
     let totalCount = 0;
     if (store.ingredients.bun._id === item._id) {
       totalCount++;
@@ -45,7 +45,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     return totalCount;
   });
 
-  const ingredientCount = useSelector((store) => {
+  const ingredientCount = useSelector((store : any)  => {
     let totalCount = 0;
     store.dragAndDrop.droppedElements.forEach((curItem: TIngredientUnique) => {
       if (curItem._id === item._id) {

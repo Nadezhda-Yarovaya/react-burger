@@ -26,18 +26,18 @@ const {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store) => {
+  const listOfIngredients = useSelector((store : any) => {
     return store.ingredients.listOfIngredients;
   });
   const createdStuffingsList = useSelector(
-    (store) => store.dragAndDrop.droppedElements
+    (store: any ) => store.dragAndDrop.droppedElements
   );
   const isMobile = useSelector(ifItsMobile);
   const isMobileOrdered = useSelector(
-    (store) => store.mobile.isMobileOrdered
+    (store: any ) => store.mobile.isMobileOrdered
   );
   const bunSelectedFromStore = useSelector(
-    (store) => store.ingredients.bun
+    (store : any) => store.ingredients.bun
   );
   const isLoading = useSelector(loadIngredients);
 
@@ -80,7 +80,7 @@ const BurgerConstructor: FC = () => {
     const thisOrderList: Array<string> = makeListOfOrder();
     if (isLogged) {
      // dispatch<any>(fetchOrderNumber({ingredients: thisOrderList}));
-     dispatch<any>(placeOrder({ingredients: thisOrderList}));
+     dispatch(placeOrder({ingredients: thisOrderList}));
     } else {
       localStorage.setItem(
         'listOfOrder',
@@ -113,7 +113,7 @@ const BurgerConstructor: FC = () => {
             <p className={constructor__title}>Заказ</p>
             <button
               onClick={() => {
-                dispatch<any>({
+                dispatch({
                   type: SET_IFMOBILEORDERED,
                   payload: false,
                 });

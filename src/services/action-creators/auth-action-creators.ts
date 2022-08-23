@@ -22,11 +22,12 @@ import {
 
 import { AppDispatch } from '../..';
 import { AppThunk } from '../../utils/types';
+import { AnyAction } from 'redux';
 
 
 
 export const performRegister: AppThunk =
-  (name, email, pass, history) => (dispatch: AppDispatch) => {
+  (name, email, pass, history) => (dispatch) => {
     register(email, pass, name)
       .then((res) => {
         if (res.success) {
@@ -51,7 +52,7 @@ export const performRegister: AppThunk =
   };
 
 export const performLogin: AppThunk =
-  (email, pass, history) => (dispatch: AppDispatch, getState) => {
+  (email, pass, history) => (dispatch : AppDispatch, getState) => {
     const cameFrom = history.location?.state?.from || '/';
     login(email, pass)
       .then((res) => {
@@ -83,7 +84,7 @@ export const performLogin: AppThunk =
             history.push({ pathname: cameFrom, state: { from: '/login' } });
           }, 1500);
         } else {
-          handleApiMessageError(dispatch, 'Ошибка email или пароля');
+          handleApiMessageError(dispatch,  'Ошибка email или пароля');
         }
       })
 
@@ -93,14 +94,14 @@ export const performLogin: AppThunk =
   };
 
 const handleGetUser: AppThunk =
-  (accessToken) => (dispatch: AppDispatch, getState) => {
+  (accessToken) => (dispatch: AppDispatch,  getState) => {
     getUser(accessToken).then((res) => {
       dispatch({ type: GET_USER, payload: res.user });
     });
   };
 
 export const handleUpdateUser: AppThunk =
-  (email, name, pass, accessToken) => (dispatch: AppDispatch, getState) => {
+  (email, name, pass, accessToken) => (dispatch: AppDispatch,  getState) => {
     if (accessToken) {
       updateUser(email, name, pass, accessToken)
         .then((res) => {
@@ -131,7 +132,7 @@ export const handleUpdateUser: AppThunk =
     }
   };
 
-export const loadUser: AppThunk = () => (dispatch: AppDispatch, getState) => {
+export const loadUser: AppThunk = () => (dispatch: AppDispatch,  getState) => {
   if (getCookie('token')) {
     const accessToken = getCookie('token');
     return dispatch(handleGetUser(accessToken));
@@ -142,7 +143,7 @@ export const loadUser: AppThunk = () => (dispatch: AppDispatch, getState) => {
 };
 
 export const patchUser: AppThunk =
-  (email, name, pass) => (dispatch: AppDispatch, getState) => {
+  (email, name, pass) => (dispatch: AppDispatch,  getState) => {
     const accessToken = getCookie('token');
 
     if (getCookie('token')) {
@@ -157,7 +158,7 @@ export const patchUser: AppThunk =
 
 const handleRefreshToken: AppThunk =
   (refeshSaved, handleUser, ...rest) =>
-  (dispatch: AppDispatch, getState) => {
+  (dispatch: AppDispatch,  getState) => {
     refreshToken(refeshSaved).then((res) => {
       localStorage.removeItem('refreshToken');
       localStorage.setItem('refreshToken', res.refreshToken);
@@ -180,7 +181,7 @@ const handleRefreshToken: AppThunk =
   };
 
 export const performLogout: AppThunk =
-  (refreshToken, history) => (dispatch: AppDispatch, getState) => {
+  (refreshToken, history) => (dispatch: AppDispatch,  getState) => {
     logout(refreshToken)
       .then((res) => {
         localStorage.removeItem('refreshToken');
@@ -209,7 +210,7 @@ export const handleRequestResetPassword: AppThunk =
   };
 
 export const resetPass: AppThunk =
-  (pass, token, history) => (dispatch: AppDispatch, getState) => {
+  (pass, token, history) => (dispatch: AppDispatch,  getState) => {
     resetPassword(pass, token)
       .then((res) => {
         if (res.success) {
@@ -239,7 +240,6 @@ export const resetPass: AppThunk =
       })
       .catch((err) => console.log(err));
   };
-
 
   export function handleApiMessageError(dispatch: AppDispatch, message: string) {
     dispatch({

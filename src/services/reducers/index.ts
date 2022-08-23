@@ -5,7 +5,8 @@ import { orderInfoReducer } from './order-info-reducer';
 import { mobileReducer } from './mobile-reducer';
 import { ingredientsReducer } from './ingredients-reducer';
 import { authReducer } from './auth-reducer';
-import { wsReducer } from './socket-reducer';
+import { feedWsReducer } from './feed-socket-reducer';
+import { ordersWsReducer } from './orders-socket-reducer';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -13,5 +14,6 @@ export const rootReducer = combineReducers({
   mobile: mobileReducer,
   dragAndDrop: dndReducer,
   auth: authReducer,
-ws: wsReducer,
+  feedWs: feedWsReducer,
+  ordersWs: ordersWsReducer,
 });

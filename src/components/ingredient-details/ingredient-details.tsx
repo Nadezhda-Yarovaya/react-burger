@@ -7,7 +7,7 @@ const { text, details, image, nutrients, nutrient, container } =
 
 const IngredientDetails: FC = () => {
   const selectedCard = useSelector(
-    (state) => state.ingredients.currentIngredient
+    (state : any)  => state.ingredients.currentIngredient
   );
 
   return (

@@ -69,7 +69,7 @@ const App: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    dispatch<any>(fetchAllIngredients());
+    dispatch(fetchAllIngredients());
   }, []);
 
   useEffect(() => {
@@ -114,25 +114,25 @@ const App: FunctionComponent = () => {
   );
 
   function closeIsPerformed() {
-    dispatch<any>({
+    dispatch({
       type: CLEAR_ORDERDATA,
     });
 
-    dispatch<any>({
+    dispatch({
       type: CLEAR_BUN,
     });
 
-    dispatch<any>({
+    dispatch({
       type: CLEAR_STUFFINGLIST,
     });
   }
 
   function closeModalIngredientsShown() {
-    dispatch<any>({
+    dispatch({
       type: REMOVE_CURRENT,
     });
 
-    dispatch<any>({
+    dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });
     history.goBack();
@@ -140,26 +140,26 @@ const App: FunctionComponent = () => {
 
   const handleSetMobile = () => {
     if (width < 790) {
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILE,
 
         payload: true,
       });
     } else {
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILE,
 
         payload: false,
       });
 
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILEORDERED,
 
         payload: false,
       });
 
       if (isMobileMenuOpened) {
-        dispatch<any>({
+        dispatch({
           type: CLOSE_MOBILEMENU,
         });
       }
@@ -167,7 +167,7 @@ const App: FunctionComponent = () => {
   };
 
   const handleSetWindowData = () => {
-    dispatch<any>({
+    dispatch({
       type: SET_WINDOWDATA,
       payload: {
         width: width,
@@ -178,11 +178,11 @@ const App: FunctionComponent = () => {
 
   const closeModalFromFeed = () => {
     /*
-    dispatch<any>({
+    dispatch({
       type: REMOVE_CURRENT, //order from feed 
     });
 
-    dispatch<any>({
+    dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });*/
     history.goBack();
@@ -191,11 +191,11 @@ const App: FunctionComponent = () => {
 
   const closeModalFromProileOrders = () => {
      /*
-    dispatch<any>({
+    dispatch({
       type: REMOVE_CURRENT, //order profiles
     });
 
-    dispatch<any>({
+    dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });*/
     history.goBack();

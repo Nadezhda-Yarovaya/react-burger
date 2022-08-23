@@ -31,15 +31,15 @@ const ConstructorList: FC = () => {
   const direction = useSelector(
     (state: any) => state.dragAndDrop.dropDirection
   );
-  const currentBun = useSelector((state) => state.ingredients.bun);
+  const currentBun = useSelector((state: any) => state.ingredients.bun);
   const isLoading = useSelector(loadIngredients);
 
   const initialIngredOffset = useSelector(
-    (store) => store.dragAndDrop.initialIngredOffset
+    (store: any) => store.dragAndDrop.initialIngredOffset
   );
 
   const stuffingListDropped = useSelector(
-    (state) => state.dragAndDrop.droppedElements
+    (state: any) => state.dragAndDrop.droppedElements
   );
 
   const thisRef = useRef<HTMLLIElement>(null);
@@ -48,7 +48,7 @@ const ConstructorList: FC = () => {
   };
 
   const handleBunDrop = (currentItem: TItem): void => {
-    dispatch<any>({
+    dispatch({
       type: REPLACE_BUN,
       bun: currentItem.item,
     });
