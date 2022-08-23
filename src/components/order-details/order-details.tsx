@@ -2,17 +2,20 @@ import { FC } from 'react';
 import orderDetailsStyles from './order-details.module.css';
 
 import doneSign from '../../images/done.svg';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/hooks';
 
 const { digits, window__text, window__extra, preloaderContainer, preloader } =
   orderDetailsStyles;
 
 const OrderDetails: FC = () => {
   const orderNumber = useSelector(
-    (store: any) => store.order.createdOrder.number
+    (store) => {
+      console.log(store.order);
+     return store.order.createdOrder.number
+    }
   );
 
-  const isLoading = useSelector((store: any) => store.order.isOrderLoading);
+  const isLoading = useSelector((store) => store.order.isOrderLoading);
 
   return (
     <>

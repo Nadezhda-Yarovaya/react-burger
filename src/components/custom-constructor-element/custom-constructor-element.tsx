@@ -14,7 +14,12 @@ import {
   CLEAR_FINALS,
 } from '../../services/actions';
 import { ifItsMobile } from '../../services/selectors';
-import { TIngredientUnique, TRectangle } from '../../utils/types';
+import {
+  TIngredient,
+  TIngredientUniq2,
+  TIngredientUnique,
+  TRectangle,
+} from '../../utils/types';
 import { SynthesizedComment } from 'typescript';
 
 import { ConstructorElement } from '../../utils/typesLibrary';
@@ -38,7 +43,41 @@ type TCustomElementProps = {
   item: TIngredientUnique;
 };
 
-const CustomConstructorElement: FC<TCustomElementProps> = ({
+type TCustomElementPropsBun = {
+  text: string;
+  price: number;
+  thumbnail: string;
+  isLocked?: boolean;
+  type?: 'top' | 'bottom';
+  item: TIngredient; // вот тут так и надо
+};
+
+export const CustomConstructorElementBun: FC<TCustomElementPropsBun> = ({
+  text,
+  price,
+  thumbnail,
+  isLocked,
+  type,
+  item,
+}) => (
+  <>
+    <div className={`${stuffings__item} mr-2`}>
+      <div className={`${constructor__item} mb-4`}>
+        <div style={{ boxSizing: 'border-box', width: '100%' }}>
+          <ConstructorElement
+            type={type}
+            isLocked={isLocked}
+            text={`${text}`}
+            price={price}
+            thumbnail={thumbnail}
+          />
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+export const CustomConstructorElement: FC<TCustomElementProps> = ({
   text,
   price,
   thumbnail,
@@ -51,22 +90,20 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({
   const dispatch = useDispatch();
 
   const currentTouchedItem = useSelector(
-    (state: any) => state.mobile.currentTouchedItem
+    (state) => state.mobile.currentTouchedItem
   );
 
-  const initialX = useSelector((state : any) => state.mobile.offsets.initials.x);
-  const finalX = useSelector((state : any)  => state.mobile.offsets.finals.x);
-  const initialY = useSelector((state : any)  => state.mobile.offsets.initials.y);
-  const finalY = useSelector((state : any)  => state.mobile.offsets.finals.y);
+  const initialX = useSelector((state) => state.mobile.offsets.initials.x);
+  const finalX = useSelector((state) => state.mobile.offsets.finals.x);
+  const initialY = useSelector((state) => state.mobile.offsets.initials.y);
+  const finalY = useSelector((state) => state.mobile.offsets.finals.y);
   const rectangleTop = useSelector(
-    (state: any) => state.mobile.offsets.rectangle.top
+    (state) => state.mobile.offsets.rectangle.top
   );
   const rectangleRight = useSelector(
-    (state: any) => state.mobile.offsets.rectangle.right
+    (state) => state.mobile.offsets.rectangle.right
   );
-  const direction = useSelector(
-    (state: any) => state.dragAndDrop.dropDirection
-  );
+  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
   const currentTouchedItemRef = useRef<HTMLDivElement>(null);
   const [currentRectangle, setCurrentRectangle] = useState<TRectangle>(
     { top: 0, left: 0, bottom: 0, right: 0 } || null
@@ -165,25 +202,24 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({
   const top: number = currentRectangle?.top || 0;
   const bottom: number = currentRectangle?.bottom || 0;
   const diff1: number = bottom - top;
+  const isUniqIdCompared = item.uniqueId
+    ? currentTouchedItem.uniqueId === item.uniqueId
+    : false;
 
   const marginOnDirection =
     direction && direction === 'top' ? '90px 16px 0 0' : '0 16px 90px 0';
 
   const stuffingItemStyle: React.CSSProperties = {
-    transform:
-      item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
-        ? `translate(${diffx + 'px'}, 0px)`
-        : 'translate(0px,0px)',
+    transform: isUniqIdCompared
+      ? `translate(${diffx + 'px'}, 0px)`
+      : 'translate(0px,0px)',
     boxSizing: 'border-box',
     margin: isItemDragging ? marginOnDirection : '0',
   };
 
   const mobileItemStyle: React.CSSProperties = {
     height: `${currentRectangle ? diff1 ?? 0 : 0}px`,
-    width:
-      item.uniqueId && currentTouchedItem.uniqueId === item.uniqueId
-        ? `${-diffx}px`
-        : '0',
+    width: isUniqIdCompared ? `${-diffx}px` : '0',
     top: `${initialY - rectangleTop}px`,
   };
 
@@ -195,16 +231,13 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({
         ref={isMobile ? null : draggedWithinConstructorRef}
       >
         <div className={`${constructor__item} mb-4`} ref={itemContainerRef}>
-          {type ? (
-            <></>
-          ) : (
-            <div
-              className={`${icon} mr-2`}
-              ref={isMobile ? draggedWithinConstructorRef : null}
-            >
-              <DragIcon type='primary' />
-            </div>
-          )}
+          <div
+            className={`${icon} mr-2`}
+            ref={isMobile ? draggedWithinConstructorRef : null}
+          >
+            <DragIcon type='primary' />
+          </div>
+
           <div
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
@@ -237,5 +270,3 @@ const CustomConstructorElement: FC<TCustomElementProps> = ({
     </>
   );
 };
-
-export default CustomConstructorElement;

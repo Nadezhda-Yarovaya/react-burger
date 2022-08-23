@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { SET_CURRENT } from '../../services/actions';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import NotFound from '../../pages/not-found';
-import { TLocation, TNewItem } from '../../utils/types';
+import { TIngredient, TIngredientUnique, TLocation, TNewItem } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const IngredientPage: FC = () => {
@@ -22,7 +22,8 @@ const IngredientPage: FC = () => {
   const cameFrom = location.state ? location.state.from : false;
   const dispatch = useDispatch();
 
-  const thisCard = allIngredients.find((item: TNewItem) => item._id === id);
+  const thisCard : TIngredientUnique = allIngredients.find((item: TNewItem) => item._id === id);
+
 
   useEffect(() => {
     if (thisCard) {

@@ -37,10 +37,9 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TLocation, TOrderItem, TOrderFull } from '../../utils/types';
+import { TLocation, TOrderItem, TOrderFull, TIngredient } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
-import { useDispatch } from '../../hooks/hooks';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { page } = appStyles;
 
@@ -51,7 +50,7 @@ const App: FunctionComponent = () => {
   const history = useHistory();
   const tempOrderslist: Array<TOrderItem> = initialTempOrderList;
 
-  const allIngredients12 = useSelector(getAllIngredients);
+  const allIngredients12 = useSelector(state => state.ingredients.listOfIngredients);
 
   useEffect(() => {
     handleSetMobile();
@@ -75,7 +74,7 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     if (allIngredients12[0].name) {
       const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
-      // console.log('FILTERED list:', filteredTempOrdersList);
+      console.log('FILTERED list:', filteredTempOrdersList);
       dispatch({
         type: SET_POSITIONSDATA,
         payload: filteredTempOrdersList,
@@ -83,12 +82,12 @@ const App: FunctionComponent = () => {
     }
   }, [allIngredients12]);
 
-  const newListAfterFilter = (arr1: Array<TOrderItem>): Array<TOrderFull> => {
+  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull> => {
     return arr1.map((item) => {
-      //console.log('подается на фильтрацию: ', item.positions);
+      console.log('подается на фильтрацию: ', item);
       const newPositions = item.positions.map((elementId) => {
         const newArrayItem = allIngredients12.find(
-          (ingredient: TOrderItem) => ingredient._id === elementId
+          (ingredient: TIngredient) => ingredient._id === elementId
         );
 
         if (newArrayItem) {
@@ -105,12 +104,12 @@ const App: FunctionComponent = () => {
     });
   };
 
-  const isPerformed = useSelector((state: any) => state.order.isPerformed);
+  const isPerformed = useSelector((state) => state.order.isPerformed);
 
   const location = useLocation<TLocation>();
 
   const isMobileMenuOpened = useSelector(
-    (state: any) => state.mobile.isMobileMenuOpened
+    (state) => state.mobile.isMobileMenuOpened
   );
 
   function closeIsPerformed() {

@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/hooks';
+
 
 const { modal, modal__button, container } = modalStyles;
 
@@ -19,12 +20,11 @@ type TModalProps = {
 const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
   const [isOpened, setIsOpened] = useState(isOpen);
 
-  const isMobile = useSelector((store: any) => store.mobile.isMobile);
+  const isMobile = useSelector((store) => store.mobile.isMobile);
   const windowWidth = useSelector(
-    (store: any) => store.mobile.windowData.width
+    (store) => store.mobile.windowData.width
   );
-  const windowHeight = useSelector(
-    (store: any) => store.mobile.windowData.height
+  const windowHeight = useSelector((store) => store.mobile.windowData.height
   );
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { TOrder, TOrderWithIngredients } from '../../utils/types';
+import { TOrderWithIngredients } from '../../utils/types';
 import {
   WS_CONNECTION_ORD_START,
   WS_CONNECTION_ORD_SUCCESS,
@@ -23,7 +23,7 @@ export interface IConnectionSuccess {
 
 export interface IConnectionError {
   readonly type: typeof WS_CONNECTION_ORD_ERROR;
-  readonly payload: string;
+  readonly payload: Event;
   // readonly error: string ;
   // readonly wsConnected: boolean;
 }
@@ -36,7 +36,7 @@ export interface IConnectionClosed {
 
 export interface IWsGetMessage {
   readonly type: typeof WS_GET_ORD_MESSAGE;
-  readonly payload: { orders: string };
+  readonly payload:  string ;
   //readonly error: undefined;
   //wsConnected: boolean;
 }
@@ -50,7 +50,7 @@ export interface IGetOrders {
 
 export interface ISetOrders {
   readonly type: typeof WS_SET_ORD_ORDERSLIST;
-  readonly payload: {ordersArray: TOrderWithIngredients[]};
+  readonly payload: TOrderWithIngredients[];
 }
 
 export type TOrdersWsActions =

@@ -26,24 +26,24 @@ const {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store : any) => {
-    return store.ingredients.listOfIngredients;
-  });
+  const listOfIngredients = useSelector((store) => {
+    // console.log(store.ingredients);
+    return store.ingredients.listOfIngredients; });
   const createdStuffingsList = useSelector(
-    (store: any ) => store.dragAndDrop.droppedElements
+    (store) => store.dragAndDrop.droppedElements
   );
   const isMobile = useSelector(ifItsMobile);
   const isMobileOrdered = useSelector(
-    (store: any ) => store.mobile.isMobileOrdered
+    (store) => store.mobile.isMobileOrdered
   );
   const bunSelectedFromStore = useSelector(
-    (store : any) => store.ingredients.bun
+    (store) => store.ingredients.bun
   );
-  const isLoading = useSelector(loadIngredients);
+  const isLoading = useSelector(state => state.ingredients.isLoading);
 
   const history = useHistory();
 
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   useEffect(() => {
     if (listOfIngredients) {

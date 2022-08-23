@@ -1,3 +1,4 @@
+import { TOrderFromServer, TOrderFull } from '../../utils/types';
 import {
   GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
@@ -14,7 +15,6 @@ type TCreatedOrder =  {
 
 export interface IGetOrderdataRequest {
   readonly type: typeof GET_ORDERDATA_REQUEST;
-  readonly isOrderLoading: boolean;
 }
 
 export interface IGetOrderdataSuccess {
@@ -24,24 +24,21 @@ export interface IGetOrderdataSuccess {
 
 export interface IClearData {
   readonly type: typeof CLEAR_ORDERDATA;
-  readonly isPerformed: boolean;
-  readonly createdOrder: TCreatedOrder;
 }
 
 
 export interface IGetOrderdataFailure {
   readonly type: typeof GET_ORDERDATA_FAILURE;
-  readonly isOrderLoading: boolean;
 }
 
 export interface ISetTotalSum {
   readonly type: typeof SET_TOTALSUM;
-  readonly totalSum: {totalSum: number;}
+  readonly totalSum: number;
 }
 
 export interface ISetPositions {
   readonly type: typeof SET_POSITIONSDATA;
-  readonly payload: {orderFullList: Array<string>;}
+  readonly payload: Array<TOrderFull> ;
 }
 
 

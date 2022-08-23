@@ -1,3 +1,4 @@
+import { XYCoord } from 'react-dnd';
 import {
   TIngredient,
   TIngredientUnique,
@@ -29,12 +30,11 @@ export interface IIncreaseDropElement {
 
 export interface IClearStuffingList {
   readonly type: typeof CLEAR_STUFFINGLIST;
-  readonly droppedElements: Array<undefined>;
 }
 
 export interface ISetDraggedConstructor {
   readonly type: typeof SET_DRAGGEDCONSTRUCTOR;
-  readonly initialIngredOffset: { initialIngredOffset: TMonitor };
+  readonly initialIngredOffset: any;
 }
 
 export interface IGoUpPosition {
@@ -51,13 +51,12 @@ export interface IGoDownPosition {
 
 export interface IDeleteItem {
   readonly type: typeof DELETE_ITEM;
-  readonly droppedElements: Array<TIngredientUnique>;
   readonly element: TIngredientUnique;
 }
 
 export interface ISetDropDirection {
   readonly type: typeof SET_DROPDIRECTION;
-  readonly payload: { dropDirection: string };
+  readonly payload: string ;
 }
 
 /*

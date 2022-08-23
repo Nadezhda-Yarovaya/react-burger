@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import {
+  firstIngred,
   TIngredient,
   TLocation,
   TOrder,
@@ -7,9 +8,9 @@ import {
 } from '../../utils/types';
 import Order from '../order/order';
 import ordersStyles from './orders-list.module.css';
-import { useSelector } from 'react-redux';
+
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
 import {
   WS_CONNECTION_ORD_START,
   WS_SET_ORD_ORDERSLIST,
@@ -18,6 +19,7 @@ import {
   WS_CONNECTION_START,
   WS_SET_ORDERSLIST,
 } from '../../services/actions/feed-ws-actions';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { orders } = ordersStyles;
 
@@ -25,20 +27,18 @@ const OrdersList: FC = () => {
   const location = useLocation<TLocation>();
   const dispatch = useDispatch();
 
-  const allOrdersFromWSFeed = useSelector((state: any) => state.feedWs.orders);
-  const allOrdersFromWSOrders = useSelector(
-    (state: any) => state.ordersWs.orders
-  );
+  const allOrdersFromWSFeed = useSelector((state) => state.feedWs.orders);
+  const allOrdersFromWSOrders = useSelector((state) => state.ordersWs.orders);
   const isFeed = location.pathname === '/feed';
 
   const allOrdersFromWS = isFeed ? allOrdersFromWSFeed : allOrdersFromWSOrders;
 
-  const orderAllList = useSelector((state: any) => state.feedWs.ordersArray);
-  const orderPersList = useSelector((state: any) => state.ordersWs.ordersArray);
+  const orderAllList = useSelector((state) => state.feedWs.ordersArray);
+  const orderPersList = useSelector((state) => state.ordersWs.ordersArray);
   const orderList = isFeed ? orderAllList : orderPersList;
 
   const allIngredients = useSelector(
-    (state: any) => state.ingredients.listOfIngredients
+    (state) => state.ingredients.listOfIngredients
   );
 
   useEffect(() => {
@@ -50,6 +50,30 @@ const OrdersList: FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
+    function makeIngredients(arrayStrings : Array<string>) : Array<TIngredient | undefined> {    
+  
+   return arrayStrings.map((ingredient: string) => {
+     return allIngredients.find(
+       (item2: TIngredient) => item2._id === ingredient
+     );    
+   });
+     
+     }
+   
+     function makeOrderIngredientsFull(
+       orders: Array<TOrder>
+     ): Array<TOrderWithIngredients> {
+       return orders.map(order => {
+        const finalIngredients = makeIngredients(order.ingredients);
+        //console.log('final ingred: ', finalIngredients);
+   
+         return {
+           ...order,
+           ingredients: finalIngredients,
+         };
+       });
+     }
+
     if (allOrdersFromWS) {
       const allOrdersArray = JSON.parse(allOrdersFromWS).orders;
       const allOrdersWithIngredients = makeOrderIngredientsFull(allOrdersArray);
@@ -65,31 +89,18 @@ const OrdersList: FC = () => {
         });
       }
     }
-  }, [allOrdersFromWS]);
+  
+  }, [allOrdersFromWS, allIngredients]);
 
-  function makeOrderIngredientsFull(
-    orders: Array<TOrder>
-  ): Array<TOrderWithIngredients> {
-    return orders.map((order) => {
-      let finalIngredients: TIngredient[] = [];
-      order.ingredients.forEach((ingredient: string, ind: number) => {
-        finalIngredients[ind] = allIngredients.find(
-          (item2: TIngredient) => item2._id === ingredient
-        );
-      });
-
-      return {
-        ...order,
-        ingredients: finalIngredients,
-      };
-    });
-  }
+  
 
   return (
     <div className={`${orders} pr-2`}>
-      {orderList.map((item: TOrderWithIngredients, ind: number) => (
-        <Order key={ind} item={item} />
-      ))}
+      {orderList
+        ? orderList.map((item: TOrderWithIngredients, ind: number) => (
+            <Order key={ind} item={item} />
+          ))
+        : ''}
     </div>
   );
 };

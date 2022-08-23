@@ -1,3 +1,4 @@
+import { firstIngredUniq, TIngredient, TIngredientUniq2, } from '../../utils/types';
 import { TMobileActions } from '../action-types/mobile-types';
 import {
   SET_IFMOBILE,
@@ -16,13 +17,28 @@ import {
   CLEAR_FINALS,
 } from '../actions';
 
+export type TMobileState = {
+  isMobile: boolean;
+  isMobileOrdered: boolean;
+  windowData: { width: number; height: number; }
+  isMobileMenuOpened: boolean;
+  isSubMenuOpened: boolean;
+  currentTouchedItem: TIngredientUniq2;
+  offsets: {
+    rectangle: { top: number; right: number; bottom?: number; left?: number; },
+    initials: { x: number; y: number; },
+    finals: { x: number; y: number; },
+    };
+
+}
+
 const initialState = {
   isMobile: false,
   isMobileOrdered: false,
   windowData: { width: 0, height: 0 },
   isMobileMenuOpened: false,
   isSubMenuOpened: false,
-  currentTouchedItem: {},
+  currentTouchedItem: firstIngredUniq,
   offsets: {
     rectangle: { top: 0, right: 0 },
     initials: { x: 0, y: 0 },
@@ -30,7 +46,7 @@ const initialState = {
   },
 };
 
-export function mobileReducer(state = initialState, action: TMobileActions) {
+export function mobileReducer(state : TMobileState = initialState, action: TMobileActions): TMobileState {
   switch (action.type) {
     case SET_IFMOBILE:
       return {

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, FC } from 'react';
 import constructorListStyles from './constructor-list.module.css';
-import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
 
 import {
   SET_DROPDIRECTION,
@@ -12,6 +11,7 @@ import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 import { TIngredient, TIngredientUnique } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
+import { CustomConstructorElement, CustomConstructorElementBun } from '../custom-constructor-element/custom-constructor-element';
 
 
 const {
@@ -29,17 +29,17 @@ const ConstructorList: FC = () => {
   const dispatch = useDispatch();
   const isMobile = useSelector(ifItsMobile);
   const direction = useSelector(
-    (state: any) => state.dragAndDrop.dropDirection
+    (state) => state.dragAndDrop.dropDirection
   );
-  const currentBun = useSelector((state: any) => state.ingredients.bun);
-  const isLoading = useSelector(loadIngredients);
+  const currentBun = useSelector((state) => state.ingredients.bun);
+  const isLoading = useSelector(state => state.ingredients.isLoading);
 
   const initialIngredOffset = useSelector(
-    (store: any) => store.dragAndDrop.initialIngredOffset
+    (store) => store.dragAndDrop.initialIngredOffset
   );
 
   const stuffingListDropped = useSelector(
-    (state: any) => state.dragAndDrop.droppedElements
+    (state) => state.dragAndDrop.droppedElements
   );
 
   const thisRef = useRef<HTMLLIElement>(null);
@@ -133,7 +133,7 @@ const ConstructorList: FC = () => {
   };
 
   const isMobileOrdered = useSelector(
-    (store: any) => store.mobile.isMobileOrdered
+    (store) => store.mobile.isMobileOrdered
   );
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const ConstructorList: FC = () => {
             ref={dropContainerBunTop}
             style={bunTopStyle}
           >
-            <CustomConstructorElement
+            <CustomConstructorElementBun
               type='top'
               isLocked={true}
               text={`${currentBun.name} ${
@@ -204,7 +204,7 @@ const ConstructorList: FC = () => {
             ref={dropContainerBunBottom}
             style={bunBottomStyle}
           >
-            <CustomConstructorElement
+            <CustomConstructorElementBun
               type='bottom'
               isLocked={true}
               text={`${currentBun.name} ${

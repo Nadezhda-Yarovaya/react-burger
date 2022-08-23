@@ -7,7 +7,6 @@ import {
 
 import profileStyles from './profile.module.css';
 import formStyles from '../../components/form/form.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import PersonalMenu from '../../components/personal-menu/personal-menu';
 
 import {
@@ -18,6 +17,7 @@ import {
 import { SHOW_APIMESSAGE, CLEAR_APIMESSAGE } from '../../services/actions';
 
 import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -26,9 +26,9 @@ const { profile, container } = profileStyles;
 const Profile: FC = () => {
   const dispatch = useDispatch();
 
-  const user1 = useSelector((state: any) => state.auth.user);
+  const user1 = useSelector((state) => state.auth.user);
 
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   const [pass, setPass] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -46,7 +46,7 @@ const Profile: FC = () => {
 
   useEffect(() => {
     if (isLogged) {
-      dispatch<any>(loadUser());
+      dispatch(loadUser());
     }
   }, [isLogged]);
 

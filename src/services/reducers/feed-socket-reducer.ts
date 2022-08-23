@@ -8,15 +8,15 @@ import {
 } from "../actions/feed-ws-actions";
 
 //import type { TSocketActions } from "../action-types/feed-ws-action-types";
-import { TMessage, TOrder } from "../../utils/types";
+import { TMessage, TOrder, TOrderWithIngredients } from "../../utils/types";
 import { TFeedWsActions } from '../action-types/feed-ws-action-types';
 // лучше создать отдельный файл типов и оттуда брать */
 
-type TWSState = {
+export type TWSState = {
   wsConnected: boolean;
   error?: Event;
   orders: string;
-  ordersArray?: Array<TOrder>;
+  ordersArray?: Array<TOrderWithIngredients>;
 };
 
 const initialState = {
@@ -27,7 +27,7 @@ const initialState = {
 };
 
 // Создадим редьюсер для WebSocket
-export const feedWsReducer = (state: TWSState = initialState, action: TFeedWsActions) => {
+export const feedWsReducer = (state: TWSState = initialState, action: TFeedWsActions): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

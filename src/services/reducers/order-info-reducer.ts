@@ -1,3 +1,4 @@
+import { firstorder, TOrderFromServer, TOrderFull } from '../../utils/types';
 import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
   GET_ORDERDATA_SUCCESS,
@@ -8,23 +9,25 @@ import {
   SET_POSITIONSDATA
 } from '../actions';
 
+export type TOrderState = {
+  createdOrder: {number?: number; positions?: Array<string>},
+  isOrderLoading: boolean;
+  isPerformed: boolean;
+  totalSum: number;
+  orderFullList: Array<TOrderFull>;
+};
+
+
+
 const initialState = {
-  createdOrder: { number: 0, positions: [''] },
+  createdOrder: { number: 0, positions: ['sdf', 'ss'] },
   isOrderLoading: false,
   isPerformed: false,
   totalSum: 0,
-  orderFullList: [{
-    name: '',
-    order: { number: 2547 },
-    status: '',
-    positions: [],
-    sum: 0,
-    date: '2022',
-    _id: '',
-  }]
+  orderFullList: [firstorder]
 };
 
-export function orderInfoReducer(state = initialState, action : TOrderInfoActions) {
+export function orderInfoReducer(state: TOrderState = initialState, action : TOrderInfoActions) : TOrderState {
   switch (action.type) {
     case GET_ORDERDATA_REQUEST:
       return {

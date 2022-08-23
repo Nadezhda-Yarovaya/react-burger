@@ -1,4 +1,4 @@
-import { TIngredientUnique } from '../../utils/types';
+import { TIngredient, TIngredientUnique, TMonitor } from '../../utils/types';
 import {
     SET_IFMOBILE,
     SET_IFMOBILEORDERED,
@@ -20,98 +20,82 @@ import {
     number: number;
     positions: Array<string>;
   };  
+
+  type TOffsets = 
+    {x: number; y: number;};
+
+    type TRectangle = {
+      top: number;
+      right : number;
+      left?:number;
+      bottom?: number;
+    }
+  
   
   export interface ISetIfMobile{
     readonly type: typeof SET_IFMOBILE;
-    readonly payload: {isMobile: boolean};
+    readonly payload:  boolean;
   }
   
   export interface ISetIfMobileOrdered{
     readonly type: typeof SET_IFMOBILEORDERED;
-    readonly payload: {isMobileOrdered: boolean};
+    readonly payload: boolean;
   }
 
   export interface ISetWindowData{
     readonly type: typeof SET_WINDOWDATA;
-    readonly payload: {isMobile: boolean};
+    readonly payload: {width: number; height: number};
   }
   
   export interface IOpenMobileMenu{
     readonly type: typeof OPEN_MOBILEMENU;
-    readonly isMobileMenuOpened: boolean;
   }
 
   export interface ICloseMobileMenu{
     readonly type: typeof CLOSE_MOBILEMENU;
-    readonly isMobileMenuOpened: boolean;
   }
 
   export interface ISubMobileMenu{
     readonly type: typeof UNFOLD_SUBMOBILEMENU;
-    readonly isSubMenuOpened: boolean;
   }
 
   export interface IFoldSubMobileMenu{
     readonly type: typeof FOLD_SUBMOBILEMENU;
-    readonly isSubMenuOpened: boolean;
   }
 
   export interface ISetTouchedItem{
     readonly type: typeof SET_TOUCHEDITEM;
-    readonly payload : {currentTouchedItem: TIngredientUnique};
+    readonly payload : TIngredientUnique | TIngredient;
   }
 
   export interface IClearTouchedItem{
-    readonly type: typeof SET_TOUCHEDITEM;
-    readonly payload : {currentTouchedItem: {}};
+    readonly type: typeof CLEAR_TOUCHEDITEM;
   }
 
-/*
-  case SET_OFFSETS:
-    return {
-      ...state,
-      offsets: {
-        ...state.offsets,
-        rectangle: action.payload,
-      },
-    };
-  case SET_INITIALS:
-    return {
-      ...state,
-      offsets: {
-        ...state.offsets,
-        initials: action.payload,
-      },
-    };
+  export interface ISetOffsets{
+    readonly type: typeof SET_OFFSETS;
+    readonly payload:  TRectangle;
+  }
 
-  case SET_FINALS:
-    return {
-      ...state,
-      offsets: {
-        ...state.offsets,
-        finals: action.payload,
-      },
-    };
+  export interface ISetInitials{
+    readonly type: typeof SET_INITIALS;
+    readonly payload: TOffsets;
+  }
 
-  case CLEAR_INITIALS:
-    return {
-      ...state,
-      offsets: {
-        ...state.offsets,
-        initials: initialState.offsets.initials,
-      },
-    };
+  export interface ISetFinals{
+    readonly type: typeof SET_FINALS;
+    readonly payload: TOffsets;
+  }
 
-  case CLEAR_FINALS:
-    return {
-      ...state,
-      offsets: {
-        ...state.offsets,
-        finals: initialState.offsets.finals,
-      },
-    };
+  export interface IClearInitials{
+    readonly type: typeof CLEAR_INITIALS;
+  }
 
-*/
+  export interface IClearFinals{
+    readonly type: typeof CLEAR_FINALS;
+  }
+
+
   export type TMobileActions = 
   | ISetIfMobile
   | ISetIfMobileOrdered
@@ -120,4 +104,10 @@ import {
   | ICloseMobileMenu
   | ISubMobileMenu
   | IFoldSubMobileMenu
-  | ISetTouchedItem;
+  | ISetTouchedItem
+  | IClearTouchedItem
+  | ISetOffsets
+  | ISetInitials
+  | ISetFinals
+  | IClearInitials
+  | IClearFinals;

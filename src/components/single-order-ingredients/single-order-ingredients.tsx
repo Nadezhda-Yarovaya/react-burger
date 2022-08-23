@@ -7,8 +7,8 @@ const { list__item, list__image, list__image_more, par, list__item_more } =
 
 type TSingleOrderProps = {
   index: number;
-  ingredient: TIngredient;
-  positions: Array<TIngredient>;
+  ingredient: TIngredient | undefined;
+  positions: Array<TIngredient | undefined>;
 };
 
 const SingleOrderIngredients: FC<TSingleOrderProps> = ({

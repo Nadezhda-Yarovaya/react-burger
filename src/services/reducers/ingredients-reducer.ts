@@ -10,27 +10,49 @@ import {
   REMOVE_MODALINGREDIENTS,
   CLEAR_BUN,
 } from '../actions';
-import {TIngedientsActions} from '../action-types/ingredients-action-types';
+import { TIngedientsActions } from '../action-types/ingredients-action-types';
+import { TByCategory, TIngredient } from '../../utils/types';
+
+export type ingredientsState = {
+  listOfIngredients: Array<TIngredient>;
+  isLoading: boolean;
+  ingredientsByCategory: TByCategory;
+  bun: TIngredient;
+  currentIngredient: TIngredient;
+  areIngredientsShown: boolean;
+};
+
+const firstIngred = {
+  calories: 420,
+  carbohydrates: 53,
+  fat: 24,
+  image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
+  image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+  name: 'Краторная булка N-200i',
+  price: 1255,
+  proteins: 80,
+  type: 'bun',
+  _id: '60d3b41abdacab0026a733c6',
+};
 
 const initialState = {
-  listOfIngredients: [{ name: '', price: 0, image: '' }],
+  listOfIngredients: [firstIngred],
   isLoading: false,
   ingredientsByCategory: {
-    buns: [],
-    sauce: [],
-    main: [],
+    bun: [firstIngred],
+    sauce: [firstIngred],
+    main: [firstIngred],
   },
-  bun: {
-    name: 'добавьте булочку в конструктор бургера',
-    _id: '1',
-    price: 0,
-    image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-  },
-  currentIngredient: { name: '', price: 0, image: '' },
+  bun: firstIngred,
+  currentIngredient: firstIngred,
   areIngredientsShown: false,
 };
 
-export function ingredientsReducer(state = initialState, action: TIngedientsActions) {
+export function ingredientsReducer(
+  state: ingredientsState = initialState,
+  action: TIngedientsActions
+) : ingredientsState {
   switch (action.type) {
     case SET_ALLINGREDIENTS_REQUEST:
       return {
@@ -75,7 +97,7 @@ export function ingredientsReducer(state = initialState, action: TIngedientsActi
     case REMOVE_CURRENT:
       return {
         ...state,
-        currentIngredient: { name: '', price: 0, image: '' },
+        currentIngredient: initialState.currentIngredient,
       };
 
     case SET_MODALINGREDIENTS:

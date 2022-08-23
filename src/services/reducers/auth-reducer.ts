@@ -10,7 +10,7 @@ import {
 
 import type { TAuthActions } from '../action-types/auth-action-types';
 
-type TAuthType = {
+export type TAuthType = {
   user: {
     email: string;
     name: string;
@@ -25,19 +25,15 @@ const initialState: TAuthType = {
   apiData: {message: '', success: false},
 };
 
-export function authReducer(state = initialState, action: TAuthActions) {
+export function authReducer(state: TAuthType = initialState, action: TAuthActions): TAuthType {
   switch (action.type) {
-    case LOGIN_SUCCESS:
-      return {
-        ...state,
-        user: action.payload,
-      };
 
+     /* case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       return {
         ...state,
   user: action.payload,
-      };
+      }; */
     case GET_USER:
       return {
         ...state,

@@ -15,31 +15,27 @@ import {REGISTER_SUCCESS, LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, RESET_PAS
         readonly type: typeof LOGIN_SUCCESS;
         readonly payload: { user: TUser };
       }
-    
-      
+          
     export interface IGetUser {
         readonly type: typeof GET_USER;
-        readonly payload: { user: TUser };
+        readonly payload: TUser;
       }
     
       export interface ISetLogged {
         readonly type: typeof SET_LOGGED;
-        readonly isLogged: boolean;
       }
     
       export interface ISetLoggedOut {
         readonly type: typeof SET_LOGGEDOUT;
-        readonly isLogged: boolean;
       }
     
       export interface IShowApiMessage {
         readonly type: typeof SHOW_APIMESSAGE;
-        readonly payload: { apiData: string };
+        readonly payload: { message: string, success: boolean; };
       }
     
       export interface IClearApiMessage {
         readonly type: typeof CLEAR_APIMESSAGE;
-        readonly payload: { apiData: string };
       }
     
       

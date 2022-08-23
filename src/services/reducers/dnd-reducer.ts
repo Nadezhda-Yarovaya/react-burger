@@ -1,3 +1,4 @@
+import { XYCoord } from 'react-dnd';
 import { TIngredientUnique } from '../../utils/types';
 import { TDndActions } from '../action-types/dnd-action-types';
 import {
@@ -10,13 +11,19 @@ import {
   CLEAR_STUFFINGLIST,
 } from '../actions';
 
+export type TDndState = {
+  droppedElements: Array<TIngredientUnique> | [],
+  dropDirection: string;
+  initialIngredOffset: any,
+}
+
 const initialState = {
   droppedElements: [],
   dropDirection: '',
   initialIngredOffset: {},
 };
 
-export function dndReducer(state = initialState, action: TDndActions) {
+export function dndReducer(state: TDndState = initialState, action: TDndActions) : TDndState {
   switch (action.type) {
     case INCREASE_DROPPEDELEMENT:
       return {

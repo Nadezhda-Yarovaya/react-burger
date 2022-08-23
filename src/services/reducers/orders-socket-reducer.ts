@@ -1,4 +1,4 @@
-import { TOrder } from '../../utils/types';
+import { TOrder, TOrderWithIngredients } from '../../utils/types';
 import { TOrdersWsActions } from '../action-types/orders-ws-action-types';
 import {
   WS_CONNECTION_ORD_START,
@@ -10,11 +10,11 @@ import {
   WS_SET_ORD_ORDERSLIST
 } from '../actions/orders-ws-actions';
 
-type TWSState = {
+export type TWSState = {
   wsConnected: boolean;
   error?: Event;
   orders: string;
-  ordersArray?: Array<TOrder>;
+  ordersArray?: Array<TOrderWithIngredients>;
 };
 
 const initialState = {
@@ -27,7 +27,7 @@ const initialState = {
 export const ordersWsReducer = (
   state: TWSState = initialState,
   action: TOrdersWsActions
-) => {
+): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_ORD_START:
       return {

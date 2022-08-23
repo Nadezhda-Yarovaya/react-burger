@@ -1,4 +1,4 @@
-import { TByCategory, TDefaultIngred, TIngredient } from '../../utils/types';
+import { TByCategory, TDefaultIngred, TIngredient, TIngredientUnique } from '../../utils/types';
 import {
     SET_ALLINGREDIENTS_REQUEST,
     SET_ALLINGREDIENTS_SUCCESS,
@@ -21,8 +21,7 @@ import {
   
   export interface ISetAllIngredientsSuccess {
       readonly type: typeof SET_ALLINGREDIENTS_SUCCESS;
-      readonly payload: {listOfIngredients: Array<TIngredient>};
-      readonly isLoading: boolean;
+      readonly payload: Array<TIngredient>;
     }
 
     export interface ISetAllIngredientsFailure {
@@ -32,41 +31,38 @@ import {
 
       export interface IClearBun {
         readonly type: typeof CLEAR_BUN;
-        readonly bun: {bun: TIngredient};
       }
 
       export interface ISetByCategory{
         readonly type: typeof SET_INGREDIENTSBYCAT;
-        readonly payload: {ingredientsByCategory: TByCategory};
+        readonly payload: TByCategory;
       }
       
    
         export interface IReplaceBun {
             readonly type: typeof REPLACE_BUN;
-            readonly bun: {bun: TIngredient};
+            readonly bun: TIngredient;
           }
 
           export interface ISetCurrent{
             readonly type: typeof SET_CURRENT;
-            readonly currentIngredient: {currentIngredient: TIngredient};
+            readonly currentIngredient: TIngredient;
           }
 
           
           export interface IRemoveCurrent{
             readonly type: typeof REMOVE_CURRENT;
-            readonly currentIngredient: {currentIngredient: TDefaultIngred};
+            readonly currentIngredient: TIngredient;
           }
 
           
     export interface ISetModal{
         readonly type: typeof SET_MODALINGREDIENTS;
-          readonly areIngredientsShown: boolean;
       }
 
 
       export interface IRemoveModal {
         readonly type: typeof REMOVE_MODALINGREDIENTS;
-          readonly areIngredientsShown: boolean;
       }
 
 
@@ -78,7 +74,6 @@ import {
         | IClearBun
         |ISetByCategory 
         | IReplaceBun
-        | ISetCurrent
         | IRemoveCurrent
         | ISetModal
         | IRemoveModal;

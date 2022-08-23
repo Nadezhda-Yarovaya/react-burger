@@ -14,9 +14,9 @@ const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState('one');
 
-  const isLoading = useSelector(loadIngredients);
+  const isLoading = useSelector(state => state.ingredients.isLoading);
 
-  const allIngredients = useSelector(getAllIngredients);
+  const allIngredients = useSelector(state => state.ingredients.listOfIngredients);
 
   const bunsRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);

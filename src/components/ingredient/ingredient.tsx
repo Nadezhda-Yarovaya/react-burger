@@ -9,7 +9,7 @@ import {
 
 import { ifItsMobile } from '../../services/selectors';
 
-import { TIngredientUnique, TLocation } from '../../utils/types';
+import { TIngredient, TIngredientUnique, TLocation } from '../../utils/types';
 
 import {
   SET_CURRENT,
@@ -21,7 +21,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 
 type TIngredientProps = {
-  item: TIngredientUnique;
+  item: TIngredient;
 };
 
 const Ingredient: FC<TIngredientProps> = ({ item }) => {
@@ -66,7 +66,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     item: { item },
   });
 
-  const handleBunDrop = (currentItem: TIngredientUnique) => {
+  const handleBunDrop = (currentItem: TIngredient) => {
     dispatch({
       type: REPLACE_BUN,
       bun: currentItem,
@@ -75,15 +75,14 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
 
   const currentCounter = item.type === 'bun' ? bunCount : ingredientCount;
 
-  const openModalIngredient = (currentItem: TIngredientUnique) => {
+  const openModalIngredient = (currentItem: TIngredient) => {
     dispatch({
       type: SET_CURRENT,
       currentIngredient: currentItem,
     });
 
     dispatch({
-      type: SET_MODALINGREDIENTS,
-    });
+      type: SET_MODALINGREDIENTS});
   };
 
   return (

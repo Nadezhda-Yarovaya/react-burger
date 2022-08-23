@@ -15,7 +15,6 @@ import headerStyles from './app-header.module.css';
 import logoMobile from '../../images/logomobile.svg';
 import openSubmIcon from '../../images/openSubmenu.svg';
 import closeSubmIcon from '../../images/closeSubmenu.svg';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   OPEN_MOBILEMENU,
   CLOSE_MOBILEMENU,
@@ -27,6 +26,7 @@ import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import { performLogout } from '../../services/action-creators/auth-action-creators';
 import { TLocation } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const {
   header,
@@ -54,11 +54,11 @@ const AppHeader: FunctionComponent = () => {
   const curLocation = location.pathname;
 
   const isMobileMenuOpened = useSelector(
-    (state: any) => state.mobile.isMobileMenuOpened
+    (state) => state.mobile.isMobileMenuOpened
   );
 
   const isSubMenuOpened = useSelector(
-    (state: any) => state.mobile.isSubMenuOpened
+    (state) => state.mobile.isSubMenuOpened
   );
 
   function openMobileMenu(): void {

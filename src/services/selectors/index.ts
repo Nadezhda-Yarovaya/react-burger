@@ -1,6 +1,6 @@
 import { TAppActions } from '../../utils/types';
 
-function ifItsMobile(state : TAppActions) {
+function ifItsMobile(state) {
     return state.mobile.isMobile;
 }
 

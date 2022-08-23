@@ -11,10 +11,10 @@ import {
   handleApiMessageError,
   performRegister,
 } from '../services/action-creators/auth-action-creators';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 import { intitialValuesRegister } from '../utils/utils';
+import { useDispatch } from '../hooks/hooks';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -31,7 +31,7 @@ const Register: FC = () => {
 
   function handleRegister() {
     if (isValid) {
-      dispatch<any>(performRegister(name, email, password, history));
+      dispatch(performRegister(name, email, password, history));
     } else {
       handleApiMessageError(dispatch, 'Заполните все поля формы корректно');
     }
