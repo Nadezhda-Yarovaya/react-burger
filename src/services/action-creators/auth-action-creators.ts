@@ -63,20 +63,16 @@ export const performLogin =
     location: TLocation,
     history: History<LocationState>
   ): AppThunk =>
-  (dispatch: AppDispatch) => {
+  (dispatch) => {
     const cameFrom = location?.state?.from || '/';
     login(email, pass)
       .then((res) => {
         if (res && res.accessToken) {
-          // updateCookie(res);
-
           let authToken = res.accessToken.split('Bearer ')[1];
-          console.log('when perform login authtoken: ', authToken);
           if (authToken) {
-            console.log('set cookie upon login ');
-            setCookie('token', authToken, { expires: 20 }); // expires in minutes
+            setCookie('token', authToken, { expires: 1 }); // expires in minutes
           }
-          localStorage.setItem('refreshToken', res.refreshToken); // не меняется, только access менеятся
+          localStorage.setItem('refreshToken', res.refreshToken);
         }
         if (res && res.success) {
           dispatch({
@@ -110,7 +106,7 @@ export const getUserAction = (): IGetUserReq => ({
 
 const handleGetUser =
   (accessToken: string): AppThunk =>
-  (dispatch: AppDispatch) => {
+  (dispatch) => {
     dispatch(getUserAction());
     getUser(accessToken).then((res) => {
       dispatch({ type: GET_USER, payload: res.user });
@@ -119,7 +115,7 @@ const handleGetUser =
 
 export const handleUpdateUser =
   (accessToken: string, email: string, name: string, pass: string): AppThunk =>
-  (dispatch: AppDispatch, getState) => {
+  (dispatch) => {
     if (accessToken) {
       updateUser(email, name, pass, accessToken)
         .then((res) => {
@@ -150,7 +146,7 @@ export const handleUpdateUser =
     }
   };
 
-export const loadUser = (): AppThunk => (dispatch: AppDispatch, getState) => {
+export const loadUser = (): AppThunk => (dispatch) => {
   const accessToken = getCookie('token');
   if (accessToken) {
     return dispatch(handleGetUser(accessToken));
@@ -166,11 +162,10 @@ export const loadUser = (): AppThunk => (dispatch: AppDispatch, getState) => {
 
 export const patchUser =
   (email: string, name: string, pass: string): AppThunk =>
-  (dispatch: AppDispatch, getState) => {
+  (dispatch) => {
     const accessToken = getCookie('token');
-
     if (accessToken) {
-      return dispatch(handleUpdateUser(email, name, pass, accessToken));
+      return dispatch(handleUpdateUser(accessToken, email, name, pass));
     } else {
       const refreshSaved = localStorage.getItem('refreshToken');
       if (refreshSaved) {
@@ -181,7 +176,7 @@ export const patchUser =
     }
   };
 
-const handleRefreshToken =
+export const handleRefreshToken =
   (
     refeshSaved: string,
     handleUser: (
@@ -192,31 +187,32 @@ const handleRefreshToken =
     ) => AppThunk,
     ...rest: Array<string>
   ): AppThunk =>
-  (dispatch: AppDispatch, getState) => {
-    refreshToken(refeshSaved).then((res) => {
-      localStorage.removeItem('refreshToken');
-      localStorage.setItem('refreshToken', res.refreshToken);
-      let authToken;
-      authToken = res.accessToken.split('Bearer ')[1];
-      if (authToken) {
-        setCookie('token', authToken, { expires: 20 }); // expires in minutes
-      }
+  (dispatch) => {
+    refreshToken(refeshSaved)
+      .then((res) => {
+        localStorage.removeItem('refreshToken');
+        localStorage.setItem('refreshToken', res.refreshToken);
+        let authToken;
+        authToken = res.accessToken.split('Bearer ')[1];
+        console.log('authtok: ', authToken);
+        if (authToken) {
+          setCookie('token', authToken, { expires: 1 }); // expires in minutes
+        }
+        const email = rest[0];
+        const name = rest[1];
+        const pass = rest[2];
 
-      const email = rest[0];
-      const name = rest[1];
-      const pass = rest[2];
-
-      return dispatch(handleUser(authToken, email, name, pass));
-    });
+        return dispatch(handleUser(authToken, email, name, pass));
+      })
+      .catch((err) => console.log(err));
   };
 
 export const performLogout =
   (refreshToken: string, history: History<LocationState>): AppThunk =>
-  (dispatch: AppDispatch, getState) => {
+  (dispatch) => {
     logout(refreshToken)
       .then((res) => {
         localStorage.removeItem('refreshToken');
-        //dispatch null user
         dispatch({
           type: SET_LOGGEDOUT,
         });
@@ -243,7 +239,7 @@ export const handleRequestResetPassword =
 
 export const resetPass =
   (pass: string, token: string, history: History<LocationState>): AppThunk =>
-  (dispatch: AppDispatch) => {
+  (dispatch) => {
     resetPassword(pass, token)
       .then((res) => {
         if (res.success) {

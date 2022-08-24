@@ -24,8 +24,6 @@ export interface IConnectionError {
 
 export interface IConnectionClosed {
   readonly type: typeof WS_CONNECTION_ORD_CLOSED;
-  readonly payload: { error: string };
-  readonly wsConnected: boolean;
 }
 
 export interface IWsGetMessage {

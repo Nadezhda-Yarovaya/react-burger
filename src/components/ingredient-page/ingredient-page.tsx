@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const IngredientPage: FC = () => {
   const allIngredients = useSelector(
-    (store: any) => store.ingredients.listOfIngredients
+    (store) => store.ingredients.listOfIngredients
   );
 
   const { id } = useParams<TParams>();
@@ -24,7 +24,7 @@ const IngredientPage: FC = () => {
   const cameFrom = location.state ? location.state.from : false;
   const dispatch = useDispatch();
 
-  const thisCard: TIngredientUnique = allIngredients.find(
+  const thisCard = allIngredients.find(
     (item: TNewItem) => item._id === id
   );
 

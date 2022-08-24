@@ -10,8 +10,8 @@ import {
 import formStyles from '../components/form/form.module.css';
 import { useHistory } from 'react-router';
 
-import { useDispatch } from 'react-redux';
 import { initialValues1 } from '../utils/utils';
+import { useDispatch } from '../hooks/hooks';
 
 const { form__input, form__element, validationError } = formStyles;
 
@@ -26,7 +26,7 @@ const ForgotPassword: FC = () => {
 
   function handleForgotPass() {
     if (isValid) {
-      dispatch<any>(handleRequestResetPassword(email, history));
+      dispatch(handleRequestResetPassword(email, history));
     } else {
       handleApiMessageError(dispatch, 'Заполните e-mail корректно');
     }

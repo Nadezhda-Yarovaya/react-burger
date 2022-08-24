@@ -53,6 +53,8 @@ export const ordersWsReducer = (
         ...state,
         error: undefined,
         wsConnected: false,
+        orders: '',
+        ordersArray: []
       };
     case WS_GET_ORD_MESSAGE:
       return {

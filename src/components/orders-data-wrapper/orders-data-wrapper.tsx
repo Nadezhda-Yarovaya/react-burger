@@ -9,15 +9,17 @@ import {
 import { useLocation } from 'react-router-dom';
 
 import {
-  WS_CONNECTION_ORD_START,
+  WS_CONNECTION_ORD_CLOSED,
   WS_SET_ORD_ORDERSLIST,
 } from '../../services/actions/orders-ws-actions';
 import {
+  WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
   WS_SET_ORDERSLIST,
 } from '../../services/actions/feed-ws-actions';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { initialElement } from '../../utils/utils';
+import { loadOrders } from '../../services/action-creators/order-action-creators';
 
 type TOrdersDataWrapperProps = {
   children: React.ReactNode;
@@ -54,12 +56,26 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
     (state) => state.ingredients.listOfIngredients
   );
 
+  const baseUrl = 'wss://norma.nomoreparties.space/orders';
+
   useEffect(() => {
     if (isFeed) {
-      dispatch({ type: WS_CONNECTION_START });
-    } else if (isOrders) {
-      dispatch({ type: WS_CONNECTION_ORD_START });
+      dispatch({
+        type: WS_CONNECTION_START,
+        payload: `${baseUrl}/all`,
+      });
     }
+    if (isOrders) {
+      dispatch(loadOrders());
+    }
+
+    return () => {
+      if (isFeed) {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      } else if (isOrders) {
+        dispatch({ type: WS_CONNECTION_ORD_CLOSED });
+      }
+    };
   }, [isFeed, isOrders, dispatch]);
 
   useEffect(() => {

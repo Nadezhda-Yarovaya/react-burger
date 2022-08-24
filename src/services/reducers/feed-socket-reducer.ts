@@ -40,14 +40,15 @@ export const feedWsReducer = (
       return {
         ...state,
         error: action.payload,
-        // error: 'Ошибка соединения',
-        // wsConnected: false,
+        wsConnected: false,
       };
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
         error: undefined,
         wsConnected: false,
+        orders: '',
+        ordersArray: []
       };
     case WS_GET_MESSAGE:
       return {

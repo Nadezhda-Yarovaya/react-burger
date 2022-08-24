@@ -98,9 +98,9 @@ const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
                   Готовы:
                 </p>
                 <ul className={numberOrdersList}>
-                  {numbersDone.map((item: number | undefined, ind: number) => (
+                  {numbersDone.map((item) => (
                     <li
-                      key={ind}
+                      key={item}
                       className={`${numberOrderItem} text text_type_digits-default`}
                     >
                       {item}
@@ -114,9 +114,9 @@ const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
                 </p>
                 <div className={numberOrdersList}>
                   {numbersPending.map(
-                    (item: number | undefined, ind: number) => (
+                    (item: number | undefined) => (
                       <li
-                        key={ind}
+                        key={item}
                         className={`${numberOrderItemPending} text text_type_digits-default`}
                       >
                         {item}

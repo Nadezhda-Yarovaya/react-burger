@@ -22,29 +22,43 @@ const OrdersList: FC<TPropsFormatDate> = ({ formatDate }) => {
     TOrderWithIngredients[] | undefined
   >([initialElement]);
 
+  const [wsConnected, setWsConnected] = useState<boolean | undefined>(false);
+
   const orderAllList = useSelector((state) => state.feedWs.ordersArray);
   const orderPersList = useSelector((state) => state.ordersWs.ordersArray);
+
+  const wsFeedConnected = useSelector((state) => state.feedWs.wsConnected);
+  const wsOrdersConnected = useSelector((state) => state.ordersWs.wsConnected);
 
   useEffect(() => {
     if (isFeed) {
       setOrderListFinal(orderAllList);
+      setWsConnected(wsFeedConnected);
     }
     if (isOrders) {
       setOrderListFinal(orderPersList);
+      setWsConnected(wsOrdersConnected);
     }
   }, [orderAllList, orderPersList]);
+
+  const ordersMessage =
+    orderListFinal && orderListFinal?.length > 0
+      ? ''
+      : 'Список заказов пока пуст';
+
+  const textMessage = wsConnected
+    ? ordersMessage
+    : 'Невозможно загрузить ленту заказов. Нет соединения';
 
   return (
     <OrdersDataWrapper>
       <div className={`${orders} pr-2 mt-8`}>
-        {orderListFinal && orderListFinal.length > 0 ? (
-          orderListFinal.map((item: TOrderWithIngredients, ind: number) => (
-            <Order key={ind} item={item} formatDate={formatDate} />
+        {wsConnected && orderListFinal && orderListFinal?.length > 0 ? (
+          orderListFinal.map((item: TOrderWithIngredients) => (
+            <Order key={item._id} item={item} formatDate={formatDate} />
           ))
         ) : (
-          <p className='text text_type_main-default'>
-            У вас пока нет заказов. Сделайте первый заказ на главной странице.
-          </p>
+          <p className='text text_type_main-default'>{textMessage}</p>
         )}
       </div>
     </OrdersDataWrapper>

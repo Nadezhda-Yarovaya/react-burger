@@ -30,11 +30,11 @@ type TWsActions = {
 };
 
 export const socketMiddleware = (
-  wsUrl: string,
   wsActions: TWsActions
 ): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
+    let url = '';
 
     return (next) => (action) => {
       const { dispatch } = store;
@@ -42,15 +42,16 @@ export const socketMiddleware = (
       const { wsConnect, onSuccess, onError, onClose, onMessage } = wsActions;
 
       if (type === wsConnect) {
-        socket = new WebSocket(wsUrl);
+        url = action.payload;
+        socket = new WebSocket(url);
       }
       if (socket) {
-        socket.onopen = (event) => {
+        socket.onopen = () => {
           dispatch({ type: onSuccess });
         };
 
-        socket.onerror = (event) => {
-          dispatch({ type: onError, payload: event.type });
+        socket.onerror = (error) => {
+          dispatch({ type: onError, payload: JSON.stringify(error) });
         };
 
         socket.onmessage = (event) => {
@@ -59,8 +60,16 @@ export const socketMiddleware = (
         };
 
         socket.onclose = (event) => {
-          //dispatch({ type: onClose, payload: event });
+        
+          if (event.code !== 1000) {
+          dispatch({ type: onError, payload: event.code.toString() });
+          } else {
+       
+            dispatch({ type: onClose});
+          }
         };
+
+
       }
 
       next(action);

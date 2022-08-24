@@ -122,8 +122,8 @@ const OrdersId: FC<OrdersIdProps> = ({ formatDate }) => {
           <p className='text text_type_main-medium mb-6'>Состав :</p>
           <ul className={list}>
             {currentOrderShown.ingredients[0] &&
-              currentOrderShown.ingredients.map((element, ind) => (
-                <li key={ind} className={list__item}>
+              currentOrderShown.ingredients.map(element => (
+                <li key={element!._id} className={list__item}>
                   <div className={list__iteminfo}>
                     <div className={list__item2}>
                       <div

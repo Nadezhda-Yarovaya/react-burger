@@ -15,16 +15,11 @@ import { feedWsActions } from './services/actions/feed-ws-actions';
 import { TAppActions } from './utils/types';
 import { ordersWsActions } from './services/actions/orders-ws-actions';
 
-const baseUrl = 'wss://norma.nomoreparties.space/orders';
 
-const accessToken = getCookie('token');
-const ourWsMiddleware = socketMiddleware(`${baseUrl}/all`, feedWsActions);
-const ourWsMiddleware2 = socketMiddleware(
-  `${baseUrl}?token=${accessToken}`,
-  ordersWsActions
-);
+const ourWsMiddleware = socketMiddleware( feedWsActions);
+const personalOrdersWsMiddleware = socketMiddleware(ordersWsActions);
 const enhancer = composeWithDevTools(
-  applyMiddleware(thunk, ourWsMiddleware, ourWsMiddleware2)
+  applyMiddleware(thunk, ourWsMiddleware, personalOrdersWsMiddleware )
 );
 const store = createStore(rootReducer, enhancer);
 

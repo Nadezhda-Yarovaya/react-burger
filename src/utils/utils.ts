@@ -81,3 +81,12 @@ export const firstorder: TOrderWithIngredients = {
   updatedAt: '',
   _id: '',
 };
+
+export const getResponse = (res: Response) => {
+  if (res.ok) {
+    return res.json();
+  } else {
+    console.log(res);
+    return Promise.reject(`Ошибка при соединении: ${res.status}`);
+  }
+};
