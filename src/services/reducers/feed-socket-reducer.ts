@@ -5,19 +5,16 @@ import {
   WS_GET_MESSAGE,
   WS_GET_ORDERS,
   WS_SET_ORDERSLIST,
+  WS_CONNECTION_START,
 } from '../actions/feed-ws-actions';
 
-import { TOrderWithIngredients } from '../../utils/types';
+import { TOrderWithIngredients, TWSState } from '../../utils/types';
 import { TFeedWsActions } from '../action-types/feed-ws-action-types';
 
-export type TWSState = {
-  wsConnected: boolean;
-  error?: string | undefined;
-  orders: string;
-  ordersArray?: Array<TOrderWithIngredients>;
-};
+
 
 const initialState = {
+  isConnecting : false,
   wsConnected: false,
   error: undefined,
   orders: '',
@@ -29,11 +26,18 @@ export const feedWsReducer = (
   action: TFeedWsActions
 ): TWSState => {
   switch (action.type) {
+    case WS_CONNECTION_START:
+      return {
+        ...state,
+        error: undefined,
+        isConnecting: true,
+      };
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
         error: undefined,
         wsConnected: true,
+        isConnecting: false,
       };
 
     case WS_CONNECTION_ERROR:
@@ -41,12 +45,14 @@ export const feedWsReducer = (
         ...state,
         error: action.payload,
         wsConnected: false,
+        isConnecting: false,
       };
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
         error: undefined,
         wsConnected: false,
+        isConnecting: false,
         orders: '',
         ordersArray: []
       };

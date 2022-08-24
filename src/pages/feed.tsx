@@ -6,7 +6,8 @@ import { numberslist } from '../utils/utils';
 
 import { TOrderWithIngredients, TPropsFormatDate } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
-import { useSelector } from '../hooks/hooks';
+import { useDispatch, useSelector } from '../hooks/hooks';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/feed-ws-actions';
 
 const {
   section,
@@ -39,7 +40,7 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
   );
 };
 
-const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
+const Feed: FC = () => {
   const allOrdersFromWS = useSelector((state) => state.feedWs.orders);
   const allOrdersFromWSArray = useSelector((state) => state.feedWs.ordersArray);
   const [total, setTotal] = useState<number>(0);
@@ -50,6 +51,23 @@ const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
   const [numbersPending, setNumbersPending] = useState<
     Array<number | undefined>
   >([0]);
+
+  const dispatch = useDispatch();
+
+  const baseUrl = 'wss://norma.nomoreparties.space/orders';
+
+  useEffect(() => {
+    
+      dispatch({
+        type: WS_CONNECTION_START,
+        payload: `${baseUrl}/all`,
+      });
+    
+    return () => {      
+        dispatch({ type: WS_CONNECTION_CLOSED });     
+    }; 
+  }, [dispatch]);
+
 
   function makeOrderNumbers(status: string): Array<number | undefined> {
     if (allOrdersFromWSArray) {
@@ -89,7 +107,7 @@ const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
           <section
             className={`mr-10} ${ingredients} ${section_flex} ${feedStyles.ordersList}`}
           >
-            <OrdersList formatDate={formatDate} />
+            <OrdersList />
           </section>
           <section className={`${feedSection}`}>
             <div style={{ display: 'flex', margin: '0 0 60px 0' }}>

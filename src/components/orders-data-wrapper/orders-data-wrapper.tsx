@@ -57,7 +57,7 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
   );
 
   const baseUrl = 'wss://norma.nomoreparties.space/orders';
-
+/*
   useEffect(() => {
     if (isFeed) {
       dispatch({
@@ -68,21 +68,22 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
     if (isOrders) {
       dispatch(loadOrders());
     }
-
+/*
     return () => {
       if (isFeed) {
         dispatch({ type: WS_CONNECTION_CLOSED });
       } else if (isOrders) {
         dispatch({ type: WS_CONNECTION_ORD_CLOSED });
       }
-    };
+    }; 
   }, [isFeed, isOrders, dispatch]);
+  */
 
   useEffect(() => {
     function makeIngredients(
       arrayStrings: Array<string>
     ): Array<TIngredient | undefined> {
-      return arrayStrings.map((ingredient: string) => {
+      return arrayStrings.map((ingredient) => {
         return allIngredients.find(
           (item2: TIngredient) => item2._id === ingredient
         );

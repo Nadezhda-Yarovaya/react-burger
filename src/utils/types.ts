@@ -237,6 +237,14 @@ export type TPropsFormatDate = {
   formatDate: (item: TOrderWithIngredients) => string;
 };
 
+export type TWSState = {
+  isConnecting: boolean;
+  wsConnected: boolean;
+  error?: string | undefined;
+  orders: string;
+  ordersArray?: Array<TOrderWithIngredients>;
+};
+
 export type TParams = {
   id: string;
 };

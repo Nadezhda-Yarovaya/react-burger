@@ -3,6 +3,7 @@ import orderDetailsStyles from './order-details.module.css';
 
 import doneSign from '../../images/done.svg';
 import { useSelector } from '../../hooks/hooks';
+import PreloaderBurger from '../preloader/preloader';
 
 const { digits, window__text, window__extra, preloaderContainer, preloader } =
   orderDetailsStyles;
@@ -15,9 +16,7 @@ const OrderDetails: FC = () => {
   return (
     <>
       {isLoading ? (
-        <div className={preloaderContainer}>
-          <div className={preloader}></div>
-        </div>
+        <PreloaderBurger />
       ) : (
         <>
           <p className={`text text_type_digits-large ${digits}`}>

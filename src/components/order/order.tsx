@@ -4,6 +4,7 @@ import SingleOrderIngredients from '../single-order-ingredients/single-order-ing
 import { Link, useLocation } from 'react-router-dom';
 import orderStyles from './order.module.css';
 import { TLocation, TOrderWithIngredients } from '../../utils/types';
+import DateOrder from '../date/date';
 
 const {
   order,
@@ -23,10 +24,9 @@ const {
 
 type TOrderPropsOrder = {
   item: TOrderWithIngredients;
-  formatDate: (item: TOrderWithIngredients) => string;
 };
 
-const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
+const Order: FC<TOrderPropsOrder> = ({ item }) => {
   type Tlocate1 = {
     feedLocate?: TLocation;
     ordersLocate?: TLocation;
@@ -63,9 +63,6 @@ const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
 
   const [finalDate, setFinalDate] = useState<string>('');
 
-  useEffect(() => {
-    setFinalDate(formatDate(item));
-  }, [item]);
 
   const [statusText, setStatusText] = useState<string>('');
 
@@ -99,12 +96,12 @@ const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
           <p className={`${number} text text_type_digits-default`}>
             #{item.number}
           </p>
-          <p className={date}>{finalDate}</p>
+          <DateOrder item={item} />
         </div>
         <p className={`${name} mt-6 mb-6 text text_type_main-medium`}>
           {item.name}
         </p>
-        {location.pathname === '/feed' ? (
+        {location.pathname.includes('/feed') ? (
           ''
         ) : (
           <p

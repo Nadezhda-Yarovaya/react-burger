@@ -44,6 +44,8 @@ import {
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { firstIngred, firstorderString } from '../../utils/utils';
+import FeedId from '../../pages/feed-id';
+import IndividualOrder from '../individul-order/individual-order';
 
 const { page } = appStyles;
 
@@ -170,42 +172,6 @@ const App: FunctionComponent = () => {
     }
   };
 
-  const formatDate = (item: TOrderWithIngredients): string => {
-    const orderDate = new Date(item.createdAt);
-    const today = new Date();
-    const daysDiff = Math.round(
-      (today.getTime() - orderDate.getTime()) / (1000 * 3600 * 24)
-    );
-    const lastDigit = parseInt(daysDiff.toString().slice(-1));
-    const howMany =
-      daysDiff > 20 && lastDigit === 1
-        ? daysDiff + ' день назад'
-        : daysDiff + ' дней назад';
-    const howManyTwo =
-      lastDigit === (2 || 3 || 4) ? daysDiff + ' дня назад' : howMany;
-    const isYesterday = daysDiff === 1 ? 'Вчера' : howManyTwo;
-    const isOrderOfToday =
-      today.toLocaleDateString() === orderDate.toLocaleDateString();
-    const dateName = isOrderOfToday ? 'Сегодня' : isYesterday;
-    const minutes =
-      orderDate.getMinutes() < 10
-        ? '0' + orderDate.getMinutes()
-        : orderDate.getMinutes();
-
-    const GMTzone = -orderDate.getTimezoneOffset() / 60;
-    const signPlusOrMinus = GMTzone > 0 ? '+' : '';
-    const finalDate =
-      dateName +
-      ', ' +
-      orderDate.getHours() +
-      ':' +
-      minutes +
-      ' i-GMT' +
-      signPlusOrMinus +
-      GMTzone;
-
-    return finalDate;
-  };
 
   const handleSetWindowData = () => {
     dispatch({
@@ -267,19 +233,19 @@ const App: FunctionComponent = () => {
           </Route>
 
           <Route path='/feed' exact>
-            <Feed formatDate={formatDate} />
+            <Feed  />
           </Route>
 
           <Route path='/feed/:id' exact>
-            <OrdersId formatDate={formatDate} />
+            {locateFeedModal ? <Feed /> : <FeedId  />}
           </Route>
 
           <ProtectedRouteLogged path='/profile/orders' exact>
-            <Orders formatDate={formatDate} />
+            <Orders  />
           </ProtectedRouteLogged>
 
           <ProtectedRouteLogged path='/profile/orders/:id' exact>
-            <OrdersId formatDate={formatDate} />
+          {locateProfileOrdersModal ? <Orders /> : <OrdersId  />}
           </ProtectedRouteLogged>
           <Route>
             <NotFound />
@@ -309,7 +275,7 @@ const App: FunctionComponent = () => {
         <Route path='/feed/:id'>
           {' '}
           <Modal closeModal={closeModalFromFeed} isOpen={true}>
-            <OrdersId formatDate={formatDate} />
+            <IndividualOrder  />
           </Modal>
         </Route>
       )}
@@ -317,7 +283,7 @@ const App: FunctionComponent = () => {
         <Route path='/profile/orders/:id'>
           {' '}
           <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
-            <OrdersId formatDate={formatDate} />
+            <IndividualOrder  />
           </Modal>
         </Route>
       )}
