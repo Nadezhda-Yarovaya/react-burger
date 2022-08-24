@@ -10,6 +10,7 @@ import { TDndActions } from '../services/action-types/dnd-action-types';
 import { TMobileActions } from '../services/action-types/mobile-types';
 import { TOrdersWsActions } from '../services/action-types/orders-ws-action-types';
 import { TOrderInfoActions } from '../services/action-types/order-info-action-types';
+import { firstIngredUniq } from './utils';
 
 export type TNewItem = { [key: string]: string | number };
 
@@ -57,6 +58,8 @@ type TLocate = {
 export type TLocation = {
   state?: {
     from?: string;
+    feedLocate?: TLocate;
+  ordersLocate?: TLocate;
   };
   from?: string;
   locate?: TLocate;
@@ -188,7 +191,7 @@ export type TFormRegister = {
 
 export type TFormUnion = TFormRegister | TFormLogin;
 
-export type TOrderItem = {
+/*export type TOrderItem = {
   name: string;
   order: { number: number };
   status: string;
@@ -196,7 +199,7 @@ export type TOrderItem = {
   sum: number;
   date: string;
   _id: string;
-};
+};*/
 /*
 export type TOrderFull1 = {
   name: string;
@@ -208,6 +211,7 @@ export type TOrderFull1 = {
   _id: string;
 };*/
 
+/*
 export type TOrderFull = {
   name: string;
   order: { number: number };
@@ -216,7 +220,8 @@ export type TOrderFull = {
   sum: number;
   date: string;
   _id: string;
-};
+}; */
+
 
 export type TOrder = {
   createdAt: string;
@@ -257,7 +262,7 @@ export type TOrdersId = {
 };
 
 export type TOrderProps = {
-  item: TOrderFull;
+  item: TOrderWithIngredients;
 };
 
 export type TMessage = {
@@ -277,51 +282,35 @@ export type TItem = {
   item: TIngredient;
 };
 
-export const firstIngredUniq = {
-  calories: 0,
-  carbohydrates: 0,
-  fat: 0,
-  image: '',
-  image_large: '',
-  image_mobile: '',
-  name: 'Выберите булку',
-  price: 0,
-  proteins: 0,
-  type: 'bun',
-  _id: '0',
-  uniqueId: 'sdfs',
-};
-
-export const firstIngred = {
-  calories: 0,
-  carbohydrates: 0,
-  fat: 0,
-  image: '',
-  image_large: '',
-  image_mobile: '',
-  name: 'Выберите булку',
-  price: 0,
-  proteins: 0,
-  type: 'bun',
-  _id: '0',
-};
-
-
-
-export const firstorder: TOrderFull = 
+export const firstorderString: TOrder  = 
   {
-    name: '',
-    order: { number: 0 },
-    status: '',
-    positions: [firstIngredUniq],
-    sum: 0,
-    date: '',
-    _id: '',
+    createdAt: "",
+ingredients: [''],
+name: "название заказа",
+number: 0,
+status: "",
+updatedAt: "",
+_id: "",
 };
+
+export type TPropsFormatDate = {
+  formatDate: (item: TOrderWithIngredients) => string;
+};
+
+export const firstorder: TOrderWithIngredients = 
+  {
+    createdAt: "",
+ingredients: [firstIngredUniq],
+name: "название заказа",
+number: 0,
+status: "",
+updatedAt: "",
+_id: "",
+};
+
 export type TOrderFromServer = {
   date?: string;
   name?: string;
-
   order?: { number: number };
   positions?: Array<string>;
   status?: string;

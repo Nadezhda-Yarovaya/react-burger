@@ -76,7 +76,7 @@ export const performLogin =
           console.log("when perform login authtoken: ", authToken);
           if (authToken) {
             console.log("set cookie upon login ");
-            setCookie("token", authToken, { expires: 1 }); // expires in minutes
+            setCookie("token", authToken, { expires: 20 }); // expires in minutes
           }
           localStorage.setItem("refreshToken", res.refreshToken); // не меняется, только access менеятся
         }

@@ -36,9 +36,10 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TLocation, TOrderItem, TOrderFull, TIngredient, firstIngred } from '../../utils/types';
+import { TLocation, TIngredient, TOrderWithIngredients, TOrder, firstorder, firstorderString } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
+import { firstIngred } from '../../utils/utils';
 
 const { page } = appStyles;
 
@@ -47,7 +48,7 @@ const App: FunctionComponent = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const tempOrderslist: Array<TOrderItem> = initialTempOrderList;
+  const tempOrderslist: Array<TOrder> = [firstorderString];
 
   const allIngredients12 = useSelector(state => state.ingredients.listOfIngredients);
 
@@ -73,7 +74,6 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     if (allIngredients12[0].name) {
       const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
-      console.log('FILTERED list:', filteredTempOrdersList);
       dispatch({
         type: SET_POSITIONSDATA,
         payload: filteredTempOrdersList,
@@ -81,10 +81,10 @@ const App: FunctionComponent = () => {
     }
   }, [allIngredients12]);
 
-  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull> => {
+  const newListAfterFilter = (arr1 : Array<TOrder>): Array<TOrderWithIngredients> => {
     return arr1.map((item) => {
-      console.log('подается на фильтрацию со стрингами: ', item);
-      const newPositions = item.positions.map((elementId) => {
+      // console.log('подается на фильтрацию со стрингами: ', item);
+      const newPositions = item.ingredients.map((elementId) => {
         const newArrayItem = allIngredients12.find(
           (ingredient: TIngredient) => ingredient._id === elementId
         );
@@ -98,7 +98,7 @@ const App: FunctionComponent = () => {
 
       return {
         ...item,
-        positions: newPositions,
+        ingredients: newPositions,
       };
     });
     
@@ -127,6 +127,7 @@ const App: FunctionComponent = () => {
   }
 
   function closeModalIngredientsShown() {
+    history.goBack();
     dispatch({
       type: REMOVE_CURRENT,
       currentIngredient: firstIngred
@@ -135,7 +136,7 @@ const App: FunctionComponent = () => {
     dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });
-    history.goBack();
+   
   }
 
   const handleSetMobile = () => {
@@ -166,6 +167,45 @@ const App: FunctionComponent = () => {
     }
   };
 
+  const formatDate = (item: TOrderWithIngredients) : string => {
+      // formatting date
+  const orderDate = new Date(item.createdAt);
+  const today = new Date();
+  const daysDiff = Math.round(
+    (today.getTime() - orderDate.getTime()) / (1000 * 3600 * 24)
+  );
+  const lastDigit = parseInt(daysDiff.toString().slice(-1));
+  const howMany =
+    daysDiff > 20 && lastDigit === 1
+      ? daysDiff + ' день назад'
+      : daysDiff + ' дней назад';
+  const howManyTwo =
+    lastDigit === (2 || 3 || 4) ? daysDiff + ' дня назад' : howMany;
+  const isYesterday = daysDiff === 1 ? 'Вчера' : howManyTwo;
+  const isOrderOfToday =
+    today.toLocaleDateString() === orderDate.toLocaleDateString();
+  const dateName = isOrderOfToday ? 'Сегодня' : isYesterday;
+  const minutes =
+    orderDate.getMinutes() < 10
+      ? '0' + orderDate.getMinutes()
+      : orderDate.getMinutes();
+
+  const GMTzone = -orderDate.getTimezoneOffset() / 60;
+  const signPlusOrMinus = GMTzone > 0 ? '+' : '';
+  const finalDate =
+    dateName +
+    ', ' +
+    orderDate.getHours() +
+    ':' +
+    minutes +
+    ' i-GMT' +
+    signPlusOrMinus +
+    GMTzone;
+
+    return finalDate;
+
+  }
+
   const handleSetWindowData = () => {
     dispatch({
       type: SET_WINDOWDATA,
@@ -177,27 +217,10 @@ const App: FunctionComponent = () => {
   };
 
   const closeModalFromFeed = () => {
-    /*
-    dispatch({
-      type: REMOVE_CURRENT, //order from feed 
-    });
-
-    dispatch({
-      type: REMOVE_MODALINGREDIENTS,
-    });*/
     history.goBack();
-
   }
 
   const closeModalFromProileOrders = () => {
-     /*
-    dispatch({
-      type: REMOVE_CURRENT, //order profiles
-    });
-
-    dispatch({
-      type: REMOVE_MODALINGREDIENTS,
-    });*/
     history.goBack();
   }
 
@@ -207,8 +230,7 @@ const App: FunctionComponent = () => {
 
   const locateProfileOrdersModal  = location?.state && location.state?.ordersLocate;
 
-
-  return (
+    return (
     <>
       <div className={page}>
         <AppHeader />
@@ -243,20 +265,20 @@ const App: FunctionComponent = () => {
           </Route>
 
           <Route path='/feed' exact>
-            <Feed />
+            <Feed formatDate={formatDate}/>
           </Route>
 
           <Route path='/feed/:id' exact>
-            <OrdersId />
+            <OrdersId formatDate={formatDate}/>
           </Route>
 
      
           <ProtectedRouteLogged path='/profile/orders' exact>
-            <Orders />
+            <Orders formatDate={formatDate}/>
           </ProtectedRouteLogged>
 
-          <ProtectedRouteLogged path='/profile/orders/:id'>
-            <OrdersId />
+          <ProtectedRouteLogged path='/profile/orders/:id' exact>
+            <OrdersId formatDate={formatDate}/>
           </ProtectedRouteLogged>
           <Route>
             <NotFound />
@@ -286,7 +308,7 @@ const App: FunctionComponent = () => {
         <Route path='/feed/:id'>
           {' '}
           <Modal closeModal={closeModalFromFeed} isOpen={true}>
-          <OrdersId />
+          <OrdersId formatDate={formatDate}/>
           </Modal>
         </Route>
       )}
@@ -294,7 +316,7 @@ const App: FunctionComponent = () => {
         <Route path='/profile/orders/:id'>
           {' '}
           <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
-          <OrdersId />
+          <OrdersId formatDate={formatDate}/>
           </Modal>
         </Route>
       )}

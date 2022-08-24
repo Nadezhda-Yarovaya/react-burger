@@ -72,6 +72,7 @@ export const ordersWsReducer = (
       error: undefined,
       ordersArray: action.payload
     }
+  
     default:
       return state;
   }

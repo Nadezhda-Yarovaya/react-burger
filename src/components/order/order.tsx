@@ -1,12 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import SingleOrderIngredients from '../single-order-ingredients/single-order-ingredients';
 import { Link, useLocation } from 'react-router-dom';
 import orderStyles from './order.module.css';
-import {
-  TLocation,
-  TOrderWithIngredients,
-} from '../../utils/types';
+import { TLocation, TOrderWithIngredients } from '../../utils/types';
 
 const {
   order,
@@ -26,62 +23,62 @@ const {
 
 type TOrderPropsOrder = {
   item: TOrderWithIngredients;
+  formatDate: (item: TOrderWithIngredients) => string;
 };
 
-const Order: FC<TOrderPropsOrder> = ({ item }) => {
+const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
   const location = useLocation<TLocation>();
 
   //const currentPath = listType === 'feed' ? '/feed/' : '/profile/orders/';
 
-  const currentLocationState =
-    location.pathname === '/feed'
-      ? { feedLocate: location }
-      : { ordersLocate: location };
+  const isFeed = location.pathname.includes('/feed');
+  const isOrders = location.pathname.includes('/orders');
+
+  type Tlocate1 = {
+    feedLocate? : TLocation;
+    ordersLocate? : TLocation;
+  }
+
+  const [currentLocationState, setcurrentLocationState ] = useState< Tlocate1 | undefined | void>({});
+
+  /*let currentLocationState1 : Tlocate1 | undefined | void = useMemo(()=> {}, []);
+    if (isFeed) {currentLocationState1 = { feedLocate: location }; }
+    if (isOrders) {currentLocationState1 = { ordersLocate: location }; }
+    */
+
+    useEffect(() => {
+      if (isFeed) {
+      setcurrentLocationState ({ feedLocate: location });
+      } 
+      if (isOrders) {
+        setcurrentLocationState({ ordersLocate: location });
+      }
+
+    },[isFeed, isOrders]);
+
+
+
+    // console.log('current location state: ', currentLocationState);
 
   const [orderSum, setOrderSum] = useState<number>(0);
 
   useEffect(() => {
     if (item) {
-      console.log('item order: ', item);
-      console.log('item Id: ', item._id);
       let sumArray: number[] = [];
-      sumArray = item.ingredients.map((item) => (item?.price || 0)) ;
-      console.log('sumArray: ', sumArray);
-     
-      
-      const orderTotal = sumArray.reduce((prev, current) => prev + current, 0) || 0;
+      sumArray = item.ingredients.map((item) => item?.price || 0);
+
+      const orderTotal =
+        sumArray.reduce((prev, current) => prev + current, 0) || 0;
       setOrderSum(orderTotal);
     }
   }, [item]);
 
-  // formatting date
-  const orderDate = new Date(item.createdAt);
-  const today = new Date();
-  const daysDiff = Math.round(
-    (today.getTime() - orderDate.getTime()) / (1000 * 3600 * 24)
-  );
-  const lastDigit = parseInt(daysDiff.toString().slice(-1));
-  const howMany =
-    daysDiff > 20 && lastDigit === 1
-      ? daysDiff + ' день назад'
-      : daysDiff + 'дней назад';
-  const howManyTwo =
-    lastDigit === (2 | 3 | 4) ? daysDiff + ' дня назад' : howMany;
-  const isYesterday = daysDiff === 1 ? 'Вчера' : howManyTwo;
-  const isOrderOfToday =
-    today.toLocaleDateString() === orderDate.toLocaleDateString();
-  const dateName = isOrderOfToday ? 'Сегодня' : isYesterday;
-  const minutes =
-    orderDate.getMinutes() < 10
-      ? '0' + orderDate.getMinutes()
-      : orderDate.getMinutes();
+  
+  const [finalDate, setFinalDate] = useState<string>('');
 
-      const GMTzone = (-orderDate.getTimezoneOffset() / 60 );
-      const signPlusOrMinus = GMTzone > 0 ? '+' : '';
-  const finalDate =
-    dateName + ', ' + orderDate.getHours() + ':' + minutes + ' i-GMT' + signPlusOrMinus + GMTzone;
-
-
+  useEffect(() => {
+    setFinalDate(formatDate(item));
+  },[item]);
 
   const [statusText, setStatusText] = useState<string>('');
 
@@ -102,7 +99,6 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
     setStatusText(makeStatus(item.status));
   }, [item]);
 
-  
   return (
     <Link
       to={{

@@ -14,7 +14,7 @@ import {
   WS_CONNECTION_CLOSED,
 } from '../services/actions/feed-ws-actions';
 
-import { TIngredient, TOrder, TOrderWithIngredients } from '../utils/types';
+import { TIngredient, TOrder, TOrderWithIngredients, TPropsFormatDate } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
 import { AppDispatch } from '..';
 import { useSelector } from '../hooks/hooks';
@@ -50,7 +50,7 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
   );
 };
 
-const Feed: FC = () => {
+const Feed: FC<TPropsFormatDate> = ({formatDate}) => {
   const allOrdersFromWS = useSelector((state) => state.feedWs.orders);
   const allOrdersFromWSArray = useSelector(
     (state) => state.feedWs.ordersArray
@@ -98,7 +98,7 @@ const Feed: FC = () => {
           <section
             className={`mr-10} ${ingredients} ${section_flex} ${feedStyles.ordersList}`}
           >
-            <OrdersList />
+            <OrdersList formatDate={formatDate}/>
           </section>
           <section className={`${feedSection}`}>
             <div style={{ display: 'flex', margin: '0 0 60px 0' }}>

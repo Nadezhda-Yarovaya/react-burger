@@ -1,4 +1,5 @@
-import { firstIngredUniq, TIngredient, TIngredientUniq2, } from '../../utils/types';
+import { TIngredient, TIngredientUniq2, } from '../../utils/types';
+import { firstIngredUniq } from '../../utils/utils';
 import { TMobileActions } from '../action-types/mobile-types';
 import {
   SET_IFMOBILE,

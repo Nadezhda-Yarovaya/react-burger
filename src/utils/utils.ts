@@ -1,6 +1,12 @@
-import { TForm, TFormLogin, TFormPass, TFormRegister } from './types';
+import {
+  TForm,
+  TFormLogin,
+  TFormPass,
+  TFormRegister,
+  TOrderWithIngredients,
+} from './types';
 
-export const initialValues1 : TForm = {
+export const initialValues1: TForm = {
   values: {
     email: '',
     password: '',
@@ -17,10 +23,9 @@ export const initialValues1 : TForm = {
     email: false,
     password: false,
     name: false,
-    token: false, 
+    token: false,
   },
-
-} 
+};
 /*
 export const intitialValuesLogin: TFormLogin = {
   values: {
@@ -84,27 +89,41 @@ export const intitialValuesResetPass: TForm = {
 
 export const numberslist: Array<number> = [55566, 77984, 56464];
 
+export const firstIngred = {
+  calories: 0,
+  carbohydrates: 0,
+  fat: 0,
+  image: '',
+  image_large: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  image_mobile: '',
+  name: 'Выберите булку',
+  price: 0,
+  proteins: 0,
+  type: 'bun',
+  _id: '0',
+};
 
-export const initialElement = {
-  name: 'Флюоресцентный традиционный-галактический бургер',
-  order: { number: 9094 },
-  status: 'Готовится',
-  positions: [
-    {
-      _id: '60d3b41abdacab0026a733c7',
-  calories: 5,
-  carbohydrates: 5,
-  fat: 5,
-  proteins: 1,
-  price: 1,
-  name: 'sdfsf',
-  image: 'sdfsf',
-  image_mobile: 'sdfsf',
-  image_large: 'sdfsf',  
-  uniqueId: 'sdfsfeee22',
-    }, 
-  ],
-  sum: 2100,
-  date: '2022-05-04',
+export const initialElement: TOrderWithIngredients = {
+  createdAt: '',
+  name: 'название заказа',
+  ingredients: [firstIngred],
+  number: 0,
+  status: '',
+  updatedAt: '',
   _id: '1112222333344455567',
-}
+};
+
+export const firstIngredUniq = {
+  calories: 0,
+  carbohydrates: 0,
+  fat: 0,
+  image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  image_large: '',
+  image_mobile: '',
+  name: 'Выберите булку',
+  price: 0,
+  proteins: 0,
+  type: 'bun',
+  _id: '0',
+  uniqueId: 'sdfs',
+};

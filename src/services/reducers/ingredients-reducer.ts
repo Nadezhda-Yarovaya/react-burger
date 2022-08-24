@@ -11,7 +11,8 @@ import {
   CLEAR_BUN,
 } from '../actions';
 import { TIngedientsActions } from '../action-types/ingredients-action-types';
-import { firstIngred, TByCategory, TIngredient } from '../../utils/types';
+import { TByCategory, TIngredient } from '../../utils/types';
+import { firstIngred } from '../../utils/utils';
 
 export type ingredientsState = {
   listOfIngredients: Array<TIngredient>;

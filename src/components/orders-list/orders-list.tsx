@@ -1,112 +1,66 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSelector } from '../../hooks/hooks';
 import {
-  firstIngred,
-  TIngredient,
   TLocation,
-  TOrder,
   TOrderWithIngredients,
+  TPropsFormatDate,
 } from '../../utils/types';
+import { initialElement } from '../../utils/utils';
 import Order from '../order/order';
+import OrdersDataWrapper from '../orders-data-wrapper/orders-data-wrapper';
 import ordersStyles from './orders-list.module.css';
 
-import { useLocation } from 'react-router-dom';
 
-import {
-  WS_CONNECTION_ORD_START,
-  WS_SET_ORD_ORDERSLIST,
-} from '../../services/actions/orders-ws-actions';
-import {
-  WS_CONNECTION_START,
-  WS_SET_ORDERSLIST,
-} from '../../services/actions/feed-ws-actions';
-import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { orders } = ordersStyles;
 
-const OrdersList: FC = () => {
+
+type TOrderPropsOrder = {
+  formatDate: (item: TOrderWithIngredients) => string;
+};
+
+const OrdersList: FC<TPropsFormatDate> = ({formatDate}) => {
+  
   const location = useLocation<TLocation>();
-  const dispatch = useDispatch();
+  const isFeed = location.pathname.includes('/feed');
+    const isOrders = location.pathname.includes('/profile/orders');
 
-  const allOrdersFromWSFeed = useSelector((state) => state.feedWs.orders);
-  const allOrdersFromWSOrders = useSelector((state) => state.ordersWs.orders);
-  const isFeed = location.pathname === '/feed';
+    const [orderListFinal, setOrderListFinal] = useState<TOrderWithIngredients[] | undefined>([initialElement]);
 
-  const allOrdersFromWS = isFeed ? allOrdersFromWSFeed : allOrdersFromWSOrders;
+   // let orderList: TOrderWithIngredients[] | undefined = useMemo(() => {return [initialElement]}, []);
+    
+    const orderAllList = useSelector((state) => state.feedWs.ordersArray);
+    const orderPersList = useSelector((state) => state.ordersWs.ordersArray);
+/*
+    if (isFeed) { orderList = orderAllList;}
+    if (isOrders) {orderList = orderPersList;}*/
 
-  const orderAllList = useSelector((state) => state.feedWs.ordersArray);
-  const orderPersList = useSelector((state) => state.ordersWs.ordersArray);
-  const orderList = isFeed ? orderAllList : orderPersList;
-
-  const allIngredients = useSelector(
-    (state) => state.ingredients.listOfIngredients
-  );
-
-  useEffect(() => {
-    if (isFeed) {
-      dispatch({ type: WS_CONNECTION_START });
-    } else {
-      dispatch({ type: WS_CONNECTION_ORD_START });
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    function makeIngredients(arrayStrings : Array<string>) : Array<TIngredient | undefined> {    
-  
-   return arrayStrings.map((ingredient: string) => {
-     return allIngredients.find(
-       (item2: TIngredient) => item2._id === ingredient
-     );    
-   });
-     
-     }
-   
-     function makeOrderIngredientsFull(
-       orders: Array<TOrder>
-     ): Array<TOrderWithIngredients> {
-       return orders.map(order => {
-        const finalIngredients = makeIngredients(order.ingredients);
-        //console.log('final ingred: ', finalIngredients);
-   
-         return {
-           ...order,
-           ingredients: finalIngredients,
-         };
-       });
-     }
-
-    if (allOrdersFromWS) {
-      const allOrdersArray = JSON.parse(allOrdersFromWS).orders;
-      /*console.log('all ords: ', allOrdersFromWS);
-      console.log('all ords: ', allOrdersArray);*/
-      if (allOrdersArray) {
-      const allOrdersWithIngredients = makeOrderIngredientsFull(allOrdersArray);
+    
+    useEffect(() => {
+      console.log(orderAllList);
       if (isFeed) {
-        dispatch({
-          type: WS_SET_ORDERSLIST,
-          payload: allOrdersWithIngredients,
-        });
-      } else {
-        dispatch({
-          type: WS_SET_ORD_ORDERSLIST,
-          payload: allOrdersWithIngredients,
-        });
+      setOrderListFinal(orderAllList);
       }
-    }
-  }
-  
-  }, [allOrdersFromWS, allIngredients]);
-
-  
-
-  console.log('orders: ', orderList);
+      if (isOrders) {
+        setOrderListFinal(orderPersList);
+        }
+    },[orderAllList, orderPersList]);
+ 
   return (
+    <OrdersDataWrapper>
     <div className={`${orders} pr-2`}>
-      {orderList && orderList.length > 0
-        ? orderList.map((item: TOrderWithIngredients, ind: number) => (
-            <Order key={ind} item={item} />
-          ))
-        : <p>У вас пока нет заказов. Сделайте первый заказ на главной странице.</p>}
+      {orderListFinal && orderListFinal.length > 0 ? (
+        orderListFinal.map((item: TOrderWithIngredients, ind: number) => (
+          <Order key={ind} item={item} formatDate={formatDate} />
+        ))
+      ) : (
+        <p>
+          У вас пока нет заказов. Сделайте первый заказ на главной странице.
+        </p>
+      )}
     </div>
+    </OrdersDataWrapper>
   );
 };
 
