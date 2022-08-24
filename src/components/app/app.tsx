@@ -36,7 +36,7 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../ingredient-page/ingredient-page';
-import { TLocation, TOrderItem, TOrderFull, TIngredient, firstIngred, TOrderFull1 } from '../../utils/types';
+import { TLocation, TOrderItem, TOrderFull, TIngredient, firstIngred } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 
@@ -81,9 +81,9 @@ const App: FunctionComponent = () => {
     }
   }, [allIngredients12]);
 
-  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull1> => {
+  const newListAfterFilter = (arr1 : Array<TOrderItem>): Array<TOrderFull> => {
     return arr1.map((item) => {
-      console.log('подается на фильтрацию: ', item);
+      console.log('подается на фильтрацию со стрингами: ', item);
       const newPositions = item.positions.map((elementId) => {
         const newArrayItem = allIngredients12.find(
           (ingredient: TIngredient) => ingredient._id === elementId
@@ -92,7 +92,7 @@ const App: FunctionComponent = () => {
         if (newArrayItem) {
           return newArrayItem;
         }
-        return elementId;
+        return firstIngred;
       });
       //console.log('результат фильтрации:', newPositions);
 
@@ -101,6 +101,7 @@ const App: FunctionComponent = () => {
         positions: newPositions,
       };
     });
+    
   };
 
   const isPerformed = useSelector((state) => state.order.isPerformed);

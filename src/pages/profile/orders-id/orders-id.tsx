@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TOrderItem, TOrderFull, TOrderFull1 } from '../../../utils/types';
+import { TOrderItem, TOrderFull } from '../../../utils/types';
 import { initialElement } from '../../../utils/utils';
 import { useSelector } from '../../../hooks/hooks';
 
@@ -26,7 +26,7 @@ const {
 
 const OrdersId: FC = () => {
   const [currentOrderShown, setCurrentOrderShown] =
-    useState<TOrderFull1>(initialElement);
+    useState<TOrderFull>(initialElement);
 
   console.log('current order: ', currentOrderShown);
 
@@ -40,7 +40,9 @@ const OrdersId: FC = () => {
   console.log('orderList: ', orderList);
 
   useEffect(() => {
-    const current = orderList.find((item: TOrderItem) => item._id === id);
+    console.log('orderList: ', orderList);
+    const current = orderList.find((item) => item._id === id);
+    console.log('current item: ', current);
     if (current) {
       setCurrentOrderShown(current);
     }
@@ -61,6 +63,7 @@ const OrdersId: FC = () => {
                 
                 <li key={ind} className={list__item}>
                   <div className={list__iteminfo}>
+                    {typeof element === 'string'}
                     <img src={element.image} alt={element.name} className={image} />
                     <p>{element.name}</p>
                   </div>

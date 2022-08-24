@@ -11,7 +11,7 @@ import {
   CLEAR_BUN,
 } from '../actions';
 import { TIngedientsActions } from '../action-types/ingredients-action-types';
-import { TByCategory, TIngredient } from '../../utils/types';
+import { firstIngred, TByCategory, TIngredient } from '../../utils/types';
 
 export type ingredientsState = {
   listOfIngredients: Array<TIngredient>;
@@ -21,7 +21,7 @@ export type ingredientsState = {
   currentIngredient: TIngredient;
   areIngredientsShown: boolean;
 };
-
+/*
 const firstIngred = {
   calories: 420,
   carbohydrates: 53,
@@ -34,7 +34,7 @@ const firstIngred = {
   proteins: 80,
   type: 'bun',
   _id: '60d3b41abdacab0026a733c6',
-};
+}; */
 
 const initialState = {
   listOfIngredients: [firstIngred],

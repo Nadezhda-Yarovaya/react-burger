@@ -3,11 +3,11 @@ import {
   GET_ORDERDATA_REQUEST,
   GET_ORDERDATA_FAILURE,
 } from '../actions';
-import { makeOrder, makeOrderWithToken } from '../../utils/api';
+import { makeOrderWithToken } from '../../utils/api';
 import { AppThunk } from '../../utils/types';
 import { AppDispatch } from '../..';
 import { getCookie } from '../../utils/auth';
-
+/*
 export const fetchOrderNumber = (ingredientsInOrder : Array<string>): AppThunk =>
    (dispatch : AppDispatch, getState) => {
     dispatch({
@@ -34,7 +34,7 @@ export const fetchOrderNumber = (ingredientsInOrder : Array<string>): AppThunk =
       });
   };
 
-
+*/
   
 export const placeOrder = (ingredientsInOrder : Array<string>): AppThunk =>
 (dispatch : AppDispatch, getState) => {
@@ -43,12 +43,11 @@ export const placeOrder = (ingredientsInOrder : Array<string>): AppThunk =>
  });
 
  const accessToken = getCookie('token');
- console.log('token in place: ', accessToken);
  
  if (accessToken) {
  makeOrderWithToken(ingredientsInOrder, accessToken)
    .then((res) => {
-     console.log('res in make Order: ', res);
+     console.log('res in make Order in creators: ', res);
      dispatch({
        type: GET_ORDERDATA_SUCCESS,
        createdOrder: {

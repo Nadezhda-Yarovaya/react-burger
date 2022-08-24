@@ -57,15 +57,15 @@ const Feed: FC = () => {
   );
   const [total, setTotal] = useState<number>(0);
   const [totalToday, setTotalToday] = useState<number>(0);
-  const [numbersDone, setNumbersDone] = useState<Array<number>>([0]);
-  const [numbersPending, setNumbersPending] = useState<Array<number>>([0]);
+  const [numbersDone, setNumbersDone] = useState<Array<number | undefined>>([0]);
+  const [numbersPending, setNumbersPending] = useState<Array<number | undefined>>([0]);
 
-  function makeOrderNumbers(status: string): Array<number> {
+  function makeOrderNumbers(status: string): Array<number | undefined> {
     if (allOrdersFromWSArray) {
     return allOrdersFromWSArray.map((order: TOrderWithIngredients) => {
       if (order.status === status) {
         return order.number;
-      } else return 0;
+      } else return undefined;
     });
   }
   return numberslist;
@@ -107,7 +107,7 @@ const Feed: FC = () => {
                   Готовы:
                 </p>
                 <ul className={numberOrdersList}>
-                  {numbersDone.map((item: number, ind: number) => (
+                  {numbersDone.map((item: number | undefined, ind: number) => (
                     <li
                       key={ind}
                       className={`${numberOrderItem} text text_type_digits-default`}
@@ -122,7 +122,7 @@ const Feed: FC = () => {
                   В работе:{' '}
                 </p>
                 <div className={numberOrdersList}>
-                  {numbersPending.map((item: number, ind: number) => (
+                  {numbersPending.map((item: number | undefined, ind: number) => (
                     <li
                       key={ind}
                       className={`${numberOrderItemPending} text text_type_digits-default`}

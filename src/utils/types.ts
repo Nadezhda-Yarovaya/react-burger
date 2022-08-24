@@ -192,12 +192,12 @@ export type TOrderItem = {
   name: string;
   order: { number: number };
   status: string;
-  positions: Array<string | TIngredientUnique | TIngredient>;
+  positions: Array<string>;
   sum: number;
   date: string;
   _id: string;
 };
-
+/*
 export type TOrderFull1 = {
   name: string;
   order: { number: number };
@@ -206,13 +206,13 @@ export type TOrderFull1 = {
   sum: number;
   date: string;
   _id: string;
-};
+};*/
 
 export type TOrderFull = {
   name: string;
   order: { number: number };
   status: string;
-  positions: Array<TIngredientUnique | TIngredient>;
+  positions: Array<TIngredient>;
   sum: number;
   date: string;
   _id: string;

@@ -1,4 +1,4 @@
-import { TOrderFromServer, TOrderFull, TOrderFull1 } from '../../utils/types';
+import { TOrderFromServer, TOrderFull } from '../../utils/types';
 import {
   GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
@@ -38,7 +38,7 @@ export interface ISetTotalSum {
 
 export interface ISetPositions {
   readonly type: typeof SET_POSITIONSDATA;
-  readonly payload: Array<TOrderFull1> ;
+  readonly payload: Array<TOrderFull> ;
 }
 
 

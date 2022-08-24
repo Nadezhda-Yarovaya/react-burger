@@ -42,12 +42,14 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
 
   useEffect(() => {
     if (item) {
-      const sumArray = item.ingredients.map((item) => item?.price);
+      console.log('item order: ', item);
+      console.log('item Id: ', item._id);
+      let sumArray: number[] = [];
+      sumArray = item.ingredients.map((item) => (item?.price || 0)) ;
+      console.log('sumArray: ', sumArray);
      
-        const orderTotal = sumArray.reduce((prev, current) => {
-          if (prev && current) { return prev + current;}
-          return 0;
-        }, 0) || 0;
+      
+      const orderTotal = sumArray.reduce((prev, current) => prev + current, 0) || 0;
       setOrderSum(orderTotal);
     }
   }, [item]);

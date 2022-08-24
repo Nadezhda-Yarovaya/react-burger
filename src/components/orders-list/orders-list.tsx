@@ -76,8 +76,8 @@ const OrdersList: FC = () => {
 
     if (allOrdersFromWS) {
       const allOrdersArray = JSON.parse(allOrdersFromWS).orders;
-      console.log('all ords: ', allOrdersFromWS);
-      console.log('all ords: ', allOrdersArray);
+      /*console.log('all ords: ', allOrdersFromWS);
+      console.log('all ords: ', allOrdersArray);*/
       if (allOrdersArray) {
       const allOrdersWithIngredients = makeOrderIngredientsFull(allOrdersArray);
       if (isFeed) {
@@ -98,13 +98,14 @@ const OrdersList: FC = () => {
 
   
 
+  console.log('orders: ', orderList);
   return (
     <div className={`${orders} pr-2`}>
-      {orderList
+      {orderList && orderList.length > 0
         ? orderList.map((item: TOrderWithIngredients, ind: number) => (
             <Order key={ind} item={item} />
           ))
-        : ''}
+        : <p>У вас пока нет заказов. Сделайте первый заказ на главной странице.</p>}
     </div>
   );
 };

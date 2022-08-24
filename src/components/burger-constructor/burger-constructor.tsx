@@ -8,7 +8,7 @@ import ConstructorList from '../constructor-list/constructor-list';
 import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
 
 import TotalSum from '../total-sum/total-sum';
-import { fetchOrderNumber, placeOrder } from '../../services/action-creators/order-action-creators';
+import { placeOrder } from '../../services/action-creators/order-action-creators';
 import { useHistory } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
@@ -79,7 +79,7 @@ const BurgerConstructor: FC = () => {
     const thisOrderList: Array<string> = makeListOfOrder();
     if (isLogged) {
      // dispatch<any>(fetchOrderNumber({ingredients: thisOrderList}));
-     dispatch(placeOrder( thisOrderList)); // here was problem 
+     dispatch(placeOrder(thisOrderList)); // here was problem 
     } else {
       localStorage.setItem(
         'listOfOrder',
