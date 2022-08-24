@@ -23,9 +23,8 @@ const Register: FC = () => {
   const history = useHistory();
   const [isPassShown, setIsPassShown] = useState(true);
 
-  const { values, handleChange, errors, isValid } = useFormAndValidation(
-    initialValues1
-  );
+  const { values, handleChange, errors, isValid } =
+    useFormAndValidation(initialValues1);
 
   const { name, email, password } = values;
 

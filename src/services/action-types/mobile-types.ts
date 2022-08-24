@@ -1,102 +1,94 @@
 import { TIngredient, TIngredientUnique, TMonitor } from '../../utils/types';
 import {
-    SET_IFMOBILE,
-    SET_IFMOBILEORDERED,
-    SET_WINDOWDATA,
-    OPEN_MOBILEMENU,
-    CLOSE_MOBILEMENU,
-    UNFOLD_SUBMOBILEMENU,
-    FOLD_SUBMOBILEMENU,
-    SET_TOUCHEDITEM,
-    CLEAR_TOUCHEDITEM,
-    SET_OFFSETS,
-    SET_INITIALS,
-    SET_FINALS,
-    CLEAR_INITIALS,
-    CLEAR_FINALS,
-  } from '../actions';
-  
-  type TCreatedOrder =  {
-    number: number;
-    positions: Array<string>;
-  };  
+  SET_IFMOBILE,
+  SET_IFMOBILEORDERED,
+  SET_WINDOWDATA,
+  OPEN_MOBILEMENU,
+  CLOSE_MOBILEMENU,
+  UNFOLD_SUBMOBILEMENU,
+  FOLD_SUBMOBILEMENU,
+  SET_TOUCHEDITEM,
+  CLEAR_TOUCHEDITEM,
+  SET_OFFSETS,
+  SET_INITIALS,
+  SET_FINALS,
+  CLEAR_INITIALS,
+  CLEAR_FINALS,
+} from '../actions';
 
-  type TOffsets = 
-    {x: number; y: number;};
+type TOffsets = { x: number; y: number };
 
-    type TRectangle = {
-      top: number;
-      right : number;
-      left?:number;
-      bottom?: number;
-    }
-  
-  
-  export interface ISetIfMobile{
-    readonly type: typeof SET_IFMOBILE;
-    readonly payload:  boolean;
-  }
-  
-  export interface ISetIfMobileOrdered{
-    readonly type: typeof SET_IFMOBILEORDERED;
-    readonly payload: boolean;
-  }
+type TRectangle = {
+  top: number;
+  right: number;
+  left?: number;
+  bottom?: number;
+};
 
-  export interface ISetWindowData{
-    readonly type: typeof SET_WINDOWDATA;
-    readonly payload: {width: number; height: number};
-  }
-  
-  export interface IOpenMobileMenu{
-    readonly type: typeof OPEN_MOBILEMENU;
-  }
+export interface ISetIfMobile {
+  readonly type: typeof SET_IFMOBILE;
+  readonly payload: boolean;
+}
 
-  export interface ICloseMobileMenu{
-    readonly type: typeof CLOSE_MOBILEMENU;
-  }
+export interface ISetIfMobileOrdered {
+  readonly type: typeof SET_IFMOBILEORDERED;
+  readonly payload: boolean;
+}
 
-  export interface ISubMobileMenu{
-    readonly type: typeof UNFOLD_SUBMOBILEMENU;
-  }
+export interface ISetWindowData {
+  readonly type: typeof SET_WINDOWDATA;
+  readonly payload: { width: number; height: number };
+}
 
-  export interface IFoldSubMobileMenu{
-    readonly type: typeof FOLD_SUBMOBILEMENU;
-  }
+export interface IOpenMobileMenu {
+  readonly type: typeof OPEN_MOBILEMENU;
+}
 
-  export interface ISetTouchedItem{
-    readonly type: typeof SET_TOUCHEDITEM;
-    readonly payload : TIngredientUnique | TIngredient;
-  }
+export interface ICloseMobileMenu {
+  readonly type: typeof CLOSE_MOBILEMENU;
+}
 
-  export interface IClearTouchedItem{
-    readonly type: typeof CLEAR_TOUCHEDITEM;
-  }
+export interface ISubMobileMenu {
+  readonly type: typeof UNFOLD_SUBMOBILEMENU;
+}
 
-  export interface ISetOffsets{
-    readonly type: typeof SET_OFFSETS;
-    readonly payload:  TRectangle;
-  }
+export interface IFoldSubMobileMenu {
+  readonly type: typeof FOLD_SUBMOBILEMENU;
+}
 
-  export interface ISetInitials{
-    readonly type: typeof SET_INITIALS;
-    readonly payload: TOffsets;
-  }
+export interface ISetTouchedItem {
+  readonly type: typeof SET_TOUCHEDITEM;
+  readonly payload: TIngredientUnique | TIngredient;
+}
 
-  export interface ISetFinals{
-    readonly type: typeof SET_FINALS;
-    readonly payload: TOffsets;
-  }
+export interface IClearTouchedItem {
+  readonly type: typeof CLEAR_TOUCHEDITEM;
+}
 
-  export interface IClearInitials{
-    readonly type: typeof CLEAR_INITIALS;
-  }
+export interface ISetOffsets {
+  readonly type: typeof SET_OFFSETS;
+  readonly payload: TRectangle;
+}
 
-  export interface IClearFinals{
-    readonly type: typeof CLEAR_FINALS;
-  }
+export interface ISetInitials {
+  readonly type: typeof SET_INITIALS;
+  readonly payload: TOffsets;
+}
 
+export interface ISetFinals {
+  readonly type: typeof SET_FINALS;
+  readonly payload: TOffsets;
+}
 
-  export type TMobileActions = 
+export interface IClearInitials {
+  readonly type: typeof CLEAR_INITIALS;
+}
+
+export interface IClearFinals {
+  readonly type: typeof CLEAR_FINALS;
+}
+
+export type TMobileActions =
   | ISetIfMobile
   | ISetIfMobileOrdered
   | ISetWindowData

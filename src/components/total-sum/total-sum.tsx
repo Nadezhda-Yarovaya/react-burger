@@ -25,13 +25,11 @@ const TotalSum: FC<TTotalSumProps> = ({
   );
   const bunSelected = useSelector((state) => state.ingredients.bun);
 
-  const isMobileOrdered = useSelector(
-    (store) => store.mobile.isMobileOrdered
-  );
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
 
   const totalSumOrder = useSelector((store) => store.order.totalSum);
 
-  const isMobile = useSelector(state => state.mobile.isMobile);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
 
   const isDisabled = stuffingsList.length === 0 || bunSelected._id === '1';
 

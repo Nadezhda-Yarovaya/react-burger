@@ -56,7 +56,6 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
 
   useEffect(() => {
     if (isFeed) {
-      console.log('here? in wrapper');
       dispatch({ type: WS_CONNECTION_START });
     } else if (isOrders) {
       dispatch({ type: WS_CONNECTION_ORD_START });
@@ -79,7 +78,6 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
     ): Array<TOrderWithIngredients> {
       return orders.map((order) => {
         const finalIngredients = makeIngredients(order.ingredients);
-        //console.log('final ingred: ', finalIngredients);
 
         return {
           ...order,
@@ -89,7 +87,6 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
     }
 
     if (allOrdersFromWS) {
-    //  console.log('all orders allOrdersFromWS: ', allOrdersFromWS);
       const allOrdersArray = JSON.parse(allOrdersFromWS).orders;
       if (allOrdersArray) {
         const allOrdersWithIngredients =
@@ -99,15 +96,13 @@ const OrdersDataWrapper: FC<TOrdersDataWrapperProps> = ({ children }) => {
             type: WS_SET_ORDERSLIST,
             payload: allOrdersWithIngredients,
           });
-        } 
+        }
         if (isOrders) {
-          // console.log('all orders: ', allOrdersWithIngredients);
           dispatch({
             type: WS_SET_ORD_ORDERSLIST,
             payload: allOrdersWithIngredients.reverse(),
           });
         }
-        
       }
     }
   }, [allOrdersFromWS, allIngredients, isFeed, isOrders, dispatch]);

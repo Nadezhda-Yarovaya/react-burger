@@ -16,7 +16,7 @@ const PersonalMenu: FC = () => {
     e.preventDefault();
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
-    dispatch(performLogout(refreshToken, history));
+      dispatch(performLogout(refreshToken, history));
     }
   }
 

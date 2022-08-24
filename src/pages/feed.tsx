@@ -3,20 +3,9 @@ import appStyles from '../components/app/app.module.css';
 import OrdersList from '../components/orders-list/orders-list';
 import feedStyles from './feed.module.css';
 import { numberslist } from '../utils/utils';
-import { useDispatch } from 'react-redux';
-import {
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
-  WS_GET_ORDERS,
-  WS_SET_ORDERSLIST,
-  WS_CONNECTION_CLOSED,
-} from '../services/actions/feed-ws-actions';
 
-import { TIngredient, TOrder, TOrderWithIngredients, TPropsFormatDate } from '../utils/types';
+import { TOrderWithIngredients, TPropsFormatDate } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
-import { AppDispatch } from '..';
 import { useSelector } from '../hooks/hooks';
 
 const {
@@ -50,25 +39,27 @@ const Numbers: FC<TNumbers> = ({ title, number }) => {
   );
 };
 
-const Feed: FC<TPropsFormatDate> = ({formatDate}) => {
+const Feed: FC<TPropsFormatDate> = ({ formatDate }) => {
   const allOrdersFromWS = useSelector((state) => state.feedWs.orders);
-  const allOrdersFromWSArray = useSelector(
-    (state) => state.feedWs.ordersArray
-  );
+  const allOrdersFromWSArray = useSelector((state) => state.feedWs.ordersArray);
   const [total, setTotal] = useState<number>(0);
   const [totalToday, setTotalToday] = useState<number>(0);
-  const [numbersDone, setNumbersDone] = useState<Array<number | undefined>>([0]);
-  const [numbersPending, setNumbersPending] = useState<Array<number | undefined>>([0]);
+  const [numbersDone, setNumbersDone] = useState<Array<number | undefined>>([
+    0,
+  ]);
+  const [numbersPending, setNumbersPending] = useState<
+    Array<number | undefined>
+  >([0]);
 
   function makeOrderNumbers(status: string): Array<number | undefined> {
     if (allOrdersFromWSArray) {
-    return allOrdersFromWSArray.map((order: TOrderWithIngredients) => {
-      if (order.status === status) {
-        return order.number;
-      } else return undefined;
-    });
-  }
-  return numberslist;
+      return allOrdersFromWSArray.map((order: TOrderWithIngredients) => {
+        if (order.status === status) {
+          return order.number;
+        } else return undefined;
+      });
+    }
+    return numberslist;
   }
 
   useEffect(() => {
@@ -98,7 +89,7 @@ const Feed: FC<TPropsFormatDate> = ({formatDate}) => {
           <section
             className={`mr-10} ${ingredients} ${section_flex} ${feedStyles.ordersList}`}
           >
-            <OrdersList formatDate={formatDate}/>
+            <OrdersList formatDate={formatDate} />
           </section>
           <section className={`${feedSection}`}>
             <div style={{ display: 'flex', margin: '0 0 60px 0' }}>
@@ -122,14 +113,16 @@ const Feed: FC<TPropsFormatDate> = ({formatDate}) => {
                   В работе:{' '}
                 </p>
                 <div className={numberOrdersList}>
-                  {numbersPending.map((item: number | undefined, ind: number) => (
-                    <li
-                      key={ind}
-                      className={`${numberOrderItemPending} text text_type_digits-default`}
-                    >
-                      {item}
-                    </li>
-                  ))}
+                  {numbersPending.map(
+                    (item: number | undefined, ind: number) => (
+                      <li
+                        key={ind}
+                        className={`${numberOrderItemPending} text text_type_digits-default`}
+                      >
+                        {item}
+                      </li>
+                    )
+                  )}
                 </div>
               </div>
             </div>

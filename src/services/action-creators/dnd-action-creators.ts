@@ -7,19 +7,23 @@ import {
 } from '../actions';
 
 const _dropIngredient = (currentItem: TIngredient, dispatch: AppDispatch) => {
-  const uniqId: string = (Math.floor(Date.now())).toString();
+  const uniqId: string = Math.floor(Date.now()).toString();
   dispatch({
     type: INCREASE_DROPPEDELEMENT,
     element: currentItem,
     uniqueId: uniqId,
   });
-}
+};
 
 export function dropElement(currentItem: TIngredient, dispatch: AppDispatch) {
   _dropIngredient(currentItem, dispatch);
 }
 
-export function dropElementWithinConstructor(currentItem: TIngredientUnique, dispatch: AppDispatch, direction: string) {
+export function dropElementWithinConstructor(
+  currentItem: TIngredientUnique,
+  dispatch: AppDispatch,
+  direction: string
+) {
   if (currentItem.uniqueId) {
     if (direction === 'top') {
       dispatch({

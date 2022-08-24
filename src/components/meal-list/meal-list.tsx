@@ -3,7 +3,7 @@ import { FC } from 'react';
 import mealListStyles from './meal-list.module.css';
 
 import Ingredient from '../ingredient/ingredient';
-import { TIngredient, TIngredientUnique } from '../../utils/types';
+import { TIngredient } from '../../utils/types';
 import { useSelector } from '../../hooks/hooks';
 
 const { list } = mealListStyles;
@@ -18,10 +18,12 @@ const MealList: FC<TMealListProps> = ({ type, title }) => {
     (store) => store.ingredients.ingredientsByCategory
   );
   let current: Array<TIngredient> = burgerIngredients.bun;
-  if (type === 'sauce') {current = burgerIngredients.sauce; }
-  if (type === 'main') {current = burgerIngredients.main; }
-
-  console.log(current);
+  if (type === 'sauce') {
+    current = burgerIngredients.sauce;
+  }
+  if (type === 'main') {
+    current = burgerIngredients.main;
+  }
 
   return (
     <>

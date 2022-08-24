@@ -1,4 +1,3 @@
-import { XYCoord } from 'react-dnd';
 import { TIngredientUnique } from '../../utils/types';
 import { TDndActions } from '../action-types/dnd-action-types';
 import {
@@ -12,10 +11,10 @@ import {
 } from '../actions';
 
 export type TDndState = {
-  droppedElements: Array<TIngredientUnique> | [],
+  droppedElements: Array<TIngredientUnique> | [];
   dropDirection: string;
-  initialIngredOffset: any,
-}
+  initialIngredOffset: any;
+};
 
 const initialState = {
   droppedElements: [],
@@ -23,7 +22,10 @@ const initialState = {
   initialIngredOffset: {},
 };
 
-export function dndReducer(state: TDndState = initialState, action: TDndActions) : TDndState {
+export function dndReducer(
+  state: TDndState = initialState,
+  action: TDndActions
+): TDndState {
   switch (action.type) {
     case INCREASE_DROPPEDELEMENT:
       return {
@@ -73,12 +75,14 @@ export function dndReducer(state: TDndState = initialState, action: TDndActions)
     case DELETE_ITEM:
       return {
         ...state,
-        droppedElements: [...state.droppedElements].filter((item : TIngredientUnique) => {
-          if (item.uniqueId === action.element.uniqueId) {
-          } else {
-            return item;
+        droppedElements: [...state.droppedElements].filter(
+          (item: TIngredientUnique) => {
+            if (item.uniqueId === action.element.uniqueId) {
+            } else {
+              return item;
+            }
           }
-        }),
+        ),
       };
 
     case SET_DROPDIRECTION:
@@ -107,16 +111,18 @@ function arraymoveDown(arr, fromIndex) {
 }
 */
 
-
-function moveArray(arr : Array<TIngredientUnique> , fromIndex1: TIngredientUnique, direction:string): Array<TIngredientUnique> {
-let fromIndex = arr.indexOf(fromIndex1);
+function moveArray(
+  arr: Array<TIngredientUnique>,
+  fromIndex1: TIngredientUnique,
+  direction: string
+): Array<TIngredientUnique> {
+  let fromIndex = arr.indexOf(fromIndex1);
   let element = arr[fromIndex];
   arr.splice(fromIndex, 1);
   if (direction === 'top') {
     arr.splice(fromIndex - 1, 0, element);
   } else {
-  arr.splice(fromIndex + 1, 0, element);
+    arr.splice(fromIndex + 1, 0, element);
   }
   return arr;
-
 }

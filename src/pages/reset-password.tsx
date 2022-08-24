@@ -11,7 +11,6 @@ import {
   resetPass,
 } from '../services/action-creators/auth-action-creators';
 
-
 import { useHistory } from 'react-router';
 import formStyles from '../components/form/form.module.css';
 import { initialValues1 } from '../utils/utils';
@@ -22,9 +21,8 @@ const ResetPassword: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory<any>();
   const [isPassShown, setIsPassShown] = useState(true);
-  const { values, handleChange, errors, isValid } = useFormAndValidation(
-    initialValues1
-  );
+  const { values, handleChange, errors, isValid } =
+    useFormAndValidation(initialValues1);
 
   const { password, token } = values;
 

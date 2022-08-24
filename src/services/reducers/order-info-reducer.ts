@@ -1,4 +1,5 @@
-import { firstorder, TOrderFromServer, TOrderWithIngredients } from '../../utils/types';
+import { TOrderWithIngredients } from '../../utils/types';
+import { firstorder } from '../../utils/utils';
 import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
   GET_ORDERDATA_SUCCESS,
@@ -6,28 +7,29 @@ import {
   GET_ORDERDATA_FAILURE,
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
-  SET_POSITIONSDATA
+  SET_POSITIONSDATA,
 } from '../actions';
 
 export type TOrderState = {
-  createdOrder: {number?: number; positions?: Array<string>},
+  createdOrder: { number?: number; positions?: Array<string> };
   isOrderLoading: boolean;
   isPerformed: boolean;
   totalSum: number;
   orderFullList: Array<TOrderWithIngredients>;
 };
 
-
-
 const initialState = {
-  createdOrder: { number: 0, positions: ['sdf', 'ss'] },
+  createdOrder: { number: 0, positions: [''] },
   isOrderLoading: false,
   isPerformed: false,
   totalSum: 0,
-  orderFullList: [firstorder]
+  orderFullList: [firstorder],
 };
 
-export function orderInfoReducer(state: TOrderState = initialState, action : TOrderInfoActions) : TOrderState {
+export function orderInfoReducer(
+  state: TOrderState = initialState,
+  action: TOrderInfoActions
+): TOrderState {
   switch (action.type) {
     case GET_ORDERDATA_REQUEST:
       return {
@@ -43,7 +45,7 @@ export function orderInfoReducer(state: TOrderState = initialState, action : TOr
           number: action.createdOrder.number,
           positions: action.createdOrder.positions,
         },
-        isOrderLoading: false,        
+        isOrderLoading: false,
       };
     case CLEAR_ORDERDATA:
       return {
@@ -62,10 +64,10 @@ export function orderInfoReducer(state: TOrderState = initialState, action : TOr
         totalSum: action.totalSum,
       };
 
-      case SET_POSITIONSDATA: 
+    case SET_POSITIONSDATA:
       return {
         ...state,
-        orderFullList: action.payload
+        orderFullList: action.payload,
       };
     default:
       return state;

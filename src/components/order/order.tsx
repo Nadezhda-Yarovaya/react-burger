@@ -27,38 +27,26 @@ type TOrderPropsOrder = {
 };
 
 const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
+  type Tlocate1 = {
+    feedLocate?: TLocation;
+    ordersLocate?: TLocation;
+  };
   const location = useLocation<TLocation>();
-
-  //const currentPath = listType === 'feed' ? '/feed/' : '/profile/orders/';
+  const [currentLocationState, setcurrentLocationState] = useState<
+    Tlocate1 | undefined | void
+  >({});
 
   const isFeed = location.pathname.includes('/feed');
   const isOrders = location.pathname.includes('/orders');
 
-  type Tlocate1 = {
-    feedLocate? : TLocation;
-    ordersLocate? : TLocation;
-  }
-
-  const [currentLocationState, setcurrentLocationState ] = useState< Tlocate1 | undefined | void>({});
-
-  /*let currentLocationState1 : Tlocate1 | undefined | void = useMemo(()=> {}, []);
-    if (isFeed) {currentLocationState1 = { feedLocate: location }; }
-    if (isOrders) {currentLocationState1 = { ordersLocate: location }; }
-    */
-
-    useEffect(() => {
-      if (isFeed) {
-      setcurrentLocationState ({ feedLocate: location });
-      } 
-      if (isOrders) {
-        setcurrentLocationState({ ordersLocate: location });
-      }
-
-    },[isFeed, isOrders]);
-
-
-
-    // console.log('current location state: ', currentLocationState);
+  useEffect(() => {
+    if (isFeed) {
+      setcurrentLocationState({ feedLocate: location });
+    }
+    if (isOrders) {
+      setcurrentLocationState({ ordersLocate: location });
+    }
+  }, [isFeed, isOrders]);
 
   const [orderSum, setOrderSum] = useState<number>(0);
 
@@ -73,12 +61,11 @@ const Order: FC<TOrderPropsOrder> = ({ item, formatDate }) => {
     }
   }, [item]);
 
-  
   const [finalDate, setFinalDate] = useState<string>('');
 
   useEffect(() => {
     setFinalDate(formatDate(item));
-  },[item]);
+  }, [item]);
 
   const [statusText, setStatusText] = useState<string>('');
 

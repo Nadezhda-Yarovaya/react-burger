@@ -8,12 +8,7 @@ const { digits, window__text, window__extra, preloaderContainer, preloader } =
   orderDetailsStyles;
 
 const OrderDetails: FC = () => {
-  const orderNumber = useSelector(
-    (store) => {
-      console.log(store.order);
-     return store.order.createdOrder.number
-    }
-  );
+  const orderNumber = useSelector((store) => store.order.createdOrder.number);
 
   const isLoading = useSelector((store) => store.order.isOrderLoading);
 

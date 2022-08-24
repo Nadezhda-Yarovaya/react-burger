@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-
 import { dndReducer } from './dnd-reducer';
 import { orderInfoReducer } from './order-info-reducer';
 import { mobileReducer } from './mobile-reducer';

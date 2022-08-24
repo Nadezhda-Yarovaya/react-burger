@@ -57,9 +57,7 @@ const AppHeader: FunctionComponent = () => {
     (state) => state.mobile.isMobileMenuOpened
   );
 
-  const isSubMenuOpened = useSelector(
-    (state) => state.mobile.isSubMenuOpened
-  );
+  const isSubMenuOpened = useSelector((state) => state.mobile.isSubMenuOpened);
 
   function openMobileMenu(): void {
     dispatch({
@@ -93,7 +91,7 @@ const AppHeader: FunctionComponent = () => {
     e.preventDefault();
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
-    dispatch(performLogout(refreshToken, history));
+      dispatch(performLogout(refreshToken, history));
     }
   }
 

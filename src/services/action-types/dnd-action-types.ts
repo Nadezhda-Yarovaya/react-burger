@@ -1,11 +1,4 @@
-import { XYCoord } from 'react-dnd';
-import {
-  TIngredient,
-  TIngredientUnique,
-  TItem,
-  TMonitor,
-  TNewItem,
-} from '../../utils/types';
+import { TIngredient, TIngredientUnique } from '../../utils/types';
 import {
   INCREASE_DROPPEDELEMENT,
   DELETE_ITEM,
@@ -15,11 +8,6 @@ import {
   GODOWN_POSITION,
   CLEAR_STUFFINGLIST,
 } from '../actions';
-
-type TCreatedOrder = {
-  number: number;
-  positions: Array<string>;
-};
 
 export interface IIncreaseDropElement {
   readonly type: typeof INCREASE_DROPPEDELEMENT;
@@ -53,42 +41,8 @@ export interface IDeleteItem {
 
 export interface ISetDropDirection {
   readonly type: typeof SET_DROPDIRECTION;
-  readonly payload: string ;
+  readonly payload: string;
 }
-
-/*
-  case INCREASE_DROPPEDELEMENT:
-    return {
-      ...state,
-      droppedElements: [
-        ...state.droppedElements,
-        {
-          ...action.element,
-          uniqueId: action.uniqueId,
-        },
-      ],
-    };
-
-
-case GODOWN_POSITION:
-  return {
-    ...state,
-    droppedElements: arraymoveDown(
-      [...state.droppedElements],
-      state.droppedElements.indexOf(action.element)
-    ),
-  }; 
-
-case DELETE_ITEM:
-  return {
-    ...state,
-    droppedElements: [...state.droppedElements].filter((item) => {
-      if (item.uniqueId === action.element.uniqueId) {
-      } else {
-        return item;
-      }
-    }),
-  }; */
 
 export type TDndActions =
   | IIncreaseDropElement

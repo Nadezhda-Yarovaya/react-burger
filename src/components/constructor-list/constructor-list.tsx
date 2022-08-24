@@ -10,8 +10,10 @@ import { useDrop } from 'react-dnd';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
 import { TIngredient, TIngredientUnique } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
-import { CustomConstructorElement, CustomConstructorElementBun } from '../custom-constructor-element/custom-constructor-element';
-
+import {
+  CustomConstructorElement,
+  CustomConstructorElementBun,
+} from '../custom-constructor-element/custom-constructor-element';
 
 const {
   stuffings,
@@ -26,12 +28,10 @@ const {
 
 const ConstructorList: FC = () => {
   const dispatch = useDispatch();
-  const isMobile = useSelector(state => state.mobile.isMobile);
-  const direction = useSelector(
-    (state) => state.dragAndDrop.dropDirection
-  );
+  const isMobile = useSelector((state) => state.mobile.isMobile);
+  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
   const currentBun = useSelector((state) => state.ingredients.bun);
-  const isLoading = useSelector(state => state.ingredients.isLoading);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
 
   const initialIngredOffset = useSelector(
     (store) => store.dragAndDrop.initialIngredOffset
@@ -131,9 +131,7 @@ const ConstructorList: FC = () => {
     border: isBunBottomHover ? '1px dashed white' : '0',
   };
 
-  const isMobileOrdered = useSelector(
-    (store) => store.mobile.isMobileOrdered
-  );
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
 
   useEffect(() => {
     if (isMobileOrdered) {

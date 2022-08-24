@@ -1,4 +1,4 @@
-import { TOrderFromServer, TOrderWithIngredients } from '../../utils/types';
+import { TOrderWithIngredients } from '../../utils/types';
 import {
   GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
@@ -8,10 +8,10 @@ import {
   SET_POSITIONSDATA,
 } from '../actions';
 
-type TCreatedOrder =  {
+type TCreatedOrder = {
   number: number;
   positions: Array<string>;
-};  
+};
 
 export interface IGetOrderdataRequest {
   readonly type: typeof GET_ORDERDATA_REQUEST;
@@ -19,13 +19,12 @@ export interface IGetOrderdataRequest {
 
 export interface IGetOrderdataSuccess {
   readonly type: typeof GET_ORDERDATA_SUCCESS;
-  readonly createdOrder:TCreatedOrder;
+  readonly createdOrder: TCreatedOrder;
 }
 
 export interface IClearData {
   readonly type: typeof CLEAR_ORDERDATA;
 }
-
 
 export interface IGetOrderdataFailure {
   readonly type: typeof GET_ORDERDATA_FAILURE;
@@ -38,9 +37,13 @@ export interface ISetTotalSum {
 
 export interface ISetPositions {
   readonly type: typeof SET_POSITIONSDATA;
-  readonly payload: Array<TOrderWithIngredients> ;
+  readonly payload: Array<TOrderWithIngredients>;
 }
 
-
-
-export type TOrderInfoActions = IGetOrderdataRequest | IGetOrderdataSuccess | IClearData | IGetOrderdataFailure | ISetTotalSum | ISetPositions;
+export type TOrderInfoActions =
+  | IGetOrderdataRequest
+  | IGetOrderdataSuccess
+  | IClearData
+  | IGetOrderdataFailure
+  | ISetTotalSum
+  | ISetPositions;

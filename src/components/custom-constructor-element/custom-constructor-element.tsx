@@ -14,13 +14,7 @@ import {
   CLEAR_FINALS,
 } from '../../services/actions';
 
-import {
-  TIngredient,
-  TIngredientUniq2,
-  TIngredientUnique,
-  TRectangle,
-} from '../../utils/types';
-import { SynthesizedComment } from 'typescript';
+import { TIngredient, TIngredientUnique, TRectangle } from '../../utils/types';
 
 import { ConstructorElement } from '../../utils/typesLibrary';
 
@@ -85,7 +79,7 @@ export const CustomConstructorElement: FC<TCustomElementProps> = ({
   type,
   item,
 }) => {
-  const isMobile = useSelector(state => state.mobile.isMobile);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
 
   const dispatch = useDispatch();
 

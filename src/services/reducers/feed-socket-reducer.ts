@@ -4,13 +4,11 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
   WS_GET_ORDERS,
-  WS_SET_ORDERSLIST
-} from "../actions/feed-ws-actions";
+  WS_SET_ORDERSLIST,
+} from '../actions/feed-ws-actions';
 
-//import type { TSocketActions } from "../action-types/feed-ws-action-types";
-import { TMessage, TOrder, TOrderWithIngredients } from "../../utils/types";
+import { TOrderWithIngredients } from '../../utils/types';
 import { TFeedWsActions } from '../action-types/feed-ws-action-types';
-// лучше создать отдельный файл типов и оттуда брать */
 
 export type TWSState = {
   wsConnected: boolean;
@@ -26,8 +24,10 @@ const initialState = {
   ordersArray: [],
 };
 
-// Создадим редьюсер для WebSocket
-export const feedWsReducer = (state: TWSState = initialState, action: TFeedWsActions): TWSState => {
+export const feedWsReducer = (
+  state: TWSState = initialState,
+  action: TFeedWsActions
+): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
@@ -40,8 +40,8 @@ export const feedWsReducer = (state: TWSState = initialState, action: TFeedWsAct
       return {
         ...state,
         error: action.payload,
-      //  error: 'Ошибка соединения',
-//        wsConnected: false,
+        // error: 'Ошибка соединения',
+        // wsConnected: false,
       };
     case WS_CONNECTION_CLOSED:
       return {
@@ -54,19 +54,19 @@ export const feedWsReducer = (state: TWSState = initialState, action: TFeedWsAct
         ...state,
         orders: action.payload,
       };
-    case WS_GET_ORDERS: 
-    return {
-      ...state,
-      error: undefined,
-      orders: action.payload
-    }
+    case WS_GET_ORDERS:
+      return {
+        ...state,
+        error: undefined,
+        orders: action.payload,
+      };
 
-    case WS_SET_ORDERSLIST: 
-    return {
-      ...state,
-      error: undefined,
-      ordersArray: action.payload
-    }
+    case WS_SET_ORDERSLIST:
+      return {
+        ...state,
+        error: undefined,
+        ordersArray: action.payload,
+      };
     default:
       return state;
   }

@@ -18,19 +18,18 @@ const {
   list__item,
   list__iteminfo,
   list__priceinfo,
-  image,
   status_performed,
   footer,
   date,
   list__image,
-  list__item2
+  list__item2,
 } = ordersIdStyles;
 
 type OrdersIdProps = {
   formatDate: (item: TOrderWithIngredients) => string;
-}
+};
 
-const OrdersId: FC<OrdersIdProps> = ({ formatDate} ) => {
+const OrdersId: FC<OrdersIdProps> = ({ formatDate }) => {
   const [currentOrderShown, setCurrentOrderShown] =
     useState<TOrderWithIngredients>(initialElement);
   const location = useLocation<TLocation>();
@@ -55,7 +54,6 @@ const OrdersId: FC<OrdersIdProps> = ({ formatDate} ) => {
     setStatusText(makeStatus(currentOrderShown.status));
   }, [currentOrderShown]);
 
-
   type TParams = {
     id: string;
   };
@@ -64,7 +62,6 @@ const OrdersId: FC<OrdersIdProps> = ({ formatDate} ) => {
 
   const isFeed = location.pathname.includes('/feed');
   const isOrders = location.pathname.includes('/orders');
-  console.log('location ordId:', location);
 
   let orderList: TOrderWithIngredients[] | undefined = useMemo(() => {
     return [initialElement];
@@ -90,11 +87,22 @@ const OrdersId: FC<OrdersIdProps> = ({ formatDate} ) => {
   }, [id, orderList]);
 
   const [finalDate, setFinalDate] = useState<string>('');
+  const [totalSumOrder, setTotalSumOrder] = useState<number>(0);
 
-useEffect(() => {
-  setFinalDate(formatDate(currentOrderShown));
-},[currentOrderShown]);
+  useEffect(() => {
+    if (currentOrderShown) {
+      let sumArray: number[] = [];
+      sumArray = currentOrderShown.ingredients.map((item) => item?.price || 0);
 
+      const orderTotal =
+        sumArray.reduce((prev, current) => prev + current, 0) || 0;
+      setTotalSumOrder(orderTotal);
+    }
+  }, [currentOrderShown]);
+
+  useEffect(() => {
+    setFinalDate(formatDate(currentOrderShown));
+  }, [currentOrderShown]);
 
   return (
     <OrdersDataWrapper>
@@ -116,16 +124,18 @@ useEffect(() => {
             {currentOrderShown.ingredients[0] &&
               currentOrderShown.ingredients.map((element, ind) => (
                 <li key={ind} className={list__item}>
-                
                   <div className={list__iteminfo}>
                     <div className={list__item2}>
-                    <div className={list__image} style={{ backgroundImage: `url('${element!.image}')` }} ></div>
-                   {/*} <img
+                      <div
+                        className={list__image}
+                        style={{ backgroundImage: `url('${element!.image}')` }}
+                      ></div>
+                      {/*} <img
                       src={element!.image}
                       alt={element!.name}
                       className={image}
               /> */}
-              </div>
+                    </div>
                     <p>{element!.name}</p>
                   </div>
                   <div className={list__priceinfo}>
@@ -138,17 +148,15 @@ useEffect(() => {
               ))}
           </ul>
           <div className={footer}>
-          <p className={date}>{finalDate}</p>
-          <div className={list__priceinfo}>
-                    <p className={`${price} text text_type_digits-default`}>
-                      {50}
-                    </p>
-                    <CurrencyIcon type='primary' />
-                  </div>
+            <p className={date}>{finalDate}</p>
+            <div className={list__priceinfo}>
+              <p className={`${price} text text_type_digits-default`}>
+                {totalSumOrder}
+              </p>
+              <CurrencyIcon type='primary' />
+            </div>
+          </div>
         </div>
-
-        </div>
-        
       </div>
     </OrdersDataWrapper>
   );

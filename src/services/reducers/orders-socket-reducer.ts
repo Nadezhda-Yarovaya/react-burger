@@ -1,4 +1,4 @@
-import { TOrder, TOrderWithIngredients } from '../../utils/types';
+import { TOrderWithIngredients } from '../../utils/types';
 import { TOrdersWsActions } from '../action-types/orders-ws-action-types';
 import {
   WS_CONNECTION_ORD_START,
@@ -7,7 +7,7 @@ import {
   WS_CONNECTION_ORD_CLOSED,
   WS_GET_ORD_MESSAGE,
   WS_GET_ORD_ORDERS,
-  WS_SET_ORD_ORDERSLIST
+  WS_SET_ORD_ORDERSLIST,
 } from '../actions/orders-ws-actions';
 
 export type TWSState = {
@@ -65,14 +65,14 @@ export const ordersWsReducer = (
         error: undefined,
         orders: action.payload,
       };
-      
-    case WS_SET_ORD_ORDERSLIST: 
-    return {
-      ...state,
-      error: undefined,
-      ordersArray: action.payload
-    }
-  
+
+    case WS_SET_ORD_ORDERSLIST:
+      return {
+        ...state,
+        error: undefined,
+        ordersArray: action.payload,
+      };
+
     default:
       return state;
   }

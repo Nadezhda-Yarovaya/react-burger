@@ -4,11 +4,11 @@ import PersonalMenu from '../../../components/personal-menu/personal-menu';
 import OrdersList from '../../../components/orders-list/orders-list';
 import { TPropsFormatDate } from '../../../utils/types';
 
-const Orders: FC<TPropsFormatDate> = ({formatDate}) => {
+const Orders: FC<TPropsFormatDate> = ({ formatDate }) => {
   return (
     <div className={ordersStyles.container}>
       <PersonalMenu />
-      <OrdersList formatDate={formatDate}/>
+      <OrdersList formatDate={formatDate} />
     </div>
   );
 };

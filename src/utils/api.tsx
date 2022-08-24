@@ -19,31 +19,19 @@ const getIngredients = () => {
     headers: config.headers,
   }).then(_getResponse);
 };
-/*
-const makeOrder = (ingredients: Array<string>) => {
-  console.log('ingred make Order: ', ingredients);
-  console.log('ingred make Order: ', JSON.stringify(ingredients));
-  const ingred1 = JSON.stringify(ingredients);
 
-  return fetch(`${config.BASE_URL}/orders`, {
-    method: 'POST',
-    headers: config.headers,
-    body: ingred1,
-  }).then(_getResponse);
-};*/
-
-const makeOrderWithToken = (ingredients: Array<string>, accessToken: string) => {
-  console.log('ingred in utils ap: ', ingredients);
-  console.log('acces tok in utils ap: ', accessToken);
+const makeOrderWithToken = (
+  ingredients: Array<string>,
+  accessToken: string
+) => {
   return fetch(`${config.BASE_URL}/orders`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + accessToken,
+      Authorization: 'Bearer ' + accessToken,
     },
-    body: JSON.stringify({ingredients}),
+    body: JSON.stringify({ ingredients }),
   }).then(_getResponse);
 };
-
 
 export { getIngredients, makeOrderWithToken };

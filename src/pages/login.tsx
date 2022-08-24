@@ -30,11 +30,9 @@ const Login: FC = () => {
   const { values, handleChange, errors, isValid } =
     useFormAndValidation(initialValues1);
 
-    const { email, password } = values;
+  const { email, password } = values;
 
-    // console.log('email: ', email);
   function handleLogin() {
-    
     if (isValid) {
       dispatch(performLogin(email, password, location, history));
     } else {

@@ -1,12 +1,8 @@
 import { FC, useEffect } from 'react';
-
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import ConstructorList from '../constructor-list/constructor-list';
-
-
 import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
-
 import TotalSum from '../total-sum/total-sum';
 import { placeOrder } from '../../services/action-creators/order-action-creators';
 import { useHistory } from 'react-router-dom';
@@ -25,20 +21,16 @@ const {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store) => {
-    // console.log(store.ingredients);
-    return store.ingredients.listOfIngredients; });
+  const listOfIngredients = useSelector(
+    (store) => store.ingredients.listOfIngredients
+  );
   const createdStuffingsList = useSelector(
     (store) => store.dragAndDrop.droppedElements
   );
-  const isMobile = useSelector(state => state.mobile.isMobile);
-  const isMobileOrdered = useSelector(
-    (store) => store.mobile.isMobileOrdered
-  );
-  const bunSelectedFromStore = useSelector(
-    (store) => store.ingredients.bun
-  );
-  const isLoading = useSelector(state => state.ingredients.isLoading);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const bunSelectedFromStore = useSelector((store) => store.ingredients.bun);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
 
   const history = useHistory();
 
@@ -78,8 +70,7 @@ const BurgerConstructor: FC = () => {
   function handlePerformOrder() {
     const thisOrderList: Array<string> = makeListOfOrder();
     if (isLogged) {
-     // dispatch<any>(fetchOrderNumber({ingredients: thisOrderList}));
-     dispatch(placeOrder(thisOrderList)); // here was problem 
+      dispatch(placeOrder(thisOrderList));
     } else {
       localStorage.setItem(
         'listOfOrder',

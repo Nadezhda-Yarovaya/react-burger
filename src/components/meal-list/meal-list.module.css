@@ -3,10 +3,6 @@
   font-family: 'JetBrains Mono', sans-serif;
   font-weight: 400;
   font-size: 22px;
-  /*
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;*/
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 272px));
   grid-column-gap: 24px;
@@ -15,23 +11,7 @@
   max-width: calc((272px * 2) + 24px + (16px * 2));
   box-sizing: border-box;
 }
-/*
-.item {
-  width: 100%;
-  border: var(--dashed-border);
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
-.burgerItem:nth-of-type(even) {
-  margin: 0;
-}
-*/
 @media screen and (max-width: 1250px) {
   .list {
     grid-template-columns: repeat(2, minmax(100px, 220px));

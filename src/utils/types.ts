@@ -1,16 +1,12 @@
-import React from 'react';
 import { TAuthActions } from '../services/action-types/auth-action-types';
 import { TFeedWsActions } from '../services/action-types/feed-ws-action-types';
-
-import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { AppDispatch, RootState } from '../';
+import { RootState } from '../';
 import { TIngedientsActions } from '../services/action-types/ingredients-action-types';
 import { TDndActions } from '../services/action-types/dnd-action-types';
 import { TMobileActions } from '../services/action-types/mobile-types';
 import { TOrdersWsActions } from '../services/action-types/orders-ws-action-types';
 import { TOrderInfoActions } from '../services/action-types/order-info-action-types';
-import { firstIngredUniq } from './utils';
 
 export type TNewItem = { [key: string]: string | number };
 
@@ -59,7 +55,7 @@ export type TLocation = {
   state?: {
     from?: string;
     feedLocate?: TLocate;
-  ordersLocate?: TLocate;
+    ordersLocate?: TLocate;
   };
   from?: string;
   locate?: TLocate;
@@ -74,64 +70,56 @@ export type TRectangle = {
   right?: number;
 };
 
-
-
 export type TInputsLogin = {
-  
-    email: string,
-    password: string,
+  email: string;
+  password: string;
 };
 
-export type TInputsPass = {  
-  email: string,
+export type TInputsPass = {
+  email: string;
 };
 
 export type TInputsRegister = {
-  name: string,
-    email: string,
-    password: string,
+  name: string;
+  email: string;
+  password: string;
 };
 
 export type TInputs = TInputsRegister;
 
-export type TInputsBool = TInputsBoolLogin | TInputsBoolPass | TInputsBoolRegister;
+export type TInputsBool =
+  | TInputsBoolLogin
+  | TInputsBoolPass
+  | TInputsBoolRegister;
 
-export type TInputsBoolLogin =
-  {
-    
-    email: boolean;
-    password: boolean;
-    
-  };
+export type TInputsBoolLogin = {
+  email: boolean;
+  password: boolean;
+};
 
+export type TInputsBoolPass = {
+  email: boolean;
+};
 
-  export type TInputsBoolPass =
-  {
-    
-    email: boolean;
-  };
+export type TInputsBoolRegister = {
+  name: boolean;
+  email: boolean;
+  password: boolean;
+};
 
-  export type TInputsBoolRegister =
-  {
-    name: boolean;
-    email: boolean;
-    password: boolean;
-    
-  };
+export type TInputs1 = {
+  name: string;
+  email: string;
+  password: string;
+  token: string;
+};
 
-  export type TInputs1 = {
-    name: string;
-    email: string;
-    password: string;
-    token: string
-  }
-
-  export type TInputsBool1 = {
-    name: boolean;
-    email: boolean;
-    password: boolean;
-    token: boolean;
-  }
+export type TInputsBool1 = {
+  name: boolean;
+  email: boolean;
+  password: boolean;
+  token: boolean;
+};
 
 export type TForm = {
   values: TInputs1;
@@ -139,12 +127,10 @@ export type TForm = {
   validities: TInputsBool1;
 };
 
-
-
 export type TFormLogin = {
   values: {
     email: string;
-    password: string;    
+    password: string;
   };
   errors: {
     email: string;
@@ -153,20 +139,18 @@ export type TFormLogin = {
   validities: {
     email: boolean;
     password: boolean;
-    
   };
 };
 
-
 export type TFormPass = {
   values: {
-    email: string;   
+    email: string;
   };
   errors: {
     email: string;
   };
   validities: {
-    email: boolean;    
+    email: boolean;
   };
 };
 
@@ -174,7 +158,7 @@ export type TFormRegister = {
   values: {
     name: string;
     email: string;
-    password: string;      
+    password: string;
   };
   errors: {
     name: string;
@@ -185,43 +169,10 @@ export type TFormRegister = {
     name: boolean;
     email: boolean;
     password: boolean;
-    
   };
 };
 
 export type TFormUnion = TFormRegister | TFormLogin;
-
-/*export type TOrderItem = {
-  name: string;
-  order: { number: number };
-  status: string;
-  positions: Array<string>;
-  sum: number;
-  date: string;
-  _id: string;
-};*/
-/*
-export type TOrderFull1 = {
-  name: string;
-  order: { number: number };
-  status: string;
-  positions: Array<TIngredientUnique | string | TIngredient>;
-  sum: number;
-  date: string;
-  _id: string;
-};*/
-
-/*
-export type TOrderFull = {
-  name: string;
-  order: { number: number };
-  status: string;
-  positions: Array<TIngredient>;
-  sum: number;
-  date: string;
-  _id: string;
-}; */
-
 
 export type TOrder = {
   createdAt: string;
@@ -282,52 +233,14 @@ export type TItem = {
   item: TIngredient;
 };
 
-export const firstorderString: TOrder  = 
-  {
-    createdAt: "",
-ingredients: [''],
-name: "название заказа",
-number: 0,
-status: "",
-updatedAt: "",
-_id: "",
-};
-
 export type TPropsFormatDate = {
   formatDate: (item: TOrderWithIngredients) => string;
 };
 
-export const firstorder: TOrderWithIngredients = 
-  {
-    createdAt: "",
-ingredients: [firstIngredUniq],
-name: "название заказа",
-number: 0,
-status: "",
-updatedAt: "",
-_id: "",
+export type TParams = {
+  id: string;
 };
 
-export type TOrderFromServer = {
-  date?: string;
-  name?: string;
-  order?: { number: number };
-  positions?: Array<string>;
-  status?: string;
-  sum?: number;
-
-  _id?: string;
-};
-
-/*
-date: "2022-05-06"
-name: "Бессмертный альфа-сахаридный экзо-плантаго бургер"
-order: {number: 2547}
-positions: (5) [{…}, {…}, {…}, {…}, {…}]
-status: "Создан"
-sum: 14450
-_id: "1112222333344455566"
-*/
 export type TAppActions =
   | TAuthActions
   | TFeedWsActions
@@ -337,6 +250,9 @@ export type TAppActions =
   | TOrdersWsActions
   | TOrderInfoActions;
 
-export type AppThunk<TReturn = void> = 
-  ThunkAction<TReturn, RootState, never, TAppActions>
-;
+export type AppThunk<TReturn = void> = ThunkAction<
+  TReturn,
+  RootState,
+  never,
+  TAppActions
+>;

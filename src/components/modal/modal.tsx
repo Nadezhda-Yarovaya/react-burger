@@ -5,7 +5,6 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { useSelector } from '../../hooks/hooks';
 
-
 const { modal, modal__button, container } = modalStyles;
 
 const modalRoot = document.getElementById('modal') as HTMLElement;
@@ -21,11 +20,8 @@ const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
   const [isOpened, setIsOpened] = useState(isOpen);
 
   const isMobile = useSelector((store) => store.mobile.isMobile);
-  const windowWidth = useSelector(
-    (store) => store.mobile.windowData.width
-  );
-  const windowHeight = useSelector((store) => store.mobile.windowData.height
-  );
+  const windowWidth = useSelector((store) => store.mobile.windowData.width);
+  const windowHeight = useSelector((store) => store.mobile.windowData.height);
 
   useEffect(() => {
     function closeByEscape(evt: KeyboardEvent) {

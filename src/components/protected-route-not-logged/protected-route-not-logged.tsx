@@ -1,4 +1,4 @@
-import  { FC } from 'react';
+import { FC } from 'react';
 
 import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import { useSelector } from '../../hooks/hooks';
