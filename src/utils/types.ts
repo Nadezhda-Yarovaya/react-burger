@@ -24,6 +24,30 @@ export type TIngredient = {
   type?: string;
 };
 
+export type TIngredientQty = TIngredient & {
+  qty: number
+}
+/*export type TIngredientQty = {
+  _id?: string;
+  calories?: number;
+  carbohydrates?: number;
+  fat?: number;
+  proteins?: number;
+  price?: number;
+  name?: string;
+  image?: string;
+  image_mobile?: string;
+  image_large?: string;
+  type?: string;
+  qty?: number | unknown;
+};*/
+
+
+export type TAssignQty = {
+  _id: string;
+  qty: number;
+}
+
 export type TIngredientUnique = TIngredient & {
   uniqueId: string;
 };
@@ -186,7 +210,17 @@ export type TOrder = {
 
 export type TOrderWithIngredients = {
   createdAt: string;
-  ingredients: Array<TIngredient | undefined>;
+  ingredients: Array<TIngredientQty>;
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
+};
+
+export type TOrderWithIngredientsNoQty = {
+  createdAt: string;
+  ingredients: Array<TIngredient>;
   name: string;
   number: number;
   status: string;

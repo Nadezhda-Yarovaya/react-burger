@@ -4,10 +4,12 @@ import OrdersList from '../components/orders-list/orders-list';
 import feedStyles from './feed.module.css';
 import { numberslist } from '../utils/utils';
 
-import { TOrderWithIngredients, TPropsFormatDate } from '../utils/types';
 import orderDetails from '../components/order-details/order-details.module.css';
 import { useDispatch, useSelector } from '../hooks/hooks';
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/feed-ws-actions';
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from '../services/actions/feed-ws-actions';
 
 const {
   section,
@@ -45,37 +47,33 @@ const Feed: FC = () => {
   const allOrdersFromWSArray = useSelector((state) => state.feedWs.ordersArray);
   const [total, setTotal] = useState<number>(0);
   const [totalToday, setTotalToday] = useState<number>(0);
-  const [numbersDone, setNumbersDone] = useState<Array<number | undefined>>([
-    0,
-  ]);
-  const [numbersPending, setNumbersPending] = useState<
-    Array<number | undefined>
-  >([0]);
+  const [numbersDone, setNumbersDone] = useState<Array<number>>([0]);
+  const [numbersPending, setNumbersPending] = useState<Array<number>>([0]);
 
   const dispatch = useDispatch();
 
   const baseUrl = 'wss://norma.nomoreparties.space/orders';
 
   useEffect(() => {
-    
-      dispatch({
-        type: WS_CONNECTION_START,
-        payload: `${baseUrl}/all`,
-      });
-    
-    return () => {      
-        dispatch({ type: WS_CONNECTION_CLOSED });     
-    }; 
+    dispatch({
+      type: WS_CONNECTION_START,
+      payload: `${baseUrl}/all`,
+    });
+
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
   }, [dispatch]);
 
-
-  function makeOrderNumbers(status: string): Array<number | undefined> {
+  function makeOrderNumbers(status: string): Array<number> {
     if (allOrdersFromWSArray) {
-      return allOrdersFromWSArray.map((order: TOrderWithIngredients) => {
+      const temporaryArrayNumbers= allOrdersFromWSArray.map((order) => {
         if (order.status === status) {
           return order.number;
-        } else return undefined;
+        } else return 0;
       });
+      const finalOrderNumbers = temporaryArrayNumbers.filter(item => item !== 0);
+      return finalOrderNumbers;
     }
     return numberslist;
   }
@@ -131,16 +129,15 @@ const Feed: FC = () => {
                   В работе:{' '}
                 </p>
                 <div className={numberOrdersList}>
-                  {numbersPending.map(
-                    (item: number | undefined) => (
+                  {numbersPending.length > 0 &&
+                    numbersPending.map((item) => (
                       <li
                         key={item}
                         className={`${numberOrderItemPending} text text_type_digits-default`}
                       >
                         {item}
                       </li>
-                    )
-                  )}
+                    ))}
                 </div>
               </div>
             </div>

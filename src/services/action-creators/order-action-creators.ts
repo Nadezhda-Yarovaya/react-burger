@@ -7,7 +7,10 @@ import { makeOrderWithToken } from '../../utils/api';
 import { AppThunk } from '../../utils/types';
 import { getCookie, refreshToken, setCookie } from '../../utils/auth';
 import { WS_CONNECTION_ORD_START } from '../actions/orders-ws-actions';
+import { handleUpdateTokens } from './auth-action-creators';
+const baseUrl = 'wss://norma.nomoreparties.space/orders';
 
+/* functions that require RefreshToken */
 export const placeOrder =
   (ingredientsInOrder: Array<string>): AppThunk =>
   (dispatch) => {
@@ -15,23 +18,59 @@ export const placeOrder =
       type: GET_ORDERDATA_REQUEST,
     });
     const accessToken = getCookie('token');
-
     if (accessToken) {
       return dispatch(handlePlaceOrder(ingredientsInOrder, accessToken));
     } else {
       const refreshSaved = localStorage.getItem('refreshToken');
       if (refreshSaved) {
-        return dispatch(
-          handleRefreshTokenInOrder(
-            refreshSaved,
-            handlePlaceOrder,
-            ingredientsInOrder
-          )
-        );
+        return dispatch(handleRefreshTokenForPlaceNewOrder(ingredientsInOrder));
       }
     }
   };
 
+export const loadOrders = (): AppThunk => (dispatch) => {
+  const accessToken = getCookie('token');
+
+  if (accessToken) {
+    console.log('accesstok success load orders: ', accessToken);
+    return dispatch(handleLoadOrders(accessToken));
+  } else {
+    console.log('accesstok fail refreshing token: ', accessToken);
+    const refreshSaved = localStorage.getItem('refreshToken');
+    console.log('accesstok fail REFRESHSVED: ', refreshSaved);
+    if (refreshSaved) {
+      return dispatch(handleRefreshTokenInLoadOrders(refreshSaved));
+    }
+  }
+};
+
+/* functions to UpdateToken */
+export const handleRefreshTokenForPlaceNewOrder =
+  (ingredientsInOrder: Array<string>): AppThunk =>
+  (dispatch) => {
+    const refreshSaved = localStorage.getItem('refreshToken');
+    if (refreshSaved) {
+      refreshToken(refreshSaved)
+        .then((res) => {
+          let authToken = handleUpdateTokens(res.refreshToken, res.accessToken);
+          return dispatch(handlePlaceOrder(ingredientsInOrder, authToken));
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+export const handleRefreshTokenInLoadOrders = (refreshSaved: string): AppThunk => (dispatch) => {
+  if (refreshSaved) {
+    refreshToken(refreshSaved)
+      .then((res) => {
+        let authToken = handleUpdateTokens(res.refreshToken, res.accessToken);
+        return dispatch(handleLoadOrders(authToken));
+      })
+      .catch((err) => console.log(err));
+  }
+};
+
+/* handle functions */
 const handlePlaceOrder =
   (ingredientsInOrder: Array<string>, accessToken: string): AppThunk =>
   (dispatch) => {
@@ -53,70 +92,11 @@ const handlePlaceOrder =
       });
   };
 
-export const handleRefreshTokenInOrder =
-  (
-    refeshSaved: string,
-    handlePlaceOrder: (
-      ingredientsInOrder: Array<string>,
-      accessToken: string
-    ) => AppThunk,
-    ingredientsInOrder: Array<string>
-  ): AppThunk =>
-  (dispatch) => {
-    refreshToken(refeshSaved).then((res) => {
-      localStorage.removeItem('refreshToken');
-      localStorage.setItem('refreshToken', res.refreshToken);
-      let authToken;
-      authToken = res.accessToken.split('Bearer ')[1];
-      if (authToken) {
-        setCookie('token', authToken, { expires: 1 }); // expires in minutes
-      }
-
-      return dispatch(handlePlaceOrder(ingredientsInOrder, authToken));
-    });
-  };
-
-const baseUrl = 'wss://norma.nomoreparties.space/orders';
-
-export const loadOrders = (): AppThunk => (dispatch) => {
-  const accessToken = getCookie('token');
-
-  if (accessToken) {
-    return dispatch(handleLoadOrders(accessToken));
-  } else {
-    const refreshSaved = localStorage.getItem('refreshToken');
-    if (refreshSaved) {
-      return dispatch(
-        handleRefreshTokenInLoadOrders(refreshSaved, handleLoadOrders)
-      );
-    }
-  }
-};
-
 const handleLoadOrders =
   (accessToken: string): AppThunk =>
   (dispatch) => {
     dispatch({
       type: WS_CONNECTION_ORD_START,
       payload: `${baseUrl}?token=${accessToken}`,
-    });
-  };
-
-export const handleRefreshTokenInLoadOrders =
-  (
-    refeshSaved: string,
-    handleLoadOrders: (accessToken: string) => AppThunk
-  ): AppThunk =>
-  (dispatch) => {
-    refreshToken(refeshSaved).then((res) => {
-      localStorage.removeItem('refreshToken');
-      localStorage.setItem('refreshToken', res.refreshToken);
-      let authToken;
-      authToken = res.accessToken.split('Bearer ')[1];
-      if (authToken) {
-        setCookie('token', authToken, { expires: 1 }); // expires in minutes
-      }
-
-      return dispatch(handleLoadOrders(authToken));
     });
   };

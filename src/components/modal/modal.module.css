@@ -10,7 +10,7 @@
   color: var(--text-color);
   border-radius: 40px;
   position: fixed;
-  z-index: 5;
+  z-index: 15;
 }
 
 .modal__button {

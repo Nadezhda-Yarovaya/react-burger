@@ -185,7 +185,7 @@ const ConstructorList: FC = () => {
               ) : (
                 <></>
               )}
-              {stuffingListDropped.map((item: TIngredientUnique) => (
+              {stuffingListDropped.map((item) => (
                 <CustomConstructorElement
                   text={item.name}
                   price={item.price}

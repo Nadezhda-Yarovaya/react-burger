@@ -15,7 +15,7 @@ export type TOrderState = {
   isOrderLoading: boolean;
   isPerformed: boolean;
   totalSum: number;
-  orderFullList: Array<TOrderWithIngredients>;
+  orderFullList?: Array<TOrderWithIngredients>;
 };
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   isOrderLoading: false,
   isPerformed: false,
   totalSum: 0,
-  orderFullList: [firstorder],
+  
 };
 
 export function orderInfoReducer(
@@ -63,12 +63,12 @@ export function orderInfoReducer(
         ...state,
         totalSum: action.totalSum,
       };
-
+/*
     case SET_POSITIONSDATA:
       return {
         ...state,
         orderFullList: action.payload,
-      };
+      }; */
     default:
       return state;
   }

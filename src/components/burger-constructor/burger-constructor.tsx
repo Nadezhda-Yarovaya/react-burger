@@ -43,7 +43,7 @@ const BurgerConstructor: FC = () => {
   }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
 
   const calculateAllPrices = (stuffings: Array<TIngredient>): void => {
-    const allPr1 = stuffings.map((item: TIngredient) => item.price);
+    const allPr1 = stuffings.map((item) => item.price);
 
     const finalNumber =
       allPr1.reduce(
@@ -59,7 +59,7 @@ const BurgerConstructor: FC = () => {
     const ingredientsFormed = [];
     ingredientsFormed.push(bunSelectedFromStore._id);
 
-    createdStuffingsList.forEach((item: TIngredient) => {
+    createdStuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 

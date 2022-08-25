@@ -34,12 +34,13 @@ import OrdersId from '../../pages/profile/orders-id/orders-id';
 import ProtectedRouteLogged from '../protected-route-logged/protected-route-logged';
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
-import IngredientPage from '../ingredient-page/ingredient-page';
+import IngredientPage from '../../pages/ingredient-page';
 import {
   TLocation,
   TIngredient,
   TOrderWithIngredients,
   TOrder,
+  TOrderWithIngredientsNoQty,
 } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
@@ -78,6 +79,7 @@ const App: FunctionComponent = () => {
     dispatch(fetchAllIngredients());
   }, []);
 
+  /*
   useEffect(() => {
     if (allIngredients[0].name) {
       const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
@@ -91,10 +93,10 @@ const App: FunctionComponent = () => {
   const newListAfterFilter = (
     arr1: Array<TOrder>
   ): Array<TOrderWithIngredients> => {
-    return arr1.map((item) => {
+    const returnedArr = arr1.map((item) => {
       const newPositions = item.ingredients.map((elementId) => {
         const newArrayItem = allIngredients.find(
-          (ingredient: TIngredient) => ingredient._id === elementId
+          (ingredient) => ingredient._id === elementId
         );
 
         if (newArrayItem) {
@@ -108,7 +110,11 @@ const App: FunctionComponent = () => {
         ingredients: newPositions,
       };
     });
+
+    console.log('filtered list: ', returnedArr);
+    return returnedArr;
   };
+*/
 
   const isPerformed = useSelector((state) => state.order.isPerformed);
 
@@ -229,7 +235,7 @@ const App: FunctionComponent = () => {
           </ProtectedRouteLogged>
 
           <Route path='/ingredients/:id' exact>
-            <IngredientPage />
+            {locateModal ? <Main /> : <IngredientPage  />}
           </Route>
 
           <Route path='/feed' exact>

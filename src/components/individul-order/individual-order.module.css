@@ -63,7 +63,8 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    max-height: 280px;
+    height: auto;
+    max-height: 240px;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
@@ -112,6 +113,15 @@
   }
   
   .list__priceinfo {
+    display: flex;
+    width: 100%;
+    max-width: 200px;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 24px 0 0;
+  }
+
+  .list__priceinfototal {
     display: flex;
     width: 100%;
     max-width: 200px;

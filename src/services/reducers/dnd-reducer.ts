@@ -76,7 +76,7 @@ export function dndReducer(
       return {
         ...state,
         droppedElements: [...state.droppedElements].filter(
-          (item: TIngredientUnique) => {
+          (item) => {
             if (item.uniqueId === action.element.uniqueId) {
             } else {
               return item;

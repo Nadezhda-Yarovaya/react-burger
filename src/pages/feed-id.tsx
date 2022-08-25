@@ -1,11 +1,13 @@
 import { FC, useEffect } from "react";
 import IndividualOrder from "../components/individul-order/individual-order";
-import { useDispatch } from "../hooks/hooks";
+import PreloaderBurger from '../components/preloader/preloader';
+import { useDispatch, useSelector } from "../hooks/hooks";
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../services/actions/feed-ws-actions";
 
 
 const FeedId:FC = () => {
 
+    const wsFeedConnecting = useSelector(state => state.feedWs.isConnecting);
     // const { id } = useParams<TParams>();
     const baseUrl = 'wss://norma.nomoreparties.space/orders';
 
@@ -24,7 +26,7 @@ const FeedId:FC = () => {
 
     return (
         <div style={{margin: '120px 0 0 0'}} >
-            <IndividualOrder />
+            {wsFeedConnecting ? <PreloaderBurger /> : <IndividualOrder />}
         </div>
     )
 }

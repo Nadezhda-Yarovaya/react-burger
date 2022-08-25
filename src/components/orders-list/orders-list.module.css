@@ -3,4 +3,6 @@
     width: 100%;
     max-width: 880px;
     flex-direction: column;
+    box-sizing: border-box;
+    margin: 32px 24px 0 0;
 }

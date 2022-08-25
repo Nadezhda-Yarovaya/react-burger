@@ -37,10 +37,25 @@ export const firstIngred = {
   _id: '0',
 };
 
+export const firstIngredQty = {
+  calories: 0,
+  carbohydrates: 0,
+  fat: 0,
+  image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  image_large: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  image_mobile: 'https://code.s3.yandex.net/react/code/bun-02.png',
+  name: 'Выберите булку',
+  price: 0,
+  proteins: 0,
+  type: 'bun',
+  _id: '0',
+
+qty: 0,};
+
 export const initialElement: TOrderWithIngredients = {
   createdAt: '',
   name: 'название заказа',
-  ingredients: [firstIngred],
+  ingredients: [firstIngredQty],
   number: 0,
   status: '',
   updatedAt: '',

@@ -53,7 +53,7 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
   useEffect(() => {
     if (item) {
       let sumArray: number[] = [];
-      sumArray = item.ingredients.map((item) => item?.price || 0);
+      sumArray = item.ingredients.map((item: any) => (item?.price * item?.qty) || 0);
 
       const orderTotal =
         sumArray.reduce((prev, current) => prev + current, 0) || 0;
@@ -83,6 +83,8 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
     setStatusText(makeStatus(item.status));
   }, [item]);
 
+
+  // console.log('ingreds: ', item.ingredients);
   return (
     <Link
       to={{
@@ -121,7 +123,7 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
                 .slice(0, 6)
                 .map((ingredient, index) => (
                   <SingleOrderIngredients
-                    key={index}
+                    key={ingredient?._id}
                     index={index}
                     positions={item.ingredients}
                     ingredient={ingredient}

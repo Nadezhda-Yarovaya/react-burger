@@ -61,7 +61,7 @@ const OrdersList: FC = () => {
 
   const list =
     wsConnected && orderListFinal && orderListFinal?.length > 0 ? (
-      orderListFinal.map((item: TOrderWithIngredients) => (
+      orderListFinal.map((item) => (
         <Order key={item._id} item={item} />
       ))
     ) : (
@@ -70,7 +70,7 @@ const OrdersList: FC = () => {
 
   return (
     <OrdersDataWrapper>
-      <div className={`${orders} pr-2 mt-8`}>
+      <div className={`${orders} pr-2`}>
         {wsConnecting ? <PreloaderBurger /> : list}
       </div>
     </OrdersDataWrapper>

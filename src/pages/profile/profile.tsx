@@ -26,7 +26,7 @@ const { profile, container } = profileStyles;
 const Profile: FC = () => {
   const dispatch = useDispatch();
 
-  const user1 = useSelector((state) => state.auth.user);
+  const currentUser = useSelector((state) => state.auth.user);
 
   const isLogged = useSelector((state) => state.auth.isLogged);
 
@@ -51,9 +51,9 @@ const Profile: FC = () => {
   }, [isLogged]);
 
   useEffect(() => {
-    setName(user1.name);
-    setEmail(user1.email);
-  }, [user1]);
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
 
   const [isProfileFormDisabled, setIsProfileFormDisabled] = useState(true);
 
@@ -67,7 +67,7 @@ const Profile: FC = () => {
 
   function updateData(): void {
     const ifAnyChanged =
-      email !== user1.email || name !== user1.name || pass !== '';
+      email !== currentUser.email || name !== currentUser.name || pass !== '';
 
     if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
       dispatch<any>(patchUser(email, name, pass));
@@ -100,8 +100,8 @@ const Profile: FC = () => {
     setIsNameDisabled(true);
     setIsEmailDisabled(true);
     setIsPassDisabled(true);
-    setEmail(user1.email);
-    setName(user1.name);
+    setEmail(currentUser.email);
+    setName(currentUser.name);
     setPass('');
     setPassValidError('');
     setEmailValidError('');

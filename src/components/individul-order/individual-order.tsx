@@ -23,11 +23,12 @@ const {
   date,
   list__image,
   list__item2,
+  list__priceinfototal
 } = ordersIdStyles;
 
 const IndividualOrder: FC = () => {
   const location = useLocation<TLocation>();
-  console.log("locat state: ", location.state);
+  // console.log("locat state: ", location.state);
 
   const [statusText, setStatusText] = useState<string>("");
   const [givenOrder, setGivenOrder] =
@@ -83,31 +84,19 @@ const IndividualOrder: FC = () => {
 
   const [totalSumOrder, setTotalSumOrder] = useState<number>(0);
 
+  //qty unknown надо решить
+
   useEffect(() => {
     if (givenOrder) {
       let sumArray: number[] = [];
-      sumArray = givenOrder.ingredients.map((item) => item?.price || 0);
+      sumArray = givenOrder.ingredients.map((item) => (item?.price * item?.qty) || 0);
 
       const orderTotal =
-        sumArray.reduce((prev, current) => prev + current, 0) || 0;
+      sumArray.reduce((prev, current) => prev + current, 0) || 0;
       setTotalSumOrder(orderTotal);
     }
   }, [givenOrder]);
-
-  useEffect(() => {
-
-    // console.log('giv order: ', givenOrder);  сюда ингредиенты приходят без уникал айди! 
-    // мне надо формировать с уникал айди когда я из стрингов их вывожу
-
-    let array = givenOrder.ingredients; // тут имена сначала сделать... 
-    let new1 = array.reduce((prev,cur ) => {
-      console.log('prev: ', prev, ' cur: ', cur);
-      prev[cur] = (prev[cur] || 0) +1
-    });
-    
-
-  },[givenOrder]);
-
+  
   return (
     <OrdersDataWrapper>
       <div className={container}>
@@ -137,7 +126,7 @@ const IndividualOrder: FC = () => {
                   </div>
                   <div className={list__priceinfo}>
                     <p className={`${price} text text_type_digits-default`}>
-                      1 x {element!.price}
+                      {`${element!.qty} x ${element!.price}`}
                     </p>
                     <CurrencyIcon type="primary" />
                   </div>
@@ -146,7 +135,7 @@ const IndividualOrder: FC = () => {
           </ul>
           <div className={footer}>
             <DateOrder item={givenOrder} />
-            <div className={list__priceinfo}>
+            <div className={list__priceinfototal}>
               <p className={`${price} text text_type_digits-default`}>
                 {totalSumOrder}
               </p>
