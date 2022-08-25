@@ -20,7 +20,7 @@ export {
   WS_CONNECTION_ORD_CLOSED,
   WS_GET_ORD_MESSAGE,
   WS_GET_ORD_ORDERS,
-  WS_SET_ORD_ORDERSLIST
+  WS_SET_ORD_ORDERSLIST,
 };
 
 export const ordersWsActions = {

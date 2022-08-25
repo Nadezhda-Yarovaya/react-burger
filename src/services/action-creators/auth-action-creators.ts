@@ -112,7 +112,6 @@ export const performLogout =
       .catch((err) => console.log(err));
   };
 
-
 export const handleRequestResetPassword =
   (email: string, history: History<LocationState>): AppThunk =>
   () => {
@@ -174,7 +173,6 @@ export function handleApiMessageError(dispatch: AppDispatch, message: string) {
     dispatch({ type: CLEAR_APIMESSAGE });
   }, 2500);
 }
-
 
 /* functions that require RefreshToken */
 export const loadUser = (): AppThunk => (dispatch) => {
@@ -273,16 +271,19 @@ export const handleUpdateUser =
   };
 
 /* function to deal with 2 tokens */
-  export const handleUpdateTokens = (
-    givenRefreshToken: string,
-    givenAccessToken: string
-  ): string => {
-    localStorage.removeItem('refreshToken');
-    localStorage.setItem('refreshToken', givenRefreshToken);
-    let authToken;
-    authToken = givenAccessToken.split('Bearer ')[1];
-    if (authToken) {
-      setCookie('token', authToken, { expires: 1 }); // expires in minutes
-    }
-    return authToken;
-  };
+export const handleUpdateTokens = (
+  givenRefreshToken: string,
+  givenAccessToken: string
+): string => {
+  const tempToken = localStorage.getItem('refreshTokenTemp');
+  if (tempToken) {
+    localStorage.removeItem('refreshTokenTemp');
+  }
+  localStorage.setItem('refreshTokenTemp', givenRefreshToken);
+  let authToken;
+  authToken = givenAccessToken.split('Bearer ')[1];
+  if (authToken) {
+    setCookie('token', authToken, { expires: 20 }); // expires in minutes
+  }
+  return authToken;
+};

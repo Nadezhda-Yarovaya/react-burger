@@ -4,8 +4,6 @@ import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { useSelector } from '../../hooks/hooks';
-import { useLocation } from 'react-router-dom';
-import { TLocation } from '../../utils/types';
 
 const { modal, modal__button, container } = modalStyles;
 

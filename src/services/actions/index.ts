@@ -9,7 +9,7 @@ import {
   SET_MODALINGREDIENTS,
   REMOVE_MODALINGREDIENTS,
   CLEAR_BUN,
-} from "./ingredients-actions";
+} from './ingredients-actions';
 
 import {
   SET_IFMOBILE,
@@ -26,7 +26,7 @@ import {
   SET_FINALS,
   CLEAR_INITIALS,
   CLEAR_FINALS,
-} from "./mobile-actions";
+} from './mobile-actions';
 
 import {
   GET_ORDERDATA_SUCCESS,
@@ -35,7 +35,7 @@ import {
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
   SET_POSITIONSDATA,
-} from "./order-info-actions";
+} from './order-info-actions';
 
 import {
   INCREASE_DROPPEDELEMENT,
@@ -45,7 +45,7 @@ import {
   GOUP_POSITION,
   GODOWN_POSITION,
   CLEAR_STUFFINGLIST,
-} from "./dnd-actions";
+} from './dnd-actions';
 
 import {
   REGISTER_SUCCESS,
@@ -60,7 +60,7 @@ import {
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
   GET_USER_REQUEST,
-} from "./auth-actions";
+} from './auth-actions';
 
 export {
   SET_ALLINGREDIENTS_REQUEST,
@@ -111,5 +111,5 @@ export {
   SET_LOGGEDOUT,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
-  GET_USER_REQUEST
+  GET_USER_REQUEST,
 };

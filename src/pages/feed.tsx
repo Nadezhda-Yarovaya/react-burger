@@ -67,12 +67,14 @@ const Feed: FC = () => {
 
   function makeOrderNumbers(status: string): Array<number> {
     if (allOrdersFromWSArray) {
-      const temporaryArrayNumbers= allOrdersFromWSArray.map((order) => {
+      const temporaryArrayNumbers = allOrdersFromWSArray.map((order) => {
         if (order.status === status) {
           return order.number;
         } else return 0;
       });
-      const finalOrderNumbers = temporaryArrayNumbers.filter(item => item !== 0);
+      const finalOrderNumbers = temporaryArrayNumbers.filter(
+        (item) => item !== 0
+      );
       return finalOrderNumbers;
     }
     return numberslist;

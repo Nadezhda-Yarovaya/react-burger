@@ -50,7 +50,8 @@ export const firstIngredQty = {
   type: 'bun',
   _id: '0',
 
-qty: 0,};
+  qty: 0,
+};
 
 export const initialElement: TOrderWithIngredients = {
   createdAt: '',
@@ -89,7 +90,7 @@ export const firstorderString: TOrder = {
 
 export const firstorder: TOrderWithIngredients = {
   createdAt: '',
-  ingredients: [firstIngredUniq],
+  ingredients: [firstIngredQty],
   name: 'название заказа',
   number: 0,
   status: '',
@@ -101,7 +102,6 @@ export const getResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   } else {
-    console.log(res);
     return Promise.reject(`Ошибка при соединении: ${res.status}`);
   }
 };

@@ -70,7 +70,7 @@ const Profile: FC = () => {
       email !== currentUser.email || name !== currentUser.name || pass !== '';
 
     if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
-      dispatch<any>(patchUser(email, name, pass));
+      dispatch(patchUser(email, name, pass));
       makeDefaultForm();
     } else {
       dispatch({

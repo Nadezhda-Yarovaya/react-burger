@@ -26,7 +26,7 @@ const OrdersId: FC = () => {
     };
   }, [dispatch]);
 
-  return <>{wsOrdersConnecting ? <PreloaderBurger /> : <IndividualOrder />}</>;
+  return <>{wsOrdersConnecting ? <PreloaderBurger /> : <div style={{margin: '120px 0 0 0'}}><IndividualOrder /></div>}</>;
 };
 
 export default OrdersId;

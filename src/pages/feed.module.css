@@ -1,90 +1,86 @@
 .container {
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    width: 100%;
-    max-width: var(--container-width);
-    
-    position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--container-width);
+  position: relative;
 }
 
 .feed {
-    width: 100%;
-    min-height: 60vh;
+  width: 100%;
+  min-height: 60vh;
 }
 
 .section {
-    width: 50%;
-    
+  width: 50%;
 }
 
 .numberOrdersList {
-    display: flex;
-    flex-direction: column;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    flex-wrap: wrap;
-    height: 250px;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  height: 250px;
 }
 
 .numberOrderItem {
-    color: var(--accent-order);
+  color: var(--accent-order);
 }
 
-.numberOrderItemPending{
-    color: var(--text-color);
+.numberOrderItemPending {
+  color: var(--text-color);
 }
 
 .par {
-    color: var(--text-color);
-    font-weight: 400;
-    margin: 0;
+  color: var(--text-color);
+  font-weight: 400;
+  margin: 0;
 }
 
 .number {
-    margin: 0;
+  margin: 0;
 }
 
 .numbersShown {
-    width: 100%;
-    margin: 0 0 60px 0;
+  width: 100%;
+  margin: 0 0 60px 0;
 }
 
 .feedSection {
-    width: 100%;
-    max-width: calc(((1260 - 80) / 2) * 100%);
-    flex-direction: column;
-    display: flex;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: calc(((1260 - 80) / 2) * 100%);
+  flex-direction: column;
+  display: flex;
+  box-sizing: border-box;
 }
 
 .ordersList {
-    max-height: 694px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    box-sizing: border-box;
-    margin: 0 60px 0 0;
+  max-height: 694px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin: 0 60px 0 0;
 }
 
 .mainTitle {
-    font-family: 'JetBrains Mono', sans-serif;
-    font-size: 30px;
-    width: 100%;
+  font-family: 'JetBrains Mono', sans-serif;
+  font-size: 30px;
+  width: 100%;
 }
 
-
 .ordersList::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  .ordersList::-webkit-scrollbar-track {
-    background-color: #2f2f37;
-    width: 8px;
-  }
-  
-  .ordersList::-webkit-scrollbar-thumb {
-    background-color: #8585ad;
-    outline: 0;
-  }
-  
+  width: 10px;
+}
+
+.ordersList::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  width: 8px;
+}
+
+.ordersList::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  outline: 0;
+}

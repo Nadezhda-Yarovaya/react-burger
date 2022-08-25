@@ -15,11 +15,10 @@ import { feedWsActions } from './services/actions/feed-ws-actions';
 import { TAppActions } from './utils/types';
 import { ordersWsActions } from './services/actions/orders-ws-actions';
 
-
-const ourWsMiddleware = socketMiddleware( feedWsActions);
+const ourWsMiddleware = socketMiddleware(feedWsActions);
 const personalOrdersWsMiddleware = socketMiddleware(ordersWsActions);
 const enhancer = composeWithDevTools(
-  applyMiddleware(thunk, ourWsMiddleware, personalOrdersWsMiddleware )
+  applyMiddleware(thunk, ourWsMiddleware, personalOrdersWsMiddleware)
 );
 const store = createStore(rootReducer, enhancer);
 

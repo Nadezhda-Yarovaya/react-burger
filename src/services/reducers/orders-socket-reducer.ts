@@ -10,7 +10,6 @@ import {
   WS_SET_ORD_ORDERSLIST,
 } from '../actions/orders-ws-actions';
 
-
 const initialState = {
   isConnecting: false,
   wsConnected: false,
@@ -53,7 +52,7 @@ export const ordersWsReducer = (
         wsConnected: false,
         isConnecting: false,
         orders: '',
-        ordersArray: []
+        ordersArray: [],
       };
     case WS_GET_ORD_MESSAGE:
       return {

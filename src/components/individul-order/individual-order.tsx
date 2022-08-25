@@ -1,12 +1,12 @@
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC, useEffect, useMemo, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { useSelector } from "../../hooks/hooks";
-import { TLocation, TOrderWithIngredients } from "../../utils/types";
-import { firstorder, initialElement } from "../../utils/utils";
-import DateOrder from "../date/date";
-import OrdersDataWrapper from "../orders-data-wrapper/orders-data-wrapper";
-import ordersIdStyles from "./individual-order.module.css";
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import { useSelector } from '../../hooks/hooks';
+import { TLocation, TOrderWithIngredients } from '../../utils/types';
+import { firstorder, initialElement } from '../../utils/utils';
+import DateOrder from '../date/date';
+import OrdersDataWrapper from '../orders-data-wrapper/orders-data-wrapper';
+import ordersIdStyles from './individual-order.module.css';
 
 const {
   container,
@@ -23,27 +23,27 @@ const {
   date,
   list__image,
   list__item2,
-  list__priceinfototal
+  list__priceinfototal,
 } = ordersIdStyles;
 
 const IndividualOrder: FC = () => {
   const location = useLocation<TLocation>();
   // console.log("locat state: ", location.state);
 
-  const [statusText, setStatusText] = useState<string>("");
+  const [statusText, setStatusText] = useState<string>('');
   const [givenOrder, setGivenOrder] =
     useState<TOrderWithIngredients>(firstorder);
 
   function makeStatus(status: string) {
     switch (status) {
-      case "done":
-        return "Выполнен";
-      case "created":
-        return "Выполнен";
-      case "pending":
-        return "Создан";
+      case 'done':
+        return 'Выполнен';
+      case 'created':
+        return 'Выполнен';
+      case 'pending':
+        return 'Создан';
       default:
-        return "Выполнен";
+        return 'Выполнен';
     }
   }
 
@@ -56,8 +56,8 @@ const IndividualOrder: FC = () => {
   };
 
   const { id } = useParams<TParams>();
-  const isFeed = location.pathname.includes("/feed");
-  const isOrders = location.pathname.includes("/orders");
+  const isFeed = location.pathname.includes('/feed');
+  const isOrders = location.pathname.includes('/orders');
 
   const orderAllList = useSelector((state) => state.feedWs.ordersArray);
   const orderPersonlList = useSelector((state) => state.ordersWs.ordersArray);
@@ -84,19 +84,19 @@ const IndividualOrder: FC = () => {
 
   const [totalSumOrder, setTotalSumOrder] = useState<number>(0);
 
-  //qty unknown надо решить
-
   useEffect(() => {
     if (givenOrder) {
       let sumArray: number[] = [];
-      sumArray = givenOrder.ingredients.map((item) => (item?.price * item?.qty) || 0);
+      sumArray = givenOrder.ingredients.map(
+        (item) => item?.price * item?.qty || 0
+      );
 
       const orderTotal =
-      sumArray.reduce((prev, current) => prev + current, 0) || 0;
+        sumArray.reduce((prev, current) => prev + current, 0) || 0;
       setTotalSumOrder(orderTotal);
     }
   }, [givenOrder]);
-  
+
   return (
     <OrdersDataWrapper>
       <div className={container}>
@@ -104,13 +104,13 @@ const IndividualOrder: FC = () => {
           <p className={`${number} text text_type_digits-default mb-10`}>
             #{givenOrder.number}
           </p>
-          <p className="text text_type_main-medium mb-3">{givenOrder.name}</p>
+          <p className='text text_type_main-medium mb-3'>{givenOrder.name}</p>
           <p
             className={`${status} ${status_performed} text text_type_main-default`}
           >
             {statusText}
           </p>
-          <p className="text text_type_main-medium mb-6">Состав :</p>
+          <p className='text text_type_main-medium mb-6'>Состав :</p>
           <ul className={list}>
             {givenOrder.ingredients[0] &&
               givenOrder.ingredients.map((element) => (
@@ -128,7 +128,7 @@ const IndividualOrder: FC = () => {
                     <p className={`${price} text text_type_digits-default`}>
                       {`${element!.qty} x ${element!.price}`}
                     </p>
-                    <CurrencyIcon type="primary" />
+                    <CurrencyIcon type='primary' />
                   </div>
                 </li>
               ))}
@@ -139,7 +139,7 @@ const IndividualOrder: FC = () => {
               <p className={`${price} text text_type_digits-default`}>
                 {totalSumOrder}
               </p>
-              <CurrencyIcon type="primary" />
+              <CurrencyIcon type='primary' />
             </div>
           </div>
         </div>

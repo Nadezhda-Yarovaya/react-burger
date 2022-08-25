@@ -24,29 +24,25 @@ export type TIngredient = {
   type?: string;
 };
 
-export type TIngredientQty = TIngredient & {
-  qty: number
-}
-/*export type TIngredientQty = {
-  _id?: string;
-  calories?: number;
-  carbohydrates?: number;
-  fat?: number;
-  proteins?: number;
-  price?: number;
-  name?: string;
-  image?: string;
-  image_mobile?: string;
-  image_large?: string;
+export type TIngredientQty = {
+  _id: string;
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  proteins: number;
+  price: number;
+  name: string;
+  image: string;
+  image_mobile: string;
+  image_large: string;
   type?: string;
-  qty?: number | unknown;
-};*/
-
+  qty: number;
+};
 
 export type TAssignQty = {
   _id: string;
   qty: number;
-}
+};
 
 export type TIngredientUnique = TIngredient & {
   uniqueId: string;
@@ -276,7 +272,7 @@ export type TWSState = {
   wsConnected: boolean;
   error?: string | undefined;
   orders: string;
-  ordersArray?: Array<TOrderWithIngredients>;
+  ordersArray: Array<any>;
 };
 
 export type TParams = {

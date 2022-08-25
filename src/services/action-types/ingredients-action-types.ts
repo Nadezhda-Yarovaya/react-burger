@@ -1,7 +1,4 @@
-import {
-  TByCategory,
-  TIngredient,
-} from '../../utils/types';
+import { TByCategory, TIngredient } from '../../utils/types';
 import {
   SET_ALLINGREDIENTS_REQUEST,
   SET_ALLINGREDIENTS_SUCCESS,

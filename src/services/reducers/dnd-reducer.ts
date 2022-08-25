@@ -75,14 +75,12 @@ export function dndReducer(
     case DELETE_ITEM:
       return {
         ...state,
-        droppedElements: [...state.droppedElements].filter(
-          (item) => {
-            if (item.uniqueId === action.element.uniqueId) {
-            } else {
-              return item;
-            }
+        droppedElements: [...state.droppedElements].filter((item) => {
+          if (item.uniqueId === action.element.uniqueId) {
+          } else {
+            return item;
           }
-        ),
+        }),
       };
 
     case SET_DROPDIRECTION:

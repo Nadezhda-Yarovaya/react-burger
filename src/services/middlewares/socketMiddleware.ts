@@ -29,9 +29,7 @@ type TWsActions = {
   onGetOrders: typeof WS_GET_ORDERS | typeof WS_GET_ORD_ORDERS;
 };
 
-export const socketMiddleware = (
-  wsActions: TWsActions
-): Middleware => {
+export const socketMiddleware = (wsActions: TWsActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
     let url = '';
@@ -60,16 +58,12 @@ export const socketMiddleware = (
         };
 
         socket.onclose = (event) => {
-        
           if (event.code !== 1000) {
-          dispatch({ type: onError, payload: event.code.toString() });
+            dispatch({ type: onError, payload: event.code.toString() });
           } else {
-       
-            dispatch({ type: onClose});
+            dispatch({ type: onClose });
           }
         };
-
-
       }
 
       next(action);

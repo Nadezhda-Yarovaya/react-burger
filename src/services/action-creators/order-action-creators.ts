@@ -23,6 +23,7 @@ export const placeOrder =
     } else {
       const refreshSaved = localStorage.getItem('refreshToken');
       if (refreshSaved) {
+        reAssignRefreshToken(refreshSaved);
         return dispatch(handleRefreshTokenForPlaceNewOrder(ingredientsInOrder));
       }
     }
@@ -32,13 +33,12 @@ export const loadOrders = (): AppThunk => (dispatch) => {
   const accessToken = getCookie('token');
 
   if (accessToken) {
-    console.log('accesstok success load orders: ', accessToken);
     return dispatch(handleLoadOrders(accessToken));
   } else {
-    console.log('accesstok fail refreshing token: ', accessToken);
     const refreshSaved = localStorage.getItem('refreshToken');
-    console.log('accesstok fail REFRESHSVED: ', refreshSaved);
+
     if (refreshSaved) {
+      reAssignRefreshToken(refreshSaved);
       return dispatch(handleRefreshTokenInLoadOrders(refreshSaved));
     }
   }
@@ -59,16 +59,18 @@ export const handleRefreshTokenForPlaceNewOrder =
     }
   };
 
-export const handleRefreshTokenInLoadOrders = (refreshSaved: string): AppThunk => (dispatch) => {
-  if (refreshSaved) {
-    refreshToken(refreshSaved)
-      .then((res) => {
-        let authToken = handleUpdateTokens(res.refreshToken, res.accessToken);
-        return dispatch(handleLoadOrders(authToken));
-      })
-      .catch((err) => console.log(err));
-  }
-};
+export const handleRefreshTokenInLoadOrders =
+  (currentRefresh: string): AppThunk =>
+  (dispatch) => {
+    if (currentRefresh) {
+      refreshToken(currentRefresh)
+        .then((res) => {
+          let authToken = handleUpdateTokens(res.refreshToken, res.accessToken);
+          return dispatch(handleLoadOrders(authToken));
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
 /* handle functions */
 const handlePlaceOrder =
@@ -100,3 +102,13 @@ const handleLoadOrders =
       payload: `${baseUrl}?token=${accessToken}`,
     });
   };
+
+export const reAssignRefreshToken = (refreshSaved: string) => {
+  const tempToken = localStorage.getItem('refreshTokenTemp');
+  if (tempToken) {
+    if (tempToken !== refreshSaved) {
+      localStorage.removeItem('refreshToken');
+      localStorage.setItem('refreshToken', tempToken);
+    }
+  }
+};

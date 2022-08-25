@@ -8,7 +8,7 @@ import {
 } from '../../services/actions';
 import { useDrop } from 'react-dnd';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
-import { TIngredient, TIngredientUnique } from '../../utils/types';
+import { TIngredientUnique } from '../../utils/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import {
   CustomConstructorElement,

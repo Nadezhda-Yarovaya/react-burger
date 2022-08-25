@@ -7,7 +7,6 @@ import { fetchAllIngredients } from '../../services/action-creators/ingredients-
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import appStyles from './app.module.css';
-import { SET_POSITIONSDATA } from '../../services/actions';
 
 import {
   SET_IFMOBILE,
@@ -35,16 +34,10 @@ import ProtectedRouteLogged from '../protected-route-logged/protected-route-logg
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
 import IngredientPage from '../../pages/ingredient-page';
-import {
-  TLocation,
-  TIngredient,
-  TOrderWithIngredients,
-  TOrder,
-  TOrderWithIngredientsNoQty,
-} from '../../utils/types';
+import { TLocation } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
 import { useDispatch, useSelector } from '../../hooks/hooks';
-import { firstIngred, firstorderString } from '../../utils/utils';
+import { firstIngred } from '../../utils/utils';
 import FeedId from '../../pages/feed-id';
 import IndividualOrder from '../individul-order/individual-order';
 
@@ -55,11 +48,6 @@ const App: FunctionComponent = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const tempOrderslist: Array<TOrder> = [firstorderString];
-
-  const allIngredients = useSelector(
-    (state) => state.ingredients.listOfIngredients
-  );
 
   useEffect(() => {
     handleSetMobile();
@@ -78,43 +66,6 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     dispatch(fetchAllIngredients());
   }, []);
-
-  /*
-  useEffect(() => {
-    if (allIngredients[0].name) {
-      const filteredTempOrdersList = newListAfterFilter(tempOrderslist);
-      dispatch({
-        type: SET_POSITIONSDATA,
-        payload: filteredTempOrdersList,
-      });
-    }
-  }, [allIngredients]);
-
-  const newListAfterFilter = (
-    arr1: Array<TOrder>
-  ): Array<TOrderWithIngredients> => {
-    const returnedArr = arr1.map((item) => {
-      const newPositions = item.ingredients.map((elementId) => {
-        const newArrayItem = allIngredients.find(
-          (ingredient) => ingredient._id === elementId
-        );
-
-        if (newArrayItem) {
-          return newArrayItem;
-        }
-        return firstIngred;
-      });
-
-      return {
-        ...item,
-        ingredients: newPositions,
-      };
-    });
-
-    console.log('filtered list: ', returnedArr);
-    return returnedArr;
-  };
-*/
 
   const isPerformed = useSelector((state) => state.order.isPerformed);
 
@@ -154,19 +105,16 @@ const App: FunctionComponent = () => {
     if (width < 790) {
       dispatch({
         type: SET_IFMOBILE,
-
         payload: true,
       });
     } else {
       dispatch({
         type: SET_IFMOBILE,
-
         payload: false,
       });
 
       dispatch({
         type: SET_IFMOBILEORDERED,
-
         payload: false,
       });
 
@@ -177,7 +125,6 @@ const App: FunctionComponent = () => {
       }
     }
   };
-
 
   const handleSetWindowData = () => {
     dispatch({
@@ -235,23 +182,23 @@ const App: FunctionComponent = () => {
           </ProtectedRouteLogged>
 
           <Route path='/ingredients/:id' exact>
-            {locateModal ? <Main /> : <IngredientPage  />}
+            {locateModal ? <Main /> : <IngredientPage />}
           </Route>
 
           <Route path='/feed' exact>
-            <Feed  />
+            <Feed />
           </Route>
 
           <Route path='/feed/:id' exact>
-            {locateFeedModal ? <Feed /> : <FeedId  />}
+            {locateFeedModal ? <Feed /> : <FeedId />}
           </Route>
 
           <ProtectedRouteLogged path='/profile/orders' exact>
-            <Orders  />
+            <Orders />
           </ProtectedRouteLogged>
 
           <ProtectedRouteLogged path='/profile/orders/:id' exact>
-          {locateProfileOrdersModal ? <Orders /> : <OrdersId  />}
+            {locateProfileOrdersModal ? <Orders /> : <OrdersId />}
           </ProtectedRouteLogged>
           <Route>
             <NotFound />
@@ -281,7 +228,7 @@ const App: FunctionComponent = () => {
         <Route path='/feed/:id'>
           {' '}
           <Modal closeModal={closeModalFromFeed} isOpen={true}>
-            <IndividualOrder  />
+            <IndividualOrder />
           </Modal>
         </Route>
       )}
@@ -289,7 +236,7 @@ const App: FunctionComponent = () => {
         <Route path='/profile/orders/:id'>
           {' '}
           <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
-            <IndividualOrder  />
+            <IndividualOrder />
           </Modal>
         </Route>
       )}

@@ -34,9 +34,7 @@ const MealList: FC<TMealListProps> = ({ type, title }) => {
       </h2>
       <ul className={`pl-4 pr-4 mt-6 mb-6 ${list}`}>
         {current &&
-          current.map((item) => (
-            <Ingredient key={item._id} item={item} />
-          ))}
+          current.map((item) => <Ingredient key={item._id} item={item} />)}
       </ul>
     </>
   );

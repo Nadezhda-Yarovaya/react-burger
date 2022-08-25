@@ -35,15 +35,9 @@ export interface ISetTotalSum {
   readonly totalSum: number;
 }
 
-export interface ISetPositions {
-  readonly type: typeof SET_POSITIONSDATA;
-  readonly payload: Array<TOrderWithIngredients>;
-}
-
 export type TOrderInfoActions =
   | IGetOrderdataRequest
   | IGetOrderdataSuccess
   | IClearData
   | IGetOrderdataFailure
-  | ISetTotalSum
-  | ISetPositions;
+  | ISetTotalSum;

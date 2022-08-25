@@ -93,10 +93,10 @@ const Form: FC<TFormProps> = ({
     e.preventDefault();
     onSubmit();
   }
-  const apiMessage = useSelector((state : any)  => {
+  const apiMessage = useSelector((state) => {
     return state.auth.apiData.message;
   });
-  const apiSuccess = useSelector((state : any)  => state.auth.apiData.success);
+  const apiSuccess = useSelector((state) => state.auth.apiData.success);
 
   const oneButton = (
     <input

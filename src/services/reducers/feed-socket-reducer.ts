@@ -8,17 +8,16 @@ import {
   WS_CONNECTION_START,
 } from '../actions/feed-ws-actions';
 
-import { TOrderWithIngredients, TWSState } from '../../utils/types';
+import { TWSState } from '../../utils/types';
 import { TFeedWsActions } from '../action-types/feed-ws-action-types';
-
-
+import { firstorder } from '../../utils/utils';
 
 const initialState = {
-  isConnecting : false,
+  isConnecting: false,
   wsConnected: false,
   error: undefined,
   orders: '',
-  ordersArray: [],
+  ordersArray: [firstorder],
 };
 
 export const feedWsReducer = (
@@ -54,7 +53,7 @@ export const feedWsReducer = (
         wsConnected: false,
         isConnecting: false,
         orders: '',
-        ordersArray: []
+        ordersArray: [],
       };
     case WS_GET_MESSAGE:
       return {
@@ -74,6 +73,7 @@ export const feedWsReducer = (
         error: undefined,
         ordersArray: action.payload,
       };
+
     default:
       return state;
   }

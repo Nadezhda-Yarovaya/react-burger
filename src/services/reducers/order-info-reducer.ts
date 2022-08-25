@@ -1,5 +1,4 @@
 import { TOrderWithIngredients } from '../../utils/types';
-import { firstorder } from '../../utils/utils';
 import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
   GET_ORDERDATA_SUCCESS,
@@ -7,7 +6,6 @@ import {
   GET_ORDERDATA_FAILURE,
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
-  SET_POSITIONSDATA,
 } from '../actions';
 
 export type TOrderState = {
@@ -23,7 +21,6 @@ const initialState = {
   isOrderLoading: false,
   isPerformed: false,
   totalSum: 0,
-  
 };
 
 export function orderInfoReducer(
@@ -63,7 +60,7 @@ export function orderInfoReducer(
         ...state,
         totalSum: action.totalSum,
       };
-/*
+    /*
     case SET_POSITIONSDATA:
       return {
         ...state,

@@ -97,7 +97,7 @@ type TSetCookieProps = {
 };
 const setCookie = (
   name: string,
-  value: any,
+  value: string,
   props: TSetCookieProps | undefined
 ) => {
   props = props || {};

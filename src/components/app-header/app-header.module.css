@@ -35,8 +35,8 @@
   border: 0;
   color: var(--secondary-text);
   cursor: pointer;
- /* padding: 12px 0 12px 32px;*/
- padding: 12px 0;
+  /* padding: 12px 0 12px 32px;*/
+  padding: 12px 0;
   position: relative;
   text-decoration: none;
   background-size: 24px 22px;
@@ -49,13 +49,15 @@
   color: var(--text-color);
 }
 
-.menu__item_unactive {  color: var(--secondary-text);}
+.menu__item_unactive {
+  color: var(--secondary-text);
+}
 
-.icon__ {  
+.icon__ {
   background-image: url('../../images/burger-icon.svg');
 }
 
-.menu__item_type_burger {  
+.menu__item_type_burger {
   background-image: url('../../images/burger-icon.svg');
 }
 
@@ -103,7 +105,7 @@
   flex-direction: column;
   background-color: var(--modal-bg);
   color: var(--text-color);
-  width: 100%;  
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;

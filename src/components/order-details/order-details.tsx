@@ -5,7 +5,7 @@ import doneSign from '../../images/done.svg';
 import { useSelector } from '../../hooks/hooks';
 import PreloaderBurger from '../preloader/preloader';
 
-const { digits, window__text, window__extra, preloaderContainer, preloader } =
+const { digits, window__text, window__extra } =
   orderDetailsStyles;
 
 const OrderDetails: FC = () => {

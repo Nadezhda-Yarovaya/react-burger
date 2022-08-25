@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import SingleOrderIngredients from '../single-order-ingredients/single-order-ingredients';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,7 +12,6 @@ const {
   ingredients,
   list,
   sumcontainer,
-  date,
   datecontainer,
   number,
   status,
@@ -53,16 +52,15 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
   useEffect(() => {
     if (item) {
       let sumArray: number[] = [];
-      sumArray = item.ingredients.map((item: any) => (item?.price * item?.qty) || 0);
+      sumArray = item.ingredients.map(
+        (item: any) => item?.price * item?.qty || 0
+      );
 
       const orderTotal =
         sumArray.reduce((prev, current) => prev + current, 0) || 0;
       setOrderSum(orderTotal);
     }
   }, [item]);
-
-  const [finalDate, setFinalDate] = useState<string>('');
-
 
   const [statusText, setStatusText] = useState<string>('');
 
@@ -83,8 +81,6 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
     setStatusText(makeStatus(item.status));
   }, [item]);
 
-
-  // console.log('ingreds: ', item.ingredients);
   return (
     <Link
       to={{
@@ -127,6 +123,7 @@ const Order: FC<TOrderPropsOrder> = ({ item }) => {
                     index={index}
                     positions={item.ingredients}
                     ingredient={ingredient}
+                    amountOfIngreds={item.ingredients.length}
                   />
                 ))}
           </ul>

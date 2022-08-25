@@ -24,9 +24,7 @@ const IngredientPage: FC = () => {
   const cameFrom = location.state ? location.state.from : false;
   const dispatch = useDispatch();
 
-  const thisCard = allIngredients.find(
-    (item) => item._id === id
-  );
+  const thisCard = allIngredients.find((item) => item._id === id);
 
   useEffect(() => {
     if (thisCard) {
@@ -37,6 +35,17 @@ const IngredientPage: FC = () => {
     }
   }, [allIngredients, cameFrom, thisCard]);
 
-  return <> {thisCard ? <div className={ingredPageStyles.box}><IngredientDetails /></div> : <NotFound />}</>;
+  return (
+    <>
+      {' '}
+      {thisCard ? (
+        <div className={ingredPageStyles.box}>
+          <IngredientDetails />
+        </div>
+      ) : (
+        <NotFound />
+      )}
+    </>
+  );
 };
 export default IngredientPage;

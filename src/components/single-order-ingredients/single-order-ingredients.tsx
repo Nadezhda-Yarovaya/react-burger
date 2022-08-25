@@ -9,15 +9,15 @@ type TSingleOrderProps = {
   index: number;
   ingredient: TIngredientQty | undefined;
   positions: Array<TIngredientQty | undefined>;
+  amountOfIngreds: number;
 };
 
 const SingleOrderIngredients: FC<TSingleOrderProps> = ({
   index,
   ingredient,
   positions,
+  amountOfIngreds,
 }) => {
-
-  
   let imageClass =
     index < 5 ? `${list__image}` : `${list__image} ${list__image_more}`;
   let listItemClass =
@@ -37,7 +37,7 @@ const SingleOrderIngredients: FC<TSingleOrderProps> = ({
             style={{ backgroundImage: `url('${ingredient.image}')` }}
             className={imageClass}
           >
-            {index < 5 ? <></> : <p className={par}>+{positions.length - 5}</p>}
+            {index < 5 ? <></> : <p className={par}>+{amountOfIngreds - 5}</p>}
           </div>
         </li>
       )}

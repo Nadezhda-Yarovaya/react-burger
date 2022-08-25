@@ -45,7 +45,7 @@ export interface IGetOrders {
 
 export interface ISetOrders {
   readonly type: typeof WS_SET_ORDERSLIST;
-  readonly payload: TOrderWithIngredients[];
+  readonly payload: Array<any>;
 }
 
 export type TFeedWsActions =
