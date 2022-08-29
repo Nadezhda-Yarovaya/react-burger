@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.f6503340.css",
-    "main.js": "/static/js/main.dea4ac47.js",
-    "static/js/787.2b4cbca8.chunk.js": "/static/js/787.2b4cbca8.chunk.js",
-    "static/media/JetBrainsMonoNL-Regular.ttf": "/static/media/JetBrainsMonoNL-Regular.11efd6d6a1d4bd5e765b.ttf",
-    "static/media/JetBrainsMono-Bold.woff2": "/static/media/JetBrainsMono-Bold.c232d532ea5a5189a278.woff2",
-    "static/media/JetBrainsMono-Regular.woff2": "/static/media/JetBrainsMono-Regular.b60380891bcf2eb241ca.woff2",
-    "static/media/JetBrainsMono-Bold.woff": "/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
-    "static/media/JetBrainsMono-Regular.woff": "/static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
-    "static/media/done.svg": "/static/media/done.fd977731a4c2e670ac186d9e114ec152.svg",
-    "static/media/iceland.woff": "/static/media/iceland.77ad7fc2baffd9305538.woff",
-    "static/media/iceland.woff2": "/static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
-    "static/media/logomobile.svg": "/static/media/logomobile.2a1cbce5ca044f79cfb831e1624e5bd1.svg",
-    "static/media/currency36x36.svg": "/static/media/currency36x36.d32d4bcb31918871f2ab8c731e23d311.svg",
-    "static/media/trash.svg": "/static/media/trash.34f3ab865edb0a381c60.svg",
-    "static/media/burger-icon.svg": "/static/media/burger-icon.a5bd79553ef588ea5a1e.svg",
-    "index.html": "/index.html",
-    "static/media/closeSubmenu.svg": "/static/media/closeSubmenu.2d15030e46fa73843efc7fdffa84a143.svg",
-    "static/media/openSubmenu.svg": "/static/media/openSubmenu.11b9b068151b844d36e54f2dc3563eb2.svg",
-    "main.f6503340.css.map": "/static/css/main.f6503340.css.map",
-    "main.dea4ac47.js.map": "/static/js/main.dea4ac47.js.map",
-    "787.2b4cbca8.chunk.js.map": "/static/js/787.2b4cbca8.chunk.js.map"
+    "main.css": "./static/css/main.b14d8b27.css",
+    "main.js": "./static/js/main.396d52cb.js",
+    "static/js/787.2b4cbca8.chunk.js": "./static/js/787.2b4cbca8.chunk.js",
+    "static/media/JetBrainsMonoNL-Regular.ttf": "./static/media/JetBrainsMonoNL-Regular.11efd6d6a1d4bd5e765b.ttf",
+    "static/media/JetBrainsMono-Bold.woff2": "./static/media/JetBrainsMono-Bold.c232d532ea5a5189a278.woff2",
+    "static/media/JetBrainsMono-Regular.woff2": "./static/media/JetBrainsMono-Regular.b60380891bcf2eb241ca.woff2",
+    "static/media/JetBrainsMono-Bold.woff": "./static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
+    "static/media/JetBrainsMono-Regular.woff": "./static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
+    "static/media/done.svg": "./static/media/done.fd977731a4c2e670ac186d9e114ec152.svg",
+    "static/media/iceland.woff": "./static/media/iceland.77ad7fc2baffd9305538.woff",
+    "static/media/iceland.woff2": "./static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
+    "static/media/logomobile.svg": "./static/media/logomobile.2a1cbce5ca044f79cfb831e1624e5bd1.svg",
+    "static/media/currency36x36.svg": "./static/media/currency36x36.d32d4bcb31918871f2ab8c731e23d311.svg",
+    "static/media/trash.svg": "./static/media/trash.34f3ab865edb0a381c60.svg",
+    "index.html": "./index.html",
+    "static/media/burger-icon.svg": "./static/media/burger-icon.a5bd79553ef588ea5a1e.svg",
+    "static/media/closeSubmenu.svg": "./static/media/closeSubmenu.2d15030e46fa73843efc7fdffa84a143.svg",
+    "static/media/openSubmenu.svg": "./static/media/openSubmenu.11b9b068151b844d36e54f2dc3563eb2.svg",
+    "main.b14d8b27.css.map": "./static/css/main.b14d8b27.css.map",
+    "main.396d52cb.js.map": "./static/js/main.396d52cb.js.map",
+    "787.2b4cbca8.chunk.js.map": "./static/js/787.2b4cbca8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f6503340.css",
-    "static/js/main.dea4ac47.js"
+    "static/css/main.b14d8b27.css",
+    "static/js/main.396d52cb.js"
   ]
 }
