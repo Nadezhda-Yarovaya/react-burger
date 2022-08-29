@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { TIngredientUnique } from '../../utils/types';
+import { TIngredient, TIngredientQty } from '../../utils/types';
 import singleOrderIngredientsStyles from './single-order-ingredients.module.css';
 
 const { list__item, list__image, list__image_more, par, list__item_more } =
@@ -7,14 +7,16 @@ const { list__item, list__image, list__image_more, par, list__item_more } =
 
 type TSingleOrderProps = {
   index: number;
-  ingredient: TIngredientUnique;
-  positions: Array<string | number>;
+  ingredient: TIngredientQty | undefined;
+  positions: Array<TIngredientQty | undefined>;
+  amountOfIngreds: number;
 };
 
 const SingleOrderIngredients: FC<TSingleOrderProps> = ({
   index,
   ingredient,
   positions,
+  amountOfIngreds,
 }) => {
   let imageClass =
     index < 5 ? `${list__image}` : `${list__image} ${list__image_more}`;
@@ -22,17 +24,24 @@ const SingleOrderIngredients: FC<TSingleOrderProps> = ({
     index < 5 ? `${list__item}` : `${list__item} ${list__item_more}`;
 
   return (
-    <li
-      className={listItemClass}
-      style={{ left: `${index * 42}px`, zIndex: `${positions.length - index}` }}
-    >
-      <div
-        style={{ backgroundImage: `url('${ingredient.image}')` }}
-        className={imageClass}
-      >
-        {index < 5 ? <></> : <p className={par}>+{positions.length - 5}</p>}
-      </div>
-    </li>
+    <>
+      {ingredient && ingredient.image && (
+        <li
+          className={listItemClass}
+          style={{
+            left: `${index * 42}px`,
+            zIndex: `${positions.length - index}`,
+          }}
+        >
+          <div
+            style={{ backgroundImage: `url('${ingredient.image}')` }}
+            className={imageClass}
+          >
+            {index < 5 ? <></> : <p className={par}>+{amountOfIngreds - 5}</p>}
+          </div>
+        </li>
+      )}
+    </>
   );
 };
 export default SingleOrderIngredients;

@@ -11,27 +11,30 @@ import {
   handleApiMessageError,
   performLogin,
 } from '../services/action-creators/auth-action-creators';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import formStyles from '../components/form/form.module.css';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
-import { intitialValuesLogin } from '../utils/utils';
+import { initialValues1 } from '../utils/utils';
+import { useDispatch } from '../hooks/hooks';
+import { TLocation } from '../utils/types';
 
 const { form__input, form__icon, form__element, validationError } = formStyles;
 
 const Login: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation<TLocation>();
   const [isPassShownLogin, setIsPassShownLogin] = useState(true);
 
   const { values, handleChange, errors, isValid } =
-    useFormAndValidation(intitialValuesLogin);
+    useFormAndValidation(initialValues1);
 
   const { email, password } = values;
+
   function handleLogin() {
     if (isValid) {
-      dispatch<any>(performLogin(email, password, history));
+      dispatch(performLogin(email, password, location, history));
     } else {
       handleApiMessageError(dispatch, 'Заполните все поля формы корректно');
     }

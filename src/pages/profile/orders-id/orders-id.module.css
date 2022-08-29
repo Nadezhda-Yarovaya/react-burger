@@ -4,6 +4,8 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+  /*margin:0 0 50px 0;*/
+  margin: 0;
 }
 
 .box {
@@ -12,62 +14,99 @@
   flex-direction: column;
   max-width: 620px;
   min-height: 300px;
-  border: 1px solid green;
-  margin: 122px 0 0 0;
+  /*margin: 122px 0 0 0;*/
+  margin: 0;
   font-family: 'JetBrains Mono', sans-serif;
 }
 
 .number {
-  font-size: 18px;
-  line-height: 24px;
   width: 100%;
   text-align: center;
   padding: 0;
-  margin: 0 0 40px 0;
   box-sizing: border-box;
 }
 
 .name {
-  font-size: 24px;
-  line-height: 30px;
   width: 100%;
   text-align: left;
   padding: 0;
-  margin: 0;
   box-sizing: border-box;
 }
 
 .status {
-  font-size: 16px;
-  line-height: 24px;
   padding: 0;
-  margin: 12px 0 60px 0;
+  margin: 0 0 60px 0;
 }
 
+.status_performed {
+  color: var(--accent-order);
+}
 .title {
   font-size: 24px;
   line-height: 28px;
   padding: 0;
-  margin: 0 0 24px 0;
+  /*margin: 0 0 24px 0;*/
+  margin: 0 0 8px 0;
 }
 
+.image {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  margin: 0 16px 0 0;
+}
 .list {
   display: flex;
   flex-direction: column;
   width: 100%;
   list-style-type: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  max-height: 280px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  outline: 0;
 }
 
 .list__item {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center !important;
+}
+
+.list__item2 {
+  padding: 2px;
+  margin: 0 16px 0 0;
+  box-sizing: border-box;
+  /*border: 2px solid var(--accent);*/
+  background-image: linear-gradient(to right top, #801ab2, #4c4cff);
+  background-size: 60px 60px;
+  border-radius: 50%;
+  background-color: var(--modal-bg);
+  overflow: hidden;
 }
 
 .list__iteminfo {
   display: flex;
   width: 100%;
   justify-content: flex-start;
+  align-items: center !important;
 }
 
 .list__priceinfo {
@@ -83,4 +122,33 @@
   line-height: 24px;
   margin: 0 8px 0 0;
   padding: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 40px 0 0 0;
+}
+
+.date {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--secondary-text);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.list__image {
+  width: 54px;
+  height: 54px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0;
+  padding: 4px;
+  box-sizing: border-box;
+  background-color: var(--modal-bg);
+  border-radius: 50%;
 }

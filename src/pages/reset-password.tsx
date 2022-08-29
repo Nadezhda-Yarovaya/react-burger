@@ -11,25 +11,24 @@ import {
   resetPass,
 } from '../services/action-creators/auth-action-creators';
 
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import formStyles from '../components/form/form.module.css';
-import { intitialValuesResetPass } from '../utils/utils';
+import { initialValues1 } from '../utils/utils';
+import { useDispatch } from '../hooks/hooks';
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
 const ResetPassword: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory<any>();
   const [isPassShown, setIsPassShown] = useState(true);
-  const { values, handleChange, errors, isValid } = useFormAndValidation(
-    intitialValuesResetPass
-  );
+  const { values, handleChange, errors, isValid } =
+    useFormAndValidation(initialValues1);
 
   const { password, token } = values;
 
   function handleResetPass() {
     if (isValid) {
-      dispatch<any>(resetPass(password, token, history));
+      dispatch(resetPass(password, token, history));
     } else {
       handleApiMessageError(dispatch, 'Заполните все поля формы корректно');
     }

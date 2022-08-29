@@ -1,16 +1,13 @@
 import { FC } from 'react';
 import ingredientStyles from './ingredient.module.css';
 import { useDrag } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { ifItsMobile } from '../../services/selectors';
-
-import { TIngredientUnique, TLocation } from '../../utils/types';
+import { TIngredient, TIngredientUnique, TLocation } from '../../utils/types';
 
 import {
   SET_CURRENT,
@@ -19,9 +16,10 @@ import {
 } from '../../services/actions';
 import { dropElement } from '../../services/action-creators/dnd-action-creators';
 import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 type TIngredientProps = {
-  item: TIngredientUnique;
+  item: TIngredient;
 };
 
 const Ingredient: FC<TIngredientProps> = ({ item }) => {
@@ -37,7 +35,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     list__item,
   } = ingredientStyles;
 
-  const bunCount = useSelector((store: any) => {
+  const bunCount = useSelector((store) => {
     let totalCount = 0;
     if (store.ingredients.bun._id === item._id) {
       totalCount++;
@@ -45,7 +43,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     return totalCount;
   });
 
-  const ingredientCount = useSelector((store: any) => {
+  const ingredientCount = useSelector((store) => {
     let totalCount = 0;
     store.dragAndDrop.droppedElements.forEach((curItem: TIngredientUnique) => {
       if (curItem._id === item._id) {
@@ -54,7 +52,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     });
     return totalCount;
   });
-  const isMobile = useSelector(ifItsMobile);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
 
   const [, draggedIngredientRef] = useDrag({
     type: 'ingredient',
@@ -66,7 +64,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
     item: { item },
   });
 
-  const handleBunDrop = (currentItem: TIngredientUnique) => {
+  const handleBunDrop = (currentItem: TIngredient) => {
     dispatch({
       type: REPLACE_BUN,
       bun: currentItem,
@@ -75,7 +73,7 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
 
   const currentCounter = item.type === 'bun' ? bunCount : ingredientCount;
 
-  const openModalIngredient = (currentItem: TIngredientUnique) => {
+  const openModalIngredient = (currentItem: TIngredient) => {
     dispatch({
       type: SET_CURRENT,
       currentIngredient: currentItem,

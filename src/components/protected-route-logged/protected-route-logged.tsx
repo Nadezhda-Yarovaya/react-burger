@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 
 import { SET_LOGGED } from '../../services/actions';
 import { useLocation } from 'react-router-dom';
 import { TLocation } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const ProtectedRouteLogged: FC<RouteProps> = ({ children, ...rest }) => {
   const dispatch = useDispatch();
@@ -12,13 +12,13 @@ const ProtectedRouteLogged: FC<RouteProps> = ({ children, ...rest }) => {
 
   useEffect(() => {
     if (localStorage.getItem('refreshToken')) {
-      dispatch<any>({
+      dispatch({
         type: SET_LOGGED,
       });
     }
   }, []);
 
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   return (
     <Route {...rest}>

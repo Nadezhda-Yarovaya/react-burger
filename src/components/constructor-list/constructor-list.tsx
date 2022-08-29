@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect, FC } from 'react';
 import constructorListStyles from './constructor-list.module.css';
-import CustomConstructorElement from '../custom-constructor-element/custom-constructor-element';
-import { useSelector, useDispatch } from 'react-redux';
 
 import {
   SET_DROPDIRECTION,
@@ -9,9 +7,13 @@ import {
   SET_OFFSETS,
 } from '../../services/actions';
 import { useDrop } from 'react-dnd';
-import { ifItsMobile, loadIngredients } from '../../services/selectors';
 import { dropElementWithinConstructor } from '../../services/action-creators/dnd-action-creators';
-import { TIngredient, TIngredientUnique } from '../../utils/types';
+import { TIngredientUnique } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
+import {
+  CustomConstructorElement,
+  CustomConstructorElementBun,
+} from '../custom-constructor-element/custom-constructor-element';
 
 const {
   stuffings,
@@ -26,28 +28,26 @@ const {
 
 const ConstructorList: FC = () => {
   const dispatch = useDispatch();
-  const isMobile = useSelector(ifItsMobile);
-  const direction = useSelector(
-    (state: any) => state.dragAndDrop.dropDirection
-  );
-  const currentBun = useSelector((state: any) => state.ingredients.bun);
-  const isLoading = useSelector(loadIngredients);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
+  const direction = useSelector((state) => state.dragAndDrop.dropDirection);
+  const currentBun = useSelector((state) => state.ingredients.bun);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
 
   const initialIngredOffset = useSelector(
-    (store: any) => store.dragAndDrop.initialIngredOffset
+    (store) => store.dragAndDrop.initialIngredOffset
   );
 
   const stuffingListDropped = useSelector(
-    (state: any) => state.dragAndDrop.droppedElements
+    (state) => state.dragAndDrop.droppedElements
   );
 
   const thisRef = useRef<HTMLLIElement>(null);
   type TItem = {
-    item: TIngredient;
+    item: TIngredientUnique;
   };
 
   const handleBunDrop = (currentItem: TItem): void => {
-    dispatch<any>({
+    dispatch({
       type: REPLACE_BUN,
       bun: currentItem.item,
     });
@@ -131,9 +131,7 @@ const ConstructorList: FC = () => {
     border: isBunBottomHover ? '1px dashed white' : '0',
   };
 
-  const isMobileOrdered = useSelector(
-    (store: any) => store.mobile.isMobileOrdered
-  );
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
 
   useEffect(() => {
     if (isMobileOrdered) {
@@ -163,7 +161,7 @@ const ConstructorList: FC = () => {
             ref={dropContainerBunTop}
             style={bunTopStyle}
           >
-            <CustomConstructorElement
+            <CustomConstructorElementBun
               type='top'
               isLocked={true}
               text={`${currentBun.name} ${
@@ -187,7 +185,7 @@ const ConstructorList: FC = () => {
               ) : (
                 <></>
               )}
-              {stuffingListDropped.map((item: TIngredientUnique) => (
+              {stuffingListDropped.map((item) => (
                 <CustomConstructorElement
                   text={item.name}
                   price={item.price}
@@ -203,7 +201,7 @@ const ConstructorList: FC = () => {
             ref={dropContainerBunBottom}
             style={bunBottomStyle}
           >
-            <CustomConstructorElement
+            <CustomConstructorElementBun
               type='bottom'
               isLocked={true}
               text={`${currentBun.name} ${

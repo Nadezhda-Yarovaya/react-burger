@@ -1,43 +1,32 @@
-import React, { useState, useEffect, FC } from 'react';
-import ordersIdStyles from './orders-id.module.css';
-import initialTempOrderList from '../../../utils/tempdata';
-import { useParams } from 'react-router-dom'; // импортируем хук
-import { useSelector } from 'react-redux';
-
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
-const {
-  container,
-  box,
-  number,
-  name,
-  status,
-  title,
-  list,
-  price,
-  list__item,
-  list__iteminfo,
-  list__priceinfo,
-} = ordersIdStyles;
+import { useState, useEffect, FC, useMemo } from 'react';
+import IndividualOrder from '../../../components/individul-order/individual-order';
+import PreloaderBurger from '../../../components/preloader/preloader';
+import { useDispatch, useSelector } from '../../../hooks/hooks';
+import { loadUser } from '../../../services/action-creators/auth-action-creators';
+import { loadOrders } from '../../../services/action-creators/order-action-creators';
+import { WS_CONNECTION_ORD_CLOSED } from '../../../services/actions/orders-ws-actions';
 
 const OrdersId: FC = () => {
-  const [currentOrderShown, setCurrentOrderShown] = useState(
-    initialTempOrderList[0]
+  const wsOrdersConnecting = useSelector(
+    (state) => state.ordersWs.isConnecting
   );
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
-  return (
-    <>
-      <div className={container}>
-        <div className={box}>
-          <p className={number}>#{currentOrderShown.order.number}</p>
-          <p className={name}>{currentOrderShown.name}</p>
-          <p className={`${status}`}>{currentOrderShown.status}</p>
-          <p className={title}>Состав :</p>
-          <ul className={list}></ul>
-        </div>
-      </div>
-    </>
-  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isLogged) {
+      dispatch(loadUser());
+    }
+  }, [isLogged]);
+
+  useEffect(() => {
+    dispatch(loadOrders());
+    return () => {
+      dispatch({ type: WS_CONNECTION_ORD_CLOSED });
+    };
+  }, [dispatch]);
+
+  return <>{wsOrdersConnecting ? <PreloaderBurger /> : <div style={{margin: '120px 0 0 0'}}><IndividualOrder /></div>}</>;
 };
 
 export default OrdersId;

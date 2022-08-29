@@ -7,7 +7,6 @@ import { fetchAllIngredients } from '../../services/action-creators/ingredients-
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import appStyles from './app.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   SET_IFMOBILE,
@@ -34,9 +33,13 @@ import OrdersId from '../../pages/profile/orders-id/orders-id';
 import ProtectedRouteLogged from '../protected-route-logged/protected-route-logged';
 import ProtectedRouteNotLogged from '../protected-route-not-logged/protected-route-not-logged';
 import ProtectedPass from '../protected-pass/protected-pass';
-import IngredientPage from '../ingredient-page/ingredient-page';
+import IngredientPage from '../../pages/ingredient-page';
 import { TLocation } from '../../utils/types';
 import ResetPassword from '../../pages/reset-password';
+import { useDispatch, useSelector } from '../../hooks/hooks';
+import { firstIngred } from '../../utils/utils';
+import FeedId from '../../pages/feed-id';
+import IndividualOrder from '../individul-order/individual-order';
 
 const { page } = appStyles;
 
@@ -48,7 +51,6 @@ const App: FunctionComponent = () => {
 
   useEffect(() => {
     handleSetMobile();
-
     handleSetWindowData();
   }, [width, height]);
 
@@ -62,64 +64,62 @@ const App: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    dispatch<any>(fetchAllIngredients());
+    dispatch(fetchAllIngredients());
   }, []);
 
-  const isPerformed = useSelector((state: any) => state.order.isPerformed);
+  const isPerformed = useSelector((state) => state.order.isPerformed);
 
   const location = useLocation<TLocation>();
 
   const isMobileMenuOpened = useSelector(
-    (state: any) => state.mobile.isMobileMenuOpened
+    (state) => state.mobile.isMobileMenuOpened
   );
 
   function closeIsPerformed() {
-    dispatch<any>({
+    dispatch({
       type: CLEAR_ORDERDATA,
     });
 
-    dispatch<any>({
+    dispatch({
       type: CLEAR_BUN,
     });
 
-    dispatch<any>({
+    dispatch({
       type: CLEAR_STUFFINGLIST,
     });
   }
 
   function closeModalIngredientsShown() {
-    dispatch<any>({
+    history.goBack();
+    dispatch({
       type: REMOVE_CURRENT,
+      currentIngredient: firstIngred,
     });
 
-    dispatch<any>({
+    dispatch({
       type: REMOVE_MODALINGREDIENTS,
     });
-    history.goBack();
   }
 
   const handleSetMobile = () => {
     if (width < 790) {
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILE,
-
         payload: true,
       });
     } else {
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILE,
-
         payload: false,
       });
 
-      dispatch<any>({
+      dispatch({
         type: SET_IFMOBILEORDERED,
-
         payload: false,
       });
 
       if (isMobileMenuOpened) {
-        dispatch<any>({
+        dispatch({
           type: CLOSE_MOBILEMENU,
         });
       }
@@ -127,7 +127,7 @@ const App: FunctionComponent = () => {
   };
 
   const handleSetWindowData = () => {
-    dispatch<any>({
+    dispatch({
       type: SET_WINDOWDATA,
       payload: {
         width: width,
@@ -136,7 +136,20 @@ const App: FunctionComponent = () => {
     });
   };
 
+  const closeModalFromFeed = () => {
+    history.goBack();
+  };
+
+  const closeModalFromProileOrders = () => {
+    history.goBack();
+  };
+
   const locateModal = location?.state && location?.state?.locate;
+
+  const locateFeedModal = location?.state && location.state?.feedLocate;
+
+  const locateProfileOrdersModal =
+    location?.state && location.state?.ordersLocate;
 
   return (
     <>
@@ -169,19 +182,23 @@ const App: FunctionComponent = () => {
           </ProtectedRouteLogged>
 
           <Route path='/ingredients/:id' exact>
-            <IngredientPage />
+            {locateModal ? <Main /> : <IngredientPage />}
           </Route>
 
-          <ProtectedRouteLogged path='/feed' exact>
+          <Route path='/feed' exact>
             <Feed />
-          </ProtectedRouteLogged>
+          </Route>
+
+          <Route path='/feed/:id' exact>
+            {locateFeedModal ? <Feed /> : <FeedId />}
+          </Route>
 
           <ProtectedRouteLogged path='/profile/orders' exact>
             <Orders />
           </ProtectedRouteLogged>
 
           <ProtectedRouteLogged path='/profile/orders/:id' exact>
-            <OrdersId />
+            {locateProfileOrdersModal ? <Orders /> : <OrdersId />}
           </ProtectedRouteLogged>
           <Route>
             <NotFound />
@@ -204,6 +221,22 @@ const App: FunctionComponent = () => {
           {' '}
           <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+      {locateFeedModal && (
+        <Route path='/feed/:id'>
+          {' '}
+          <Modal closeModal={closeModalFromFeed} isOpen={true}>
+            <IndividualOrder />
+          </Modal>
+        </Route>
+      )}
+      {locateProfileOrdersModal && (
+        <Route path='/profile/orders/:id'>
+          {' '}
+          <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
+            <IndividualOrder />
           </Modal>
         </Route>
       )}

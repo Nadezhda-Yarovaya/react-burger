@@ -1,13 +1,13 @@
 import { FC } from 'react';
+import { useSelector } from '../../hooks/hooks';
 import ingredientStyles from './ingredient-details.module.css';
-import { useSelector } from 'react-redux';
 
 const { text, details, image, nutrients, nutrient, container } =
   ingredientStyles;
 
 const IngredientDetails: FC = () => {
   const selectedCard = useSelector(
-    (state: any) => state.ingredients.currentIngredient
+    (state) => state.ingredients.currentIngredient
   );
 
   return (

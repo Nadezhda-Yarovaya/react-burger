@@ -1,3 +1,5 @@
+import { getResponse } from './utils';
+
 const config = {
   BASE_URL: 'https://norma.nomoreparties.space/api',
   headers: {
@@ -5,20 +7,12 @@ const config = {
   },
 };
 
-const _getResponse = (res: Response) => {
-  if (res.ok) {
-    return res.json();
-  } else {
-    return Promise.reject(`Ошибка при соединении: ${res.status}`);
-  }
-};
-
 const requestResetPassword = (data: string) => {
   return fetch(`${config.BASE_URL}/password-reset`, {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ email: data }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const resetPassword = (newPass: string, token: string) => {
@@ -26,7 +20,7 @@ const resetPassword = (newPass: string, token: string) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ password: newPass, token }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const register = (email: string, password: string, name: string) => {
@@ -34,7 +28,7 @@ const register = (email: string, password: string, name: string) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ email, password, name }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const login = (email: string, password: string) => {
@@ -42,7 +36,7 @@ const login = (email: string, password: string) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ email, password }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const getUser = (accessToken: string) => {
@@ -52,7 +46,7 @@ const getUser = (accessToken: string) => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + accessToken,
     },
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 type TUser = {
@@ -78,7 +72,7 @@ const updateUser = (
       Authorization: 'Bearer ' + accessToken,
     },
     body: JSON.stringify(bodySent),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const refreshToken = (refreshToken: string) => {
@@ -86,7 +80,7 @@ const refreshToken = (refreshToken: string) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ token: refreshToken }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 const logout = (refreshToken: string) => {
@@ -94,7 +88,7 @@ const logout = (refreshToken: string) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ token: refreshToken }),
-  }).then(_getResponse);
+  }).then(getResponse);
 };
 
 type TSetCookieProps = {
@@ -103,7 +97,7 @@ type TSetCookieProps = {
 };
 const setCookie = (
   name: string,
-  value: any,
+  value: string,
   props: TSetCookieProps | undefined
 ) => {
   props = props || {};

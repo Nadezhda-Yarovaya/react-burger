@@ -1,18 +1,13 @@
 import { FC, useEffect } from 'react';
-
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import ConstructorList from '../constructor-list/constructor-list';
-
-import { useSelector, useDispatch } from 'react-redux';
-
 import { SET_TOTALSUM, SET_IFMOBILEORDERED } from '../../services/actions';
-
 import TotalSum from '../total-sum/total-sum';
-import { ifItsMobile, loadIngredients } from '../../services/selectors';
-import { fetchOrderNumber } from '../../services/action-creators/order-action-creators';
+import { placeOrder } from '../../services/action-creators/order-action-creators';
 import { useHistory } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const {
   constructor__title,
@@ -26,24 +21,20 @@ const {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const listOfIngredients = useSelector((store: any) => {
-    return store.ingredients.listOfIngredients;
-  });
+  const listOfIngredients = useSelector(
+    (store) => store.ingredients.listOfIngredients
+  );
   const createdStuffingsList = useSelector(
-    (store: any) => store.dragAndDrop.droppedElements
+    (store) => store.dragAndDrop.droppedElements
   );
-  const isMobile = useSelector(ifItsMobile);
-  const isMobileOrdered = useSelector(
-    (store: any) => store.mobile.isMobileOrdered
-  );
-  const bunSelectedFromStore = useSelector(
-    (store: any) => store.ingredients.bun
-  );
-  const isLoading = useSelector(loadIngredients);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
+  const isMobileOrdered = useSelector((store) => store.mobile.isMobileOrdered);
+  const bunSelectedFromStore = useSelector((store) => store.ingredients.bun);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
 
   const history = useHistory();
 
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   useEffect(() => {
     if (listOfIngredients) {
@@ -52,7 +43,7 @@ const BurgerConstructor: FC = () => {
   }, [bunSelectedFromStore, createdStuffingsList, listOfIngredients]);
 
   const calculateAllPrices = (stuffings: Array<TIngredient>): void => {
-    const allPr1 = stuffings.map((item: TIngredient) => item.price);
+    const allPr1 = stuffings.map((item) => item.price);
 
     const finalNumber =
       allPr1.reduce(
@@ -68,7 +59,7 @@ const BurgerConstructor: FC = () => {
     const ingredientsFormed = [];
     ingredientsFormed.push(bunSelectedFromStore._id);
 
-    createdStuffingsList.forEach((item: TIngredient) => {
+    createdStuffingsList.forEach((item) => {
       ingredientsFormed.push(item._id);
     });
 
@@ -79,7 +70,7 @@ const BurgerConstructor: FC = () => {
   function handlePerformOrder() {
     const thisOrderList: Array<string> = makeListOfOrder();
     if (isLogged) {
-      dispatch<any>(fetchOrderNumber(thisOrderList));
+      dispatch(placeOrder(thisOrderList));
     } else {
       localStorage.setItem(
         'listOfOrder',
@@ -112,7 +103,7 @@ const BurgerConstructor: FC = () => {
             <p className={constructor__title}>Заказ</p>
             <button
               onClick={() => {
-                dispatch<any>({
+                dispatch({
                   type: SET_IFMOBILEORDERED,
                   payload: false,
                 });

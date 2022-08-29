@@ -3,10 +3,9 @@ import React, { FC, useState, useEffect, useRef } from 'react';
 import { Tab } from '../../utils/typesLibrary';
 import ingredientsStyles from './burger-ingredients.module.css';
 import MealList from '../meal-list/meal-list';
-import { useDispatch, useSelector } from 'react-redux';
 import { SET_INGREDIENTSBYCAT } from '../../services/actions';
-import { getAllIngredients, loadIngredients } from '../../services/selectors';
 import { TIngredient } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { title, list, tabs, ingredients, tabcontainer } = ingredientsStyles;
 
@@ -14,9 +13,11 @@ const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState('one');
 
-  const isLoading = useSelector(loadIngredients);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
 
-  const allIngredients = useSelector(getAllIngredients);
+  const allIngredients = useSelector(
+    (state) => state.ingredients.listOfIngredients
+  );
 
   const bunsRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);

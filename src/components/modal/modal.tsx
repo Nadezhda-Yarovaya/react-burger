@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/hooks';
 
 const { modal, modal__button, container } = modalStyles;
 
@@ -19,13 +19,14 @@ type TModalProps = {
 const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
   const [isOpened, setIsOpened] = useState(isOpen);
 
-  const isMobile = useSelector((store: any) => store.mobile.isMobile);
-  const windowWidth = useSelector(
-    (store: any) => store.mobile.windowData.width
-  );
-  const windowHeight = useSelector(
-    (store: any) => store.mobile.windowData.height
-  );
+  const isMobile = useSelector((store) => store.mobile.isMobile);
+  const windowWidth = useSelector((store) => store.mobile.windowData.width);
+  const windowHeight = useSelector((store) => store.mobile.windowData.height);
+
+  const thisRef1 = useRef<HTMLDivElement>(null);
+
+  const modalHeight = type === 'orderPerformed' ? 650 : 538;
+  const [realHeight, setRealHeight] = useState<number>(modalHeight);
 
   useEffect(() => {
     function closeByEscape(evt: KeyboardEvent) {
@@ -42,9 +43,15 @@ const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
     }
   }, [isOpened]);
 
-  const modalHeight = type === 'orderPerformed' ? 650 : 538;
+  useEffect(() => {
+    const rectangle = (
+      thisRef1 as React.MutableRefObject<HTMLDivElement>
+    ).current?.getBoundingClientRect();
 
-  const topPosition = ((windowHeight - modalHeight) / 2).toString() + 'px';
+    setRealHeight(rectangle.height);
+  }, [realHeight]);
+
+  const topPosition = ((windowHeight - realHeight) / 2).toString() + 'px';
   const leftPosition =
     (
       (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
@@ -55,7 +62,8 @@ const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
     <>
       <ModalOverlay closeModal={closeModal} />
       <div
-        className={`pl-10 pr-10 pb-15 pt-10  ${modal}`}
+        className={`pl-10 pr-10 pb-10 pt-10  ${modal}`}
+        ref={thisRef1}
         style={{ top: topPosition, left: leftPosition }}
       >
         <div className={`${container}`}>

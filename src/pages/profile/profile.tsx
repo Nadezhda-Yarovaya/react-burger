@@ -7,7 +7,6 @@ import {
 
 import profileStyles from './profile.module.css';
 import formStyles from '../../components/form/form.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import PersonalMenu from '../../components/personal-menu/personal-menu';
 
 import {
@@ -18,6 +17,7 @@ import {
 import { SHOW_APIMESSAGE, CLEAR_APIMESSAGE } from '../../services/actions';
 
 import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -26,9 +26,9 @@ const { profile, container } = profileStyles;
 const Profile: FC = () => {
   const dispatch = useDispatch();
 
-  const user1 = useSelector((state: any) => state.auth.user);
+  const currentUser = useSelector((state) => state.auth.user);
 
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
+  const isLogged = useSelector((state) => state.auth.isLogged);
 
   const [pass, setPass] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -46,14 +46,14 @@ const Profile: FC = () => {
 
   useEffect(() => {
     if (isLogged) {
-      dispatch<any>(loadUser());
+      dispatch(loadUser());
     }
   }, [isLogged]);
 
   useEffect(() => {
-    setName(user1.name);
-    setEmail(user1.email);
-  }, [user1]);
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
 
   const [isProfileFormDisabled, setIsProfileFormDisabled] = useState(true);
 
@@ -67,10 +67,10 @@ const Profile: FC = () => {
 
   function updateData(): void {
     const ifAnyChanged =
-      email !== user1.email || name !== user1.name || pass !== '';
+      email !== currentUser.email || name !== currentUser.name || pass !== '';
 
     if (ifAnyChanged && isNameValid && isEmailValid && isPassValid) {
-      dispatch<any>(patchUser(email, name, pass));
+      dispatch(patchUser(email, name, pass));
       makeDefaultForm();
     } else {
       dispatch({
@@ -100,8 +100,8 @@ const Profile: FC = () => {
     setIsNameDisabled(true);
     setIsEmailDisabled(true);
     setIsPassDisabled(true);
-    setEmail(user1.email);
-    setName(user1.name);
+    setEmail(currentUser.email);
+    setName(currentUser.name);
     setPass('');
     setPassValidError('');
     setEmailValidError('');

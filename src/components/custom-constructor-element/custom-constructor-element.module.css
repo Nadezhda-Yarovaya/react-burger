@@ -47,13 +47,13 @@
   box-sizing: border-box;
   height: auto;
   background-color: red;
-   position: absolute; 
-   right: 0;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   padding: 17px 0;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 17px 0;
 }
 
 .delete_image {
@@ -61,10 +61,8 @@
   background-size: cover;
   width: 35px;
   height: 35px;
-  background-color: transparent;  
-
+  background-color: transparent;
 }
-
 
 .stuffings__item {
   box-sizing: border-box;
@@ -86,7 +84,6 @@
     padding: 0;
     margin: 0;
   }
-
 }
 
 @media screen and (max-width: 460px) {
