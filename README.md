@@ -4,5 +4,8 @@
 ## Технологии
 HTML, CSS, React, Redux, TypeScript
 
-## Текущий этап: STEP-5
-Создаем ленту заказов с WebSocket и типизируем Redux
+## Текущий этап: STEP-6
+Покрытие тестами 
+
+## GH- Pages
+https://nadezhda-yarovaya.github.io/react-burger/
