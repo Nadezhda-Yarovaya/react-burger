@@ -61,6 +61,10 @@
     position: static;
     margin: 24px 0 0 24px;
   }
+
+  .navigation {
+    max-width: 700px;
+  }
 }
 
 @media screen and (max-width: 790px) {

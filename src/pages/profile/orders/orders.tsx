@@ -10,7 +10,7 @@ import { loadUser } from '../../../services/action-creators/auth-action-creators
 
 const Orders: FC = () => {
   const dispatch = useDispatch();
-
+  const isMobile = useSelector((state) => state.mobile.isMobile);
   /*
   const isLogged = useSelector((state) => state.auth.isLogged);
   useEffect(() => {
@@ -28,6 +28,11 @@ const Orders: FC = () => {
   return (
     <div className={ordersStyles.container}>
       <PersonalMenu />
+      {isMobile ? (
+        <h2 className='text text_type_main-medium'>Ваши заказы:</h2>
+      ) : (
+        ''
+      )}
       <OrdersList />
     </div>
   );

@@ -54,6 +54,7 @@
   height: 64px;
   object-fit: cover;
   margin: 0 16px 0 0;
+  box-sizing: border-box;
 }
 
 .list {
@@ -90,9 +91,13 @@
   width: 100%;
   justify-content: space-between;
   align-items: center !important;
+  margin: 0 0 16px 0;
+  padding: 0;
 }
 
 .list__item2 {
+  display: block;
+  width: 70px;
   padding: 2px;
   margin: 0 16px 0 0;
   box-sizing: border-box;
@@ -102,13 +107,25 @@
   border-radius: 50%;
   background-color: var(--modal-bg);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
+.elementName {
+  font-size: 16px;
+  line-height: 20px;
+  font-family: 'JetBrains Mono', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 500px;
+  width: 100%;
+}
 .list__iteminfo {
   display: flex;
   width: 100%;
   justify-content: flex-start;
   align-items: center !important;
+  box-sizing: border-box;
 }
 
 .list__priceinfo {
@@ -118,6 +135,7 @@
   justify-content: flex-end;
   align-items: center;
   padding: 0 24px 0 0;
+  box-sizing: border-box;
 }
 
 .list__priceinfototal {
@@ -162,4 +180,25 @@
   box-sizing: border-box;
   background-color: var(--modal-bg);
   border-radius: 50%;
+}
+
+
+@media screen and (max-width: 790px ) {
+  
+.list__item2 {
+  display: block;
+  width: 60px;
+  background-size: 45px 45px;
+}
+
+.list__image {
+  width: 44px;
+  height: 44px;
+}
+
+.elementName {
+  font-size: 14px;
+  line-height: 18px;
+}
+
 }

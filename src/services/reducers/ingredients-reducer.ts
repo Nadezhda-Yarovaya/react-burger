@@ -23,7 +23,7 @@ export type ingredientsState = {
   areIngredientsShown: boolean;
 };
 
-const initialState = {
+export const initialState = {
   listOfIngredients: [firstIngred],
   isLoading: false,
   ingredientsByCategory: {

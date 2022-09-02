@@ -4,7 +4,7 @@
   width: 100%;
   align-items: center;
   box-sizing: border-box;
-  margin: 0;
+  margin: 0!important;
   padding: 0;
 }
 
@@ -28,7 +28,7 @@
   composes: element__description;
 }
 
-.constructor__item {
+.constructor__item_bun {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -36,6 +36,18 @@
   width: 100%;
   position: relative;
 }
+
+.constructor__item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  position: relative;
+  margin: 0 0 16px 0;
+}
+
+
 
 .icon {
   display: block;
@@ -70,6 +82,18 @@
   align-items: center;
   width: 100%;
   justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.elementBox {
+display: flex;
+justify-content: flex-end;
+box-sizing: border-box; width: 100%;
+}
+
+.nullMargin {
+  margin: 0;
 }
 
 @media screen and (max-width: 1310px) {
@@ -78,6 +102,16 @@
   }
 }
 
+@media screen and (max-width: 860px) {
+.constructor__item {
+  justify-content: flex-start;
+}
+.icon {
+  padding: 3px 0;
+  margin: 0 8px 0 0;
+}
+
+}
 @media screen and (max-width: 790px) {
   .constructor__item {
     justify-content: flex-start;

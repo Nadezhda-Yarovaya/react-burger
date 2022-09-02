@@ -1,3 +1,4 @@
+/* App */
 .page {
   min-height: 100vh;
   width: 100%;
@@ -52,6 +53,24 @@
   .constructor {
     justify-content: flex-start;
   }
+ 
+  .page__section {
+    max-width: calc(((960 - 60) / 2) * 100%);
+  }
+}
+
+@media screen and (max-width: 860px) {
+
+  .main {
+    justify-content: space-between;
+  }
+  .constructor {
+    justify-content: flex-start;
+  }
+ 
+  .page__section {
+    max-width: 380px;
+  }
 }
 
 @media screen and (max-width: 790px) {
@@ -61,6 +80,9 @@
   }
   .constructor {
     justify-content: space-between;
+  }
+  .page__section {
+    max-width: 780px;
   }
 }
 

@@ -34,7 +34,7 @@
 
 @media screen and (max-width: 790px) {
   .modal {
-    max-width: 420px;
+    max-width: 600px;
     min-height: 480px;
   }
 }

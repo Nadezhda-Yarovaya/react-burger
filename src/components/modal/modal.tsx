@@ -52,10 +52,10 @@ const Modal: FC<TModalProps> = ({ isOpen, closeModal, type, children }) => {
   }, [realHeight]);
 
   const topPosition = ((windowHeight - realHeight) / 2).toString() + 'px';
+  console.log('widH ', windowWidth);
   const leftPosition =
     (
-      (windowWidth - (isMobile ? (windowWidth < 480 ? 290 : 420) : 720)) /
-      2
+      (windowWidth - (isMobile ? (windowWidth < 480 ? 620 : 610) : 720)) /  2
     ).toString() + 'px';
 
   return ReactDOM.createPortal(

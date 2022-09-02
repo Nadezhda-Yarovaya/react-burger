@@ -1,3 +1,10 @@
+.feedPage {
+  flex-direction: column;
+}
+
+.feedContainer {
+  display: flex;
+}
 .container {
   display: flex;
   align-items: flex-end;
@@ -83,4 +90,21 @@
 .ordersList::-webkit-scrollbar-thumb {
   background-color: #8585ad;
   outline: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .feedPage {
+    padding: 0 12px;
+  }
+  .feedContainer {
+    flex-direction: column;
+  }
+
+  .ordersList {
+    max-height: 435px;
+  }
+
+  .feedSection {
+    margin: 60px 0 0 0;
+  }
 }

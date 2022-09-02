@@ -6,3 +6,21 @@
     box-sizing: border-box;
     margin: 32px 24px 0 0;
 }
+
+@media screen and (max-width: 1150px) {
+    .orders {
+      max-width: 770px;
+    }
+  }
+  
+  @media screen and (max-width: 1060px) {
+    .orders {
+      max-width: 690px;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .orders {
+      max-width: 960px;
+    }
+  }

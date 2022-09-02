@@ -56,6 +56,7 @@ const Profile: FC = () => {
   }, [currentUser]);
 
   const [isProfileFormDisabled, setIsProfileFormDisabled] = useState(true);
+  const isMobile = useSelector((state) => state.mobile.isMobile);
 
   function toggleDisabled(): void {
     setIsProfileFormDisabled(!isProfileFormDisabled);
@@ -117,7 +118,11 @@ const Profile: FC = () => {
     <>
       <div className={container}>
         <PersonalMenu />
-
+        {isMobile ? (
+          <h2 className='text text_type_main-medium'>Ваши данные:</h2>
+        ) : (
+          ''
+        )}
         <div className={profile}>
           <Form
             name='editprofileform'
