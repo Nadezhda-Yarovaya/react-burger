@@ -24,10 +24,10 @@ import { AppThunk, TLocation } from '../../utils/types';
 import { History, LocationState } from 'history';
 
 export const performRegister =
-  (
-    name: string,
+  (   
     email: string,
     pass: string,
+    name: string,
     history: History<LocationState>
   ): AppThunk =>
   (dispatch: AppDispatch) => {

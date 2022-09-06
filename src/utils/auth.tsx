@@ -1,11 +1,6 @@
-import { getResponse } from './utils';
+import { config, getResponse } from './utils';
 
-const config = {
-  BASE_URL: 'https://norma.nomoreparties.space/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
+
 
 const requestResetPassword = (data: string) => {
   return fetch(`${config.BASE_URL}/password-reset`, {

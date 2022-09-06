@@ -1,12 +1,29 @@
-import { SET_ALLINGREDIENTS_FAILURE, SET_ALLINGREDIENTS_REQUEST, SET_ALLINGREDIENTS_SUCCESS } from '../actions';
+import {SET_ALLINGREDIENTS_REQUEST} from '../actions';
 import { ingredientsReducer, initialState } from './ingredients-reducer';
-import { fetchAllIngredients } from '../action-creators/ingredients-action-creators';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+// import { fetchAllIngredients } from '../action-creators/ingredients-action-creators';
+// import configureMockStore from 'redux-mock-store';
+// import thunk from 'redux-thunk';
+// import fetchMock from 'fetch-mock';
+import { getResponse } from '../../utils/utils';
+/* const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);*/
 
+describe('Проверка async методов', () => {
+
+test ('проверяем Get Response - успех', async() => {
+  const givenData = {ok: true, json: async() => {return {data: 'test'}}};
+const result = await getResponse(givenData);
+const expectedOutput = {data: 'test' };
+expect(result).toStrictEqual(expectedOutput);
+});
+
+test ('проверяем Get Response - неудача', async() => {
+  const givenData = {ok: false, status: 403};
+  const result = getResponse(givenData);
+  const expectedOutput = `Ошибка при соединении: ${givenData.status}`;  
+  await expect(result).rejects.toEqual(expectedOutput);
+  });
+});
 
 describe('Проверка экшенов ingredients-reducer', () => {
 it ('Запрашивает все игредиенты', () => {
@@ -14,16 +31,18 @@ it ('Запрашивает все игредиенты', () => {
     expect(ingredientsReducer(initialState , {type: SET_ALLINGREDIENTS_REQUEST})).toEqual(expectedAction) // работает, говорит все ок ))
     // нужно еще проверить - если передаю не то, то что будет? должно быть false 
 });
-
+/*
 it ('Неудача при получении всех ингредиентов', () => {
     const expectedAction = {...initialState, isLoading: true};
     expect(ingredientsReducer(initialState , {type: SET_ALLINGREDIENTS_FAILURE})).toEqual(expectedAction) // работает, говорит все ок ))
     // нужно еще проверить - если передаю не то, то что будет? должно быть false 
-})
+}) */
 }
-); /* checking simple actions */ 
+);
 
+/* checking simple actions */ 
 
+/*
 describe('асинхронные экшены с запросом к серверу', () => {
 
   afterEach(() => {
@@ -49,4 +68,5 @@ describe('асинхронные экшены с запросом к серве�
     })
   })
 }); 
+*/
 /* closing describe for async */ 

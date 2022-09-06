@@ -21,7 +21,7 @@ export type TAuthType = {
   isUserLoding: boolean;
 };
 
-const initialState: TAuthType = {
+export const initialAuthState: TAuthType = {
   user: { email: '', name: '' },
   isLogged: false,
   apiData: { message: '', success: false },
@@ -29,7 +29,7 @@ const initialState: TAuthType = {
 };
 
 export function authReducer(
-  state: TAuthType = initialState,
+  state: TAuthType = initialAuthState,
   action: TAuthActions
 ): TAuthType {
   switch (action.type) {
@@ -66,7 +66,7 @@ export function authReducer(
     case CLEAR_APIMESSAGE:
       return {
         ...state,
-        apiData: initialState.apiData,
+        apiData: initialAuthState.apiData,
       };
 
     default:

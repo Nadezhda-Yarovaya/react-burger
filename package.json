@@ -66,5 +66,6 @@
     "gh-pages": "^4.0.0",
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4"
-  }
+  },
+  "jest": { "transformIgnorePatterns": [ "/node_modules/(?!react-dnd|core-dnd|@react-dnd|dnd-core|react-dnd-html5-backend|react-dnd-multi-backend|react-dnd-touch-backend)" ] }
 }
