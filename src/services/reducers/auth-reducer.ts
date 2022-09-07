@@ -1,5 +1,7 @@
 import {
+  REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  REGISTER_FAILURE,
   LOGIN_SUCCESS,
   GET_USER,
   SET_LOGGED,
@@ -19,6 +21,9 @@ export type TAuthType = {
   isLogged: boolean;
   apiData: { message: string; success: boolean };
   isUserLoding: boolean;
+  isRegisterSuccess: boolean;
+  isRequestingRegister: boolean;
+  err: any;
 };
 
 export const initialAuthState: TAuthType = {
@@ -26,6 +31,9 @@ export const initialAuthState: TAuthType = {
   isLogged: false,
   apiData: { message: '', success: false },
   isUserLoding: false,
+  isRegisterSuccess: false,
+  isRequestingRegister: false,
+  err: {}
 };
 
 export function authReducer(
@@ -33,12 +41,18 @@ export function authReducer(
   action: TAuthActions
 ): TAuthType {
   switch (action.type) {
-    /* case LOGIN_SUCCESS:
+    case REGISTER_REQUEST: 
+    return {...state, isRequestingRegister: true};
+    case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       return {
         ...state,
-  user: action.payload,
-      }; */
+        isRegisterSuccess: true,
+        isRequestingRegister: false
+      };
+
+      case REGISTER_FAILURE: 
+      return {...state, isRequestingRegister: false,  isRegisterSuccess: false, err: action.err};
 
     case GET_USER_REQUEST:
       return { ...state, isUserLoding: true };

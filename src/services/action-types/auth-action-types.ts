@@ -7,15 +7,21 @@ import {
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
   GET_USER_REQUEST,
+  REGISTER_REQUEST,
+  REGISTER_FAILURE,
 } from '../actions/auth-actions';
 
 type TUser = {
   email: string;
   name: string;
 };
+
+export interface IRegisterRequest {
+  readonly type: typeof REGISTER_REQUEST;
+}
+
 export interface IRegisterSuccess {
   readonly type: typeof REGISTER_SUCCESS;
-  readonly payload: { user: TUser };
 }
 
 export interface ILoginSuccess {
@@ -49,13 +55,13 @@ export interface IClearApiMessage {
   readonly type: typeof CLEAR_APIMESSAGE;
 }
 
-/*
     export interface IRegisterFailure {
         readonly type: typeof REGISTER_FAILURE;
-          readonly user: TUser;
-      } */
+          readonly err: any;
+      } 
 
 export type TAuthActions =
+  | IRegisterRequest
   | IRegisterSuccess
   | ILoginSuccess
   | IGetUserReq
@@ -63,4 +69,5 @@ export type TAuthActions =
   | ISetLogged
   | ISetLoggedOut
   | IShowApiMessage
-  | IClearApiMessage;
+  | IClearApiMessage
+  | IRegisterFailure;

@@ -112,3 +112,5 @@ export const getResponse = (res: Response) => {
     return Promise.reject(`Ошибка при соединении: ${res.status}`);
   }
 };
+
+export const registerSuccessMessage = 'Успешная регистрация. Перенаправляем на страницу входа';

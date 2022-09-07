@@ -4,6 +4,9 @@ import {
   SET_LOGGED,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
+  REGISTER_SUCCESS,
+  REGISTER_REQUEST,
+  REGISTER_FAILURE,
 } from '../actions';
 
 import {
@@ -22,36 +25,54 @@ import {
 import { AppDispatch } from '../..';
 import { AppThunk, TLocation } from '../../utils/types';
 import { History, LocationState } from 'history';
+import { registerSuccessMessage } from '../../utils/utils';
+
+type TPropsRegister = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+function fetchRegisterRequest() {
+  return {
+    type: REGISTER_REQUEST,
+  };
+}
+
+function fetchRegisterSuccess() {
+  return {
+    type: REGISTER_SUCCESS,
+  };
+}
+
+function fetchRegisterFailure(err: any) {
+  return {
+    type: REGISTER_FAILURE,
+    err,
+  };
+}
 
 export const performRegister =
-  (   
-    email: string,
-    pass: string,
-    name: string,
-    history: History<LocationState>
-  ): AppThunk =>
+  ({ name, email, password }: TPropsRegister): AppThunk =>
   (dispatch: AppDispatch) => {
-    register(email, pass, name)
+    dispatch(fetchRegisterRequest());
+
+    return register(email, password, name)
       .then((res) => {
-        if (res.success) {
-          dispatch({
+        // if (res.success) {
+        dispatch(fetchRegisterSuccess());        
+        dispatch({
             type: SHOW_APIMESSAGE,
             payload: {
-              message: 'Успешная регистрация. Перенаправляем на страницу входа',
+              message: registerSuccessMessage,
               success: true,
             },
-          });
-
-          setTimeout(() => {
-            dispatch({
-              type: CLEAR_APIMESSAGE,
-            });
-            history.push('./login');
-          }, 2000);
-        }
+        });
       })
 
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        dispatch(fetchRegisterFailure(err));
+      });
   };
 
 export const performLogin =
