@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import ConstructorList from '../constructor-list/constructor-list';
@@ -89,8 +89,16 @@ const BurgerConstructor: FC = () => {
       payload: !isMobileOrdered,
     });
   }
+  const [allIngredForord, setAllingredForOrd ] = useState<Array<string>>(['']);
+
+  useEffect(() => {
+    setAllingredForOrd(makeListOfOrder());
+  }, [createdStuffingsList]);
 
   const mobileListStyle = isMobileOrdered ? list_displayed : list_notdisplayed;
+
+  const orderNumber = useSelector((store) => store.order.createdOrder.number);
+  const email11 = useSelector((store) => store.auth.user.email);
 
   return (
     <>
@@ -132,3 +140,4 @@ const BurgerConstructor: FC = () => {
 };
 
 export default BurgerConstructor;
+

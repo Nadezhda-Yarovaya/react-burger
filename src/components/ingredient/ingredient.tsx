@@ -20,9 +20,10 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 
 type TIngredientProps = {
   item: TIngredient;
+  testId: string;
 };
 
-const Ingredient: FC<TIngredientProps> = ({ item }) => {
+const Ingredient: FC<TIngredientProps> = ({ item, testId }) => {
   const dispatch = useDispatch();
   const location = useLocation<TLocation>();
 
@@ -93,6 +94,8 @@ const Ingredient: FC<TIngredientProps> = ({ item }) => {
           ? draggedBun
           : draggedIngredientRef
       }
+
+      data-testid={testId} 
     >
       <div className={list__item}>
         <Link

@@ -19,7 +19,7 @@ const OrderDetails: FC = () => {
         <PreloaderBurger />
       ) : (
         <>
-          <p className={`text text_type_digits-large ${digits}`}>
+          <p className={`text text_type_digits-large ${digits}`} data-testid='order_number_modal'>
             {orderNumber}
           </p>
           <p className={`text text_type_main-default mt-8 mb-15`}>

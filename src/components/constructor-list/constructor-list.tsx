@@ -165,6 +165,7 @@ const ConstructorList: FC = () => {
             className={`${item} ${item_type_bun} ${scrollVisible ? bunShort : bunLong} mb-4`}
             ref={dropContainerBunTop}
             style={bunTopStyle}
+            data-testid='drop_cont-buns'
           >
             <CustomConstructorElementBun
               type='top'

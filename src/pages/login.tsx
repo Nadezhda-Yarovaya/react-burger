@@ -63,6 +63,7 @@ const Login: FC = () => {
           name='email'
           value={email}
           onChange={handleChange}
+          data-testid='email_input'
         />
         <p className={validationError}>{errors.email}</p>
       </div>
@@ -78,6 +79,7 @@ const Login: FC = () => {
           minLength={2}
           maxLength={25}
           onChange={handleChange}
+          data-testid='password_input'
         />
         <div className={form__icon} onClick={(e) => toggleShowPass(e)}>
           {isPassShownLogin ? (
@@ -86,7 +88,7 @@ const Login: FC = () => {
             <HideIcon type='primary' />
           )}
         </div>
-        <p className={validationError}>{errors.password}</p>
+        <p className={validationError} data-testid='apimessage_login'>{errors.password}</p>
       </div>
     </Form>
   );

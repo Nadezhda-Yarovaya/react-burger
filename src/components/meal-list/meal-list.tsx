@@ -18,11 +18,14 @@ const MealList: FC<TMealListProps> = ({ type, title }) => {
     (store) => store.ingredients.ingredientsByCategory
   );
   let current: Array<TIngredient> = burgerIngredients.bun;
+  let currentId: string = 'listbuns';
   if (type === 'sauce') {
     current = burgerIngredients.sauce;
+    currentId = 'listsauce';
   }
   if (type === 'main') {
     current = burgerIngredients.main;
+    currentId = 'listsauce';
   }
 
   return (
@@ -34,7 +37,7 @@ const MealList: FC<TMealListProps> = ({ type, title }) => {
       </h2>
       <ul className={`pl-4 pr-4 mt-6 mb-6 ${list}`}>
         {current &&
-          current.map((item) => <Ingredient key={item._id} item={item} />)}
+          current.map((item, index) => <Ingredient key={item._id} item={item} testId={`${currentId}-${index}`} />)}
       </ul>
     </>
   );
