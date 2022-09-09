@@ -2,17 +2,13 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
-
   LOGIN_SUCCESS,
-
   GET_USER_REQUEST,
   GET_USER,
-
   SET_LOGGED,
   SET_LOGGEDOUT,
-
   SHOW_APIMESSAGE,
-  CLEAR_APIMESSAGE,  
+  CLEAR_APIMESSAGE,
 } from '../actions';
 
 import type { TAuthActions } from '../action-types/auth-action-types';
@@ -37,7 +33,7 @@ export const initialAuthState: TAuthType = {
   isUserLoding: false,
   isRegisterSuccess: false,
   isRequestingRegister: false,
-  err: {}
+  err: {},
 };
 
 export function authReducer(
@@ -45,18 +41,23 @@ export function authReducer(
   action: TAuthActions
 ): TAuthType {
   switch (action.type) {
-    case REGISTER_REQUEST: 
-    return {...state, isRequestingRegister: true};
+    case REGISTER_REQUEST:
+      return { ...state, isRequestingRegister: true };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       return {
         ...state,
         isRegisterSuccess: true,
-        isRequestingRegister: false
+        isRequestingRegister: false,
       };
 
-      case REGISTER_FAILURE: 
-      return {...state, isRequestingRegister: false,  isRegisterSuccess: false, err: action.err};
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        isRequestingRegister: false,
+        isRegisterSuccess: false,
+        err: action.err,
+      };
 
     case GET_USER_REQUEST:
       return { ...state, isUserLoding: true };

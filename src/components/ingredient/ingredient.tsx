@@ -94,8 +94,7 @@ const Ingredient: FC<TIngredientProps> = ({ item, testId }) => {
           ? draggedBun
           : draggedIngredientRef
       }
-
-      data-testid={testId} 
+      data-testid={testId}
     >
       <div className={list__item}>
         <Link

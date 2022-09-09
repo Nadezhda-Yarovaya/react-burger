@@ -55,10 +55,10 @@ export interface IClearApiMessage {
   readonly type: typeof CLEAR_APIMESSAGE;
 }
 
-    export interface IRegisterFailure {
-        readonly type: typeof REGISTER_FAILURE;
-          readonly err: any;
-      } 
+export interface IRegisterFailure {
+  readonly type: typeof REGISTER_FAILURE;
+  readonly err: any;
+}
 
 export type TAuthActions =
   | IRegisterRequest

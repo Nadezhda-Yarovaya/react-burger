@@ -8,7 +8,7 @@ import {
   WS_GET_ORDERS,
   WS_SET_ORDERSLIST,
 } from '../actions/feed-ws-actions';
-import { TMessage, TOrderWithIngredients } from '../../utils/types';
+import { TMessage } from '../../utils/types';
 
 export interface IConnectionStart {
   readonly type: typeof WS_CONNECTION_START;

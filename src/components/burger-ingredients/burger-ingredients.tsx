@@ -69,7 +69,9 @@ const BurgerIngredients: FC = () => {
 
   return (
     <>
-      <h1 className={`mt-10 mb-5 ml-1 ${title}`} data-testid='mainpage_title'>Соберите бургер</h1>
+      <h1 className={`mt-10 mb-5 ml-1 ${title}`} data-testid='mainpage_title'>
+        Соберите бургер
+      </h1>
       {isLoading ? (
         <p className='text text_type_main-small'>Загрузка...</p>
       ) : (

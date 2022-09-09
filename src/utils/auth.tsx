@@ -1,7 +1,5 @@
 import { config, getResponse } from './utils';
 
-
-
 const requestResetPassword = (data: string) => {
   return fetch(`${config.BASE_URL}/password-reset`, {
     method: 'POST',

@@ -1,11 +1,9 @@
-import { TOrderWithIngredients } from '../../utils/types';
 import {
   GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
   GET_ORDERDATA_FAILURE,
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
-  SET_POSITIONSDATA,
 } from '../actions';
 
 type TCreatedOrder = {

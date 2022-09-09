@@ -25,7 +25,7 @@ const {
   stuffings__empty,
   empty,
   bunShort,
-  bunLong
+  bunLong,
 } = constructorListStyles;
 
 const ConstructorList: FC = () => {
@@ -151,7 +151,7 @@ const ConstructorList: FC = () => {
     }
   }, [isMobile, isMobileOrdered, stuffingListDropped]);
 
-  const scrollVisible = stuffingListDropped.length > 4 ;
+  const scrollVisible = stuffingListDropped.length > 4;
 
   return (
     <ul className={`${list} ${isMobile ? '' : list_flex}`}>
@@ -162,7 +162,9 @@ const ConstructorList: FC = () => {
       ) : (
         <>
           <li
-            className={`${item} ${item_type_bun} ${scrollVisible ? bunShort : bunLong} mb-4`}
+            className={`${item} ${item_type_bun} ${
+              scrollVisible ? bunShort : bunLong
+            } mb-4`}
             ref={dropContainerBunTop}
             style={bunTopStyle}
             data-testid='drop_cont-buns'
@@ -179,11 +181,13 @@ const ConstructorList: FC = () => {
               scrollVisible={scrollVisible}
             />
           </li>
-          <li className={`${item_type_stuffing}`} ref={thisRef} data-testid='drop_cont-stuffings'>
+          <li
+            className={`${item_type_stuffing}`}
+            ref={thisRef}
+            data-testid='drop_cont-stuffings'
+          >
             <div
-              className={`${stuffings} ${
-                scrollVisible ? '' : `${empty} pr-2`
-              }`}
+              className={`${stuffings} ${scrollVisible ? '' : `${empty} pr-2`}`}
               style={stuffingsStyles}
               ref={dropContainerRef}
             >
@@ -204,7 +208,9 @@ const ConstructorList: FC = () => {
             </div>
           </li>
           <li
-     className={`${item} ${item_type_bun} ${scrollVisible ? bunShort : bunLong} mt-4`}
+            className={`${item} ${item_type_bun} ${
+              scrollVisible ? bunShort : bunLong
+            } mt-4`}
             ref={dropContainerBunBottom}
             style={bunBottomStyle}
           >

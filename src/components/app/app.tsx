@@ -40,7 +40,7 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 import { firstIngred } from '../../utils/utils';
 import FeedId from '../../pages/feed-id';
 import IndividualOrder from '../individul-order/individual-order';
-const {page} = appStyles;
+const { page } = appStyles;
 
 const App: FunctionComponent = () => {
   const [width, height] = useWindowSize();

@@ -89,7 +89,7 @@ const BurgerConstructor: FC = () => {
       payload: !isMobileOrdered,
     });
   }
-  const [allIngredForord, setAllingredForOrd ] = useState<Array<string>>(['']);
+  const [allIngredForord, setAllingredForOrd] = useState<Array<string>>(['']);
 
   useEffect(() => {
     setAllingredForOrd(makeListOfOrder());
@@ -140,4 +140,3 @@ const BurgerConstructor: FC = () => {
 };
 
 export default BurgerConstructor;
-

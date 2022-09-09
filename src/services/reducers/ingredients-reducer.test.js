@@ -1,4 +1,4 @@
-import { firstIngred } from "../../utils/utils";
+import { firstIngred } from '../../utils/utils';
 import {
   SET_ALLINGREDIENTS_REQUEST,
   SET_ALLINGREDIENTS_SUCCESS,
@@ -10,25 +10,26 @@ import {
   SET_MODALINGREDIENTS,
   REMOVE_MODALINGREDIENTS,
   CLEAR_BUN,
-} from "../actions";
+} from '../actions';
+
 import {
   ingredientsReducer,
   initialIngredientsState,
-} from "./ingredients-reducer";
+} from './ingredients-reducer';
 
-describe("check inggredients reducer", () => {
-  test("shoult return initial state", () => {
+describe('check inggredients reducer', () => {
+  test('should return initial state', () => {
     expect(ingredientsReducer(undefined, {})).toEqual(initialIngredientsState);
   });
 
-  test("should change on action call of SET_ALLINGREDIENTS_REQUEST", () => {
+  test('should change on action call of SET_ALLINGREDIENTS_REQUEST', () => {
     const expectedPayload = { isLoading: true };
     expect(
       ingredientsReducer({}, { type: SET_ALLINGREDIENTS_REQUEST })
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of SET_ALLINGREDIENTS_SUCCESS", () => {
+  test('should change on action call of SET_ALLINGREDIENTS_SUCCESS', () => {
     const listOfIngredients = [firstIngred, firstIngred];
 
     const expectedPayload = {
@@ -43,7 +44,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of SET_ALLINGREDIENTS_FAILURE", () => {
+  test('should change on action call of SET_ALLINGREDIENTS_FAILURE', () => {
     const expectedPayload = {
       isLoading: false,
     };
@@ -52,7 +53,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of SET_INGREDIENTSBYCAT", () => {
+  test('should change on action call of SET_INGREDIENTSBYCAT', () => {
     const ingredientsByCategory = {
       bun: [firstIngred],
       sauce: [firstIngred],
@@ -70,7 +71,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of REPLACE_BUN", () => {
+  test('should change on action call of REPLACE_BUN', () => {
     const bun = firstIngred;
     const expectedPayload = {
       bun,
@@ -80,7 +81,7 @@ describe("check inggredients reducer", () => {
     );
   });
 
-  test("should change on action call of CLEAR_BUN", () => {
+  test('should change on action call of CLEAR_BUN', () => {
     const expectedPayload = {
       bun: initialIngredientsState.bun,
     };
@@ -92,7 +93,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of SET_CURRENT", () => {
+  test('should change on action call of SET_CURRENT', () => {
     const currentIngredient = firstIngred;
     const expectedPayload = {
       currentIngredient,
@@ -102,7 +103,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of REMOVE_CURRENT", () => {
+  test('should change on action call of REMOVE_CURRENT', () => {
     const currentIngredient = {};
     const expectedPayload = {
       currentIngredient,
@@ -112,7 +113,7 @@ describe("check inggredients reducer", () => {
     ).toEqual(expectedPayload);
   });
 
-  test("should change on action call of SET_MODALINGREDIENTS", () => {
+  test('should change on action call of SET_MODALINGREDIENTS', () => {
     const expectedPayload = {
       areIngredientsShown: true,
     };
@@ -121,7 +122,7 @@ describe("check inggredients reducer", () => {
     );
   });
 
-  test("should change on action call of REMOVE_MODALINGREDIENTS", () => {
+  test('should change on action call of REMOVE_MODALINGREDIENTS', () => {
     const expectedPayload = {
       areIngredientsShown: false,
     };

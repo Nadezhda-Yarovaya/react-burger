@@ -16,7 +16,7 @@ const TotalSumButton: FC<TButtonProps> = ({
 }) => {
   return (
     <div data-testid='button_placeorder'>
-       <Button
+      <Button
         type='primary'
         size={size}
         onClick={handleClick}
@@ -25,7 +25,7 @@ const TotalSumButton: FC<TButtonProps> = ({
       >
         {btnText}
       </Button>
-      </div>
+    </div>
   );
 };
 

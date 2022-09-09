@@ -53,21 +53,20 @@
   .constructor {
     justify-content: flex-start;
   }
- 
+
   .page__section {
     max-width: calc(((960 - 60) / 2) * 100%);
   }
 }
 
 @media screen and (max-width: 860px) {
-
   .main {
     justify-content: space-between;
   }
   .constructor {
     justify-content: flex-start;
   }
- 
+
   .page__section {
     max-width: 380px;
   }

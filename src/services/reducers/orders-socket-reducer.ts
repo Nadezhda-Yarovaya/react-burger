@@ -10,7 +10,7 @@ import {
   WS_SET_ORD_ORDERSLIST,
 } from '../actions/orders-ws-actions';
 
-const initialState = {
+export const initialOrdersWsState = {
   isConnecting: false,
   wsConnected: false,
   error: undefined,
@@ -19,7 +19,7 @@ const initialState = {
 };
 
 export const ordersWsReducer = (
-  state: TWSState = initialState,
+  state: TWSState = initialOrdersWsState,
   action: TOrdersWsActions
 ): TWSState => {
   switch (action.type) {
@@ -28,7 +28,6 @@ export const ordersWsReducer = (
         ...state,
         error: undefined,
         isConnecting: true,
-        wsConnected: true,
       };
 
     case WS_CONNECTION_ORD_SUCCESS:
@@ -44,6 +43,7 @@ export const ordersWsReducer = (
         ...state,
         error: action.payload,
         isConnecting: false,
+        wsConnected: false,
       };
     case WS_CONNECTION_ORD_CLOSED:
       return {

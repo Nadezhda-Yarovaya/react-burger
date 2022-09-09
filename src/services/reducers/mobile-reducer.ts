@@ -32,7 +32,7 @@ export type TMobileState = {
   };
 };
 
-const initialState = {
+export const initialMobileState = {
   isMobile: false,
   isMobileOrdered: false,
   windowData: { width: 0, height: 0 },
@@ -47,7 +47,7 @@ const initialState = {
 };
 
 export function mobileReducer(
-  state: TMobileState = initialState,
+  state: TMobileState = initialMobileState,
   action: TMobileActions
 ): TMobileState {
   switch (action.type) {
@@ -130,7 +130,7 @@ export function mobileReducer(
         ...state,
         offsets: {
           ...state.offsets,
-          initials: initialState.offsets.initials,
+          initials: initialMobileState.offsets.initials,
         },
       };
 
@@ -139,7 +139,7 @@ export function mobileReducer(
         ...state,
         offsets: {
           ...state.offsets,
-          finals: initialState.offsets.finals,
+          finals: initialMobileState.offsets.finals,
         },
       };
 

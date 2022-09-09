@@ -113,4 +113,5 @@ export const getResponse = (res: Response) => {
   }
 };
 
-export const registerSuccessMessage = 'Успешная регистрация. Перенаправляем на страницу входа';
+export const registerSuccessMessage =
+  'Успешная регистрация. Перенаправляем на страницу входа';

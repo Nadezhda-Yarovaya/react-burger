@@ -18,7 +18,7 @@ const makeOrderWithToken = (
   ingredients: Array<string>,
   accessToken: string
 ) => {
-  console.log('ingred: ', {ingredients});
+  console.log('ingred: ', { ingredients });
   return fetch(`${config.BASE_URL}/orders`, {
     method: 'POST',
     headers: {

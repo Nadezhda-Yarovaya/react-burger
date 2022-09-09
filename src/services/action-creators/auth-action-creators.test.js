@@ -13,8 +13,11 @@ import { performRegister } from './auth-action-creators';
 const middlewares = [thunk.withExtraArgument({ authApi })];
 const mockStore = configureMockStore(middlewares);
 
+const randomNumber = Math.floor(Math.random() * 10000);
+const randomEmail = 'emailnew' + randomNumber.toString() + '@yandex.ru';
+
 describe('check Auth Action Creators', () => {
-  test('register ACTION CREATOR, if Success', async () => {
+  test('register ACTION CREATOR, should be Success', async () => {
     const expectedActions = [
       { type: REGISTER_REQUEST },
       { type: REGISTER_SUCCESS },
@@ -24,14 +27,12 @@ describe('check Auth Action Creators', () => {
       },
     ];
     const store = mockStore({});
-    const randomNumber = Math.floor(Math.random() * 10000);
-    const randomEmail = 'emailnew' + randomNumber.toString() + '@yandex.ru';
 
     await store
       .dispatch(
         performRegister({
           name: 'name',
-          email: randomEmail, //random email to run tests again
+          email: randomEmail, //устанавливаю рандомный емаил, для повторного тестирования
           password: 'password',
         })
       )
@@ -40,7 +41,7 @@ describe('check Auth Action Creators', () => {
       });
   });
 
-  test('register ACTION CREATOR, if Failure', async () => {
+  test('register ACTION CREATOR, should be Failure', async () => {
     const errorCode = '403';
     const errorMessage = `Ошибка при соединении: ${errorCode}`;
 
@@ -55,7 +56,7 @@ describe('check Auth Action Creators', () => {
       .dispatch(
         performRegister({
           name: 'name',
-          email: 'emailnew1@yandex.ru', // Email уже был зарегистрирован, например
+          email: randomEmail, // Email уже был зарегистрирован, например
           password: 'password',
         })
       )

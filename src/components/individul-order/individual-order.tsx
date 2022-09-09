@@ -24,7 +24,7 @@ const {
   list__image,
   list__item2,
   list__priceinfototal,
-  elementName
+  elementName,
 } = ordersIdStyles;
 
 const IndividualOrder: FC = () => {

@@ -94,7 +94,7 @@ export function dndReducer(
   }
 }
 
-function moveArray(
+export function moveArray(
   arr: Array<TIngredientUnique>,
   fromIndex1: TIngredientUnique,
   direction: string
