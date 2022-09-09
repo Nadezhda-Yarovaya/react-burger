@@ -179,7 +179,7 @@ const ConstructorList: FC = () => {
               scrollVisible={scrollVisible}
             />
           </li>
-          <li className={`${item_type_stuffing}`} ref={thisRef}>
+          <li className={`${item_type_stuffing}`} ref={thisRef} data-testid='drop_cont-stuffings'>
             <div
               className={`${stuffings} ${
                 scrollVisible ? '' : `${empty} pr-2`

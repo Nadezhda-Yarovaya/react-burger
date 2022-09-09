@@ -8,17 +8,6 @@ type TButtonProps = {
   size: 'small' | 'medium' | 'large';
 };
 
-/*
-  <Button
-        type='primary'
-        size={size}
-        onClick={handleClick}
-        disabled={isDisabled}
-        name='totalsumbtn'
-      >
-        {btnText}
-      </Button>*/
-
 const TotalSumButton: FC<TButtonProps> = ({
   handleClick,
   isDisabled,
@@ -26,14 +15,17 @@ const TotalSumButton: FC<TButtonProps> = ({
   size,
 }) => {
   return (
-      <button
+    <div data-testid='button_placeorder'>
+       <Button
+        type='primary'
+        size={size}
         onClick={handleClick}
         name='totalsumbtn'
-        data-testid='button_placeorder'
-        type='button'
+        disabled={isDisabled}
       >
         {btnText}
-      </button>
+      </Button>
+      </div>
   );
 };
 

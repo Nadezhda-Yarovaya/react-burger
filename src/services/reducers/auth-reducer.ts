@@ -2,13 +2,17 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+
   LOGIN_SUCCESS,
+
+  GET_USER_REQUEST,
   GET_USER,
+
   SET_LOGGED,
   SET_LOGGEDOUT,
+
   SHOW_APIMESSAGE,
-  CLEAR_APIMESSAGE,
-  GET_USER_REQUEST,
+  CLEAR_APIMESSAGE,  
 } from '../actions';
 
 import type { TAuthActions } from '../action-types/auth-action-types';

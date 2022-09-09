@@ -4,7 +4,7 @@ describe('check auth with fixtures', () => {
   
     beforeEach(() => {
       cy.intercept('POST', 'login', { fixture: 'user.json' }).as('postLogin');
-      cy.visit('http://localhost:3006/login');
+      cy.visit('/login');
     });
   
     afterEach(() => {

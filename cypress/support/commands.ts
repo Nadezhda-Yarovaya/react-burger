@@ -35,3 +35,12 @@
 //     }
 //   }
 // }
+/*
+
+Cypress.Commands.add("dragNew", { prevSubject: "element" }, (subject, targetEl) => {
+    cy.wrap(subject).trigger("dragstart");
+    cy.get(targetEl).trigger("drop");
+  }
+); */
+
+export{};

@@ -25,7 +25,7 @@ const MealList: FC<TMealListProps> = ({ type, title }) => {
   }
   if (type === 'main') {
     current = burgerIngredients.main;
-    currentId = 'listsauce';
+    currentId = 'listmain';
   }
 
   return (
