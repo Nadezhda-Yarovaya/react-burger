@@ -1,72 +1,132 @@
-import {SET_ALLINGREDIENTS_REQUEST} from '../actions';
-import { ingredientsReducer, initialState } from './ingredients-reducer';
-// import { fetchAllIngredients } from '../action-creators/ingredients-action-creators';
-// import configureMockStore from 'redux-mock-store';
-// import thunk from 'redux-thunk';
-// import fetchMock from 'fetch-mock';
-import { getResponse } from '../../utils/utils';
-/* const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);*/
+import { firstIngred } from "../../utils/utils";
+import {
+  SET_ALLINGREDIENTS_REQUEST,
+  SET_ALLINGREDIENTS_SUCCESS,
+  SET_ALLINGREDIENTS_FAILURE,
+  SET_INGREDIENTSBYCAT,
+  REPLACE_BUN,
+  SET_CURRENT,
+  REMOVE_CURRENT,
+  SET_MODALINGREDIENTS,
+  REMOVE_MODALINGREDIENTS,
+  CLEAR_BUN,
+} from "../actions";
+import {
+  ingredientsReducer,
+  initialIngredientsState,
+} from "./ingredients-reducer";
 
-describe('Проверка async методов', () => {
+describe("check inggredients reducer", () => {
+  test("shoult return initial state", () => {
+    expect(ingredientsReducer(undefined, {})).toEqual(initialIngredientsState);
+  });
 
-test ('проверяем Get Response - успех', async() => {
-  const givenData = {ok: true, json: async() => {return {data: 'test'}}};
-const result = await getResponse(givenData);
-const expectedOutput = {data: 'test' };
-expect(result).toStrictEqual(expectedOutput);
-});
+  test("should change on action call of SET_ALLINGREDIENTS_REQUEST", () => {
+    const expectedPayload = { isLoading: true };
+    expect(
+      ingredientsReducer({}, { type: SET_ALLINGREDIENTS_REQUEST })
+    ).toEqual(expectedPayload);
+  });
 
-test ('проверяем Get Response - неудача', async() => {
-  const givenData = {ok: false, status: 403};
-  const result = getResponse(givenData);
-  const expectedOutput = `Ошибка при соединении: ${givenData.status}`;  
-  await expect(result).rejects.toEqual(expectedOutput);
+  test("should change on action call of SET_ALLINGREDIENTS_SUCCESS", () => {
+    const listOfIngredients = [firstIngred, firstIngred];
+
+    const expectedPayload = {
+      isLoading: false,
+      listOfIngredients,
+    };
+    expect(
+      ingredientsReducer(
+        {},
+        { type: SET_ALLINGREDIENTS_SUCCESS, payload: listOfIngredients }
+      )
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of SET_ALLINGREDIENTS_FAILURE", () => {
+    const expectedPayload = {
+      isLoading: false,
+    };
+    expect(
+      ingredientsReducer({}, { type: SET_ALLINGREDIENTS_FAILURE })
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of SET_INGREDIENTSBYCAT", () => {
+    const ingredientsByCategory = {
+      bun: [firstIngred],
+      sauce: [firstIngred],
+      main: [firstIngred],
+    };
+
+    const expectedPayload = {
+      ingredientsByCategory,
+    };
+    expect(
+      ingredientsReducer(
+        {},
+        { type: SET_INGREDIENTSBYCAT, payload: ingredientsByCategory }
+      )
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of REPLACE_BUN", () => {
+    const bun = firstIngred;
+    const expectedPayload = {
+      bun,
+    };
+    expect(ingredientsReducer({}, { type: REPLACE_BUN, bun })).toEqual(
+      expectedPayload
+    );
+  });
+
+  test("should change on action call of CLEAR_BUN", () => {
+    const expectedPayload = {
+      bun: initialIngredientsState.bun,
+    };
+    expect(
+      ingredientsReducer(
+        {},
+        { type: CLEAR_BUN, bun: initialIngredientsState.bun }
+      )
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of SET_CURRENT", () => {
+    const currentIngredient = firstIngred;
+    const expectedPayload = {
+      currentIngredient,
+    };
+    expect(
+      ingredientsReducer({}, { type: SET_CURRENT, currentIngredient })
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of REMOVE_CURRENT", () => {
+    const currentIngredient = {};
+    const expectedPayload = {
+      currentIngredient,
+    };
+    expect(
+      ingredientsReducer({}, { type: REMOVE_CURRENT, currentIngredient })
+    ).toEqual(expectedPayload);
+  });
+
+  test("should change on action call of SET_MODALINGREDIENTS", () => {
+    const expectedPayload = {
+      areIngredientsShown: true,
+    };
+    expect(ingredientsReducer({}, { type: SET_MODALINGREDIENTS })).toEqual(
+      expectedPayload
+    );
+  });
+
+  test("should change on action call of REMOVE_MODALINGREDIENTS", () => {
+    const expectedPayload = {
+      areIngredientsShown: false,
+    };
+    expect(ingredientsReducer({}, { type: REMOVE_MODALINGREDIENTS })).toEqual(
+      expectedPayload
+    );
   });
 });
-
-describe('Проверка экшенов ingredients-reducer', () => {
-it ('Запрашивает все игредиенты', () => {
-    const expectedAction = {...initialState, isLoading: true};
-    expect(ingredientsReducer(initialState , {type: SET_ALLINGREDIENTS_REQUEST})).toEqual(expectedAction) // работает, говорит все ок ))
-    // нужно еще проверить - если передаю не то, то что будет? должно быть false 
-});
-/*
-it ('Неудача при получении всех ингредиентов', () => {
-    const expectedAction = {...initialState, isLoading: true};
-    expect(ingredientsReducer(initialState , {type: SET_ALLINGREDIENTS_FAILURE})).toEqual(expectedAction) // работает, говорит все ок ))
-    // нужно еще проверить - если передаю не то, то что будет? должно быть false 
-}) */
-}
-);
-
-/* checking simple actions */ 
-
-/*
-describe('асинхронные экшены с запросом к серверу', () => {
-
-  afterEach(() => {
-    fetchMock.restore()
-  })
-
-  it('проверяем запрос на получение всех ингредиентов SET_ALLINGREDIENTS_SUCCESS', () => {
-
-    fetchMock.getOnce('https://norma.nomoreparties.space/api/ingredients', {
-    method: 'GET',
-      headers: {'Content-Type': 'application/json' },
-    })
-
-    const expectedActions = [
-      // { type: SET_ALLINGREDIENTS_REQUEST },
-      { type: SET_ALLINGREDIENTS_SUCCESS, payload: ''}
-    ]
-    const store = mockStore({ todos: [] })
-
-    return store.dispatch().then(() => {
-      // Возвращаем асинхронный экшен
-      expect(store.getActions(fetchAllIngredients())).toEqual(expectedActions)
-    })
-  })
-}); 
-*/
-/* closing describe for async */ 
