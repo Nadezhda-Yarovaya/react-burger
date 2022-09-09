@@ -21,8 +21,8 @@
 
 .stuffings__empty {
   font-family: 'JetBrains Mono';
-  margin-right: 20%;
   font-size: 14px;
+  margin: 8px auto 20px;
 }
 
 .item {
@@ -36,7 +36,6 @@
   display: flex;
   box-sizing: border-box;
   justify-content: flex-end;
-  padding: 0 16px 0 52px;
 }
 
 .stuffings {
@@ -56,16 +55,19 @@
 
 .stuffings::-webkit-scrollbar {
   width: 10px;
+  padding: 20px;
 }
 
 .stuffings::-webkit-scrollbar-track {
   background-color: #2f2f37;
   width: 8px;
+  padding: 20px;
 }
 
 .stuffings::-webkit-scrollbar-thumb {
   background-color: #8585ad;
   outline: 0;
+  padding: 20px;
 }
 
 .item_type_stuffing {
@@ -75,9 +77,18 @@
   box-sizing: border-box;
 }
 
+.bunShort {  
+  padding: 0 16px 0 52px;
+}
+
+.bunLong {
+  padding: 0 12px 0 52px;
+}
+
+
 @media screen and (max-width: 1250px) {
   .item_type_bun {
-    padding: 0 16px 0 44px;
+    padding: 0 12px 0 54px;
   }
   .stuffings {
     padding: 0 0 0 20px;
@@ -85,6 +96,7 @@
 }
 
 @media screen and (max-width: 1150px) {
+ 
   .stuffings {
     margin: 0;
   }
@@ -98,6 +110,11 @@
     margin-right: 0;
     margin-left: 5%;
   }
+}
+@media screen and (max-width: 860px) {
+.item_type_bun {
+  padding: 0 0 0 36px;
+}
 }
 
 @media screen and (max-width: 790px) {

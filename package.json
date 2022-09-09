@@ -1,16 +1,16 @@
 {
   "name": "react-burger",
   "version": "0.1.0",
-  "homepage": "./", 
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.42",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
+    "node-fetch": "^3.2.10",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -30,9 +30,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "deploy-script": "npm run build && scp -r ./build/* seriozz@51.250.103.60:/home/seriozz/stellar-frontend" 
   },
   "eslintConfig": {
     "extends": [
@@ -53,11 +55,23 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^13.3.0",
     "@types/react": "^18.0.17",
     "@types/react-dnd-multi-backend": "^6.0.2",
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
     "@types/react-router-dom": "^5.3.3",
-    "gh-pages": "^4.0.0"
+    "@types/redux-mock-store": "^1.0.3",
+    "cypress": "^10.7.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "fetch-mock": "^9.11.0",
+    "gh-pages": "^4.0.0",
+    "react-test-renderer": "^18.2.0",
+    "redux-mock-store": "^1.5.4"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!react-dnd|core-dnd|@react-dnd|dnd-core|react-dnd-html5-backend|react-dnd-multi-backend|react-dnd-touch-backend)"
+    ]
   }
 }

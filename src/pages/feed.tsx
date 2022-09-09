@@ -20,6 +20,8 @@ const {
   mainTitle,
   par,
   numberOrderItemPending,
+  feedPage,
+  feedContainer,
 } = feedStyles;
 
 const { main, ingredients, section_flex } = appStyles;
@@ -96,14 +98,9 @@ const Feed: FC = () => {
 
   return (
     <>
-      <main
-        className={`${main} mb-10`}
-        style={{
-          flexDirection: 'column',
-        }}
-      >
+      <main className={`${main} ${feedPage} mb-10`}>
         <h1 className={mainTitle}>Лента заказов</h1>
-        <div style={{ display: 'flex' }}>
+        <div className={feedContainer}>
           <section
             className={`mr-10} ${ingredients} ${section_flex} ${feedStyles.ordersList}`}
           >

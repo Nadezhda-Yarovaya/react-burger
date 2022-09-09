@@ -1,12 +1,14 @@
 import {
+  REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  REGISTER_FAILURE,
   LOGIN_SUCCESS,
+  GET_USER_REQUEST,
   GET_USER,
   SET_LOGGED,
   SET_LOGGEDOUT,
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
-  GET_USER_REQUEST,
 } from '../actions';
 
 import type { TAuthActions } from '../action-types/auth-action-types';
@@ -19,26 +21,43 @@ export type TAuthType = {
   isLogged: boolean;
   apiData: { message: string; success: boolean };
   isUserLoding: boolean;
+  isRegisterSuccess: boolean;
+  isRequestingRegister: boolean;
+  err: any;
 };
 
-const initialState: TAuthType = {
+export const initialAuthState: TAuthType = {
   user: { email: '', name: '' },
   isLogged: false,
   apiData: { message: '', success: false },
   isUserLoding: false,
+  isRegisterSuccess: false,
+  isRequestingRegister: false,
+  err: {},
 };
 
 export function authReducer(
-  state: TAuthType = initialState,
+  state: TAuthType = initialAuthState,
   action: TAuthActions
 ): TAuthType {
   switch (action.type) {
-    /* case LOGIN_SUCCESS:
+    case REGISTER_REQUEST:
+      return { ...state, isRequestingRegister: true };
+    case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       return {
         ...state,
-  user: action.payload,
-      }; */
+        isRegisterSuccess: true,
+        isRequestingRegister: false,
+      };
+
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        isRequestingRegister: false,
+        isRegisterSuccess: false,
+        err: action.err,
+      };
 
     case GET_USER_REQUEST:
       return { ...state, isUserLoding: true };
@@ -66,7 +85,7 @@ export function authReducer(
     case CLEAR_APIMESSAGE:
       return {
         ...state,
-        apiData: initialState.apiData,
+        apiData: initialAuthState.apiData,
       };
 
     default:

@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import Form from '../components/form/form';
 
 import {
@@ -14,7 +14,8 @@ import {
 import { useHistory } from 'react-router-dom';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 import { initialValues1 } from '../utils/utils';
-import { useDispatch } from '../hooks/hooks';
+import { useDispatch, useSelector } from '../hooks/hooks';
+import { CLEAR_APIMESSAGE } from '../services/actions';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -22,6 +23,9 @@ const Register: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isPassShown, setIsPassShown] = useState(true);
+  const isRegisterSuccess = useSelector(
+    (state) => state.auth.isRegisterSuccess
+  );
 
   const { values, handleChange, errors, isValid } =
     useFormAndValidation(initialValues1);
@@ -30,7 +34,7 @@ const Register: FC = () => {
 
   function handleRegister() {
     if (isValid) {
-      dispatch(performRegister(name, email, password, history));
+      dispatch(performRegister({ name, email, password }));
     } else {
       handleApiMessageError(dispatch, 'Заполните все поля формы корректно');
     }
@@ -40,6 +44,20 @@ const Register: FC = () => {
     e.preventDefault();
     setIsPassShown(!isPassShown);
   }
+
+  useEffect(() => {
+    console.log('isRegisterSuccess: ', isRegisterSuccess);
+    if (isRegisterSuccess) {
+      setTimeout(() => {
+        dispatch({
+          type: CLEAR_APIMESSAGE,
+        });
+        history.push('/');
+      }, 2000);
+    }
+  }, [isRegisterSuccess, history]);
+
+  // console.log('hist: ', JSON.stringify(history));
 
   return (
     <Form

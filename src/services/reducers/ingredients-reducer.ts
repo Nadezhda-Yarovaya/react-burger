@@ -23,7 +23,7 @@ export type ingredientsState = {
   areIngredientsShown: boolean;
 };
 
-const initialState = {
+export const initialIngredientsState = {
   listOfIngredients: [firstIngred],
   isLoading: false,
   ingredientsByCategory: {
@@ -37,7 +37,7 @@ const initialState = {
 };
 
 export function ingredientsReducer(
-  state: ingredientsState = initialState,
+  state: ingredientsState = initialIngredientsState,
   action: TIngedientsActions
 ): ingredientsState {
   switch (action.type) {
@@ -61,7 +61,7 @@ export function ingredientsReducer(
     case CLEAR_BUN:
       return {
         ...state,
-        bun: initialState.bun,
+        bun: initialIngredientsState.bun,
       };
     case SET_INGREDIENTSBYCAT:
       return {

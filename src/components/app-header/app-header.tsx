@@ -33,8 +33,11 @@ const {
   header__container,
   menu,
   menu__item,
+  menu__item_active,
   logo,
   header__desktop,
+  header__mobile,
+  header__mobilebutton,
   menu__image,
   mobilemenu,
   submenu,
@@ -42,9 +45,6 @@ const {
   mobilemenu__top,
   mobilemenu_state_opened,
   mobilemenu__list,
-  header__mobile,
-  header__mobilebutton,
-  menu__item_active,
 } = headerStyles;
 
 const AppHeader: FunctionComponent = () => {
@@ -175,7 +175,7 @@ const AppHeader: FunctionComponent = () => {
             style={{
               color: `${
                 location.pathname === '/profile' ||
-                location.pathname === '/orders'
+                location.pathname === '/profile/orders'
                   ? '#f2f2f3'
                   : ''
               }`,
@@ -205,7 +205,7 @@ const AppHeader: FunctionComponent = () => {
             </NavLink>
 
             <NavLink
-              to='/orders'
+              to='/profile/orders'
               className={menu__item}
               activeClassName={menu__item_active}
               onClick={closeMobileMenu}
@@ -225,7 +225,6 @@ const AppHeader: FunctionComponent = () => {
             activeClassName={menu__item_active}
             onClick={closeMobileMenu}
           >
-            {' '}
             <HeaderItem text='Конструктор' id={1} icon={BurgerIcon} />
           </NavLink>
 
@@ -235,7 +234,6 @@ const AppHeader: FunctionComponent = () => {
             activeClassName={menu__item_active}
             onClick={closeMobileMenu}
           >
-            {' '}
             <HeaderItem text='Лента заказов' id={2} icon={ListIcon} />{' '}
           </NavLink>
         </div>

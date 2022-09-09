@@ -7,5 +7,5 @@ HTML, CSS, React, Redux, TypeScript
 ## Текущий этап: STEP-6
 Покрытие тестами 
 
-## GH- Pages
-https://nadezhda-yarovaya.github.io/react-burger/
+## Ссылка на проект: 
+https://seriozz.nomoredomains.sbs/

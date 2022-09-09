@@ -48,6 +48,7 @@ import {
 } from './dnd-actions';
 
 import {
+  REGISTER_REQUEST,
   REGISTER_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_REQUEST,
@@ -60,6 +61,7 @@ import {
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
   GET_USER_REQUEST,
+  REGISTER_FAILURE
 } from './auth-actions';
 
 export {
@@ -112,4 +114,6 @@ export {
   SHOW_APIMESSAGE,
   CLEAR_APIMESSAGE,
   GET_USER_REQUEST,
+  REGISTER_REQUEST,
+  REGISTER_FAILURE
 };

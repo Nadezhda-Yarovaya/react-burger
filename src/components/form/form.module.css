@@ -148,3 +148,21 @@
   overflow: visible;
   min-height: 30px;
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    max-width: 350px;
+  }
+
+  .form__input {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .container {
+    display: flex;
+    max-width: 250px;
+  }
+}

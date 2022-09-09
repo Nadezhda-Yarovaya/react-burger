@@ -40,7 +40,6 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 import { firstIngred } from '../../utils/utils';
 import FeedId from '../../pages/feed-id';
 import IndividualOrder from '../individul-order/individual-order';
-
 const { page } = appStyles;
 
 const App: FunctionComponent = () => {
@@ -48,6 +47,11 @@ const App: FunctionComponent = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const isPerformed = useSelector((state) => state.order.isPerformed);
+  const location = useLocation<TLocation>();
+  const isMobileMenuOpened = useSelector(
+    (state) => state.mobile.isMobileMenuOpened
+  );
 
   useEffect(() => {
     handleSetMobile();
@@ -66,14 +70,6 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     dispatch(fetchAllIngredients());
   }, []);
-
-  const isPerformed = useSelector((state) => state.order.isPerformed);
-
-  const location = useLocation<TLocation>();
-
-  const isMobileMenuOpened = useSelector(
-    (state) => state.mobile.isMobileMenuOpened
-  );
 
   function closeIsPerformed() {
     dispatch({
@@ -145,9 +141,7 @@ const App: FunctionComponent = () => {
   };
 
   const locateModal = location?.state && location?.state?.locate;
-
   const locateFeedModal = location?.state && location.state?.feedLocate;
-
   const locateProfileOrdersModal =
     location?.state && location.state?.ordersLocate;
 
@@ -204,7 +198,7 @@ const App: FunctionComponent = () => {
             <NotFound />
           </Route>
         </Switch>
-      </div>{' '}
+      </div>
       {isPerformed ? (
         <Modal
           closeModal={closeIsPerformed}
@@ -218,7 +212,6 @@ const App: FunctionComponent = () => {
       )}
       {locateModal && (
         <Route path='/ingredients/:id'>
-          {' '}
           <Modal closeModal={closeModalIngredientsShown} isOpen={true}>
             <IngredientDetails />
           </Modal>
@@ -226,7 +219,6 @@ const App: FunctionComponent = () => {
       )}
       {locateFeedModal && (
         <Route path='/feed/:id'>
-          {' '}
           <Modal closeModal={closeModalFromFeed} isOpen={true}>
             <IndividualOrder />
           </Modal>
@@ -234,7 +226,6 @@ const App: FunctionComponent = () => {
       )}
       {locateProfileOrdersModal && (
         <Route path='/profile/orders/:id'>
-          {' '}
           <Modal closeModal={closeModalFromProileOrders} isOpen={true}>
             <IndividualOrder />
           </Modal>

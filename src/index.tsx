@@ -20,7 +20,7 @@ const personalOrdersWsMiddleware = socketMiddleware(ordersWsActions);
 const enhancer = composeWithDevTools(
   applyMiddleware(thunk, ourWsMiddleware, personalOrdersWsMiddleware)
 );
-const store = createStore(rootReducer, enhancer);
+export const store = createStore(rootReducer, enhancer);
 
 export type RootState = ReturnType<typeof store.getState>;
 

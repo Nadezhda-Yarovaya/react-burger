@@ -16,14 +16,14 @@ export type TDndState = {
   initialIngredOffset: any;
 };
 
-const initialState = {
+export const initialDndState = {
   droppedElements: [],
   dropDirection: '',
   initialIngredOffset: {},
 };
 
 export function dndReducer(
-  state: TDndState = initialState,
+  state: TDndState = initialDndState,
   action: TDndActions
 ): TDndState {
   switch (action.type) {
@@ -42,7 +42,7 @@ export function dndReducer(
     case CLEAR_STUFFINGLIST:
       return {
         ...state,
-        droppedElements: initialState.droppedElements,
+        droppedElements: initialDndState.droppedElements,
       };
 
     case SET_DRAGGEDCONSTRUCTOR: {
@@ -93,23 +93,8 @@ export function dndReducer(
       return state;
   }
 }
-/*
-function arraymoveUp(arr, fromIndex) {
-  let element = arr[fromIndex];
-  arr.splice(fromIndex, 1);
-  arr.splice(fromIndex - 1, 0, element);
-  return arr;
-}
 
-function arraymoveDown(arr, fromIndex) {
-  let element = arr[fromIndex];
-  arr.splice(fromIndex, 1);
-  arr.splice(fromIndex + 1, 0, element);
-  return arr;
-}
-*/
-
-function moveArray(
+export function moveArray(
   arr: Array<TIngredientUnique>,
   fromIndex1: TIngredientUnique,
   direction: string

@@ -1,0 +1,9 @@
+{
+  "accessToken": "test-accessToken",
+  "refreshToken": "test-refreshToken",
+  "success": true,
+  "user": {
+    "email": "seriozz2@yandex.ru",
+    "name": "sdfsdfsf"
+  }
+}

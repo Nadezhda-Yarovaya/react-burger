@@ -79,7 +79,7 @@ export const firstIngredUniq = {
 };
 
 export const firstorderString: TOrder = {
-  createdAt: '',
+  createdAt: '2022-09-05T06:57:36.071Z',
   ingredients: [''],
   name: 'название заказа',
   number: 0,
@@ -89,13 +89,20 @@ export const firstorderString: TOrder = {
 };
 
 export const firstorder: TOrderWithIngredients = {
-  createdAt: '',
+  createdAt: '2022-09-05T06:57:36.071Z',
   ingredients: [firstIngredQty],
   name: 'название заказа',
   number: 0,
   status: '',
   updatedAt: '',
   _id: '',
+};
+
+export const config = {
+  BASE_URL: 'https://norma.nomoreparties.space/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 };
 
 export const getResponse = (res: Response) => {
@@ -105,3 +112,6 @@ export const getResponse = (res: Response) => {
     return Promise.reject(`Ошибка при соединении: ${res.status}`);
   }
 };
+
+export const registerSuccessMessage =
+  'Успешная регистрация. Перенаправляем на страницу входа';

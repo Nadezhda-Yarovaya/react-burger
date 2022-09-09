@@ -24,6 +24,7 @@ const {
   list__image,
   list__item2,
   list__priceinfototal,
+  elementName,
 } = ordersIdStyles;
 
 const IndividualOrder: FC = () => {
@@ -122,7 +123,7 @@ const IndividualOrder: FC = () => {
                         style={{ backgroundImage: `url('${element!.image}')` }}
                       ></div>
                     </div>
-                    <p>{element!.name}</p>
+                    <p className={elementName}>{element!.name}</p>
                   </div>
                   <div className={list__priceinfo}>
                     <p className={`${price} text text_type_digits-default`}>

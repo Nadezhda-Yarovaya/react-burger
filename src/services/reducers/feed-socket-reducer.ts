@@ -1,18 +1,18 @@
 import {
+  WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
   WS_GET_ORDERS,
   WS_SET_ORDERSLIST,
-  WS_CONNECTION_START,
 } from '../actions/feed-ws-actions';
 
 import { TWSState } from '../../utils/types';
 import { TFeedWsActions } from '../action-types/feed-ws-action-types';
 import { firstorder } from '../../utils/utils';
 
-const initialState = {
+export const initialFeedWSState = {
   isConnecting: false,
   wsConnected: false,
   error: undefined,
@@ -21,7 +21,7 @@ const initialState = {
 };
 
 export const feedWsReducer = (
-  state: TWSState = initialState,
+  state: TWSState = initialFeedWSState,
   action: TFeedWsActions
 ): TWSState => {
   switch (action.type) {

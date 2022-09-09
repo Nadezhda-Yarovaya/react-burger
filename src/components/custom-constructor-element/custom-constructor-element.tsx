@@ -26,6 +26,9 @@ const {
   delete_mobile,
   delete_image,
   stuffings__item,
+  elementBox,
+  constructor__item_bun,
+  nullMargin,
 } = CustomConstructorStyles;
 
 type TCustomElementProps = {
@@ -43,7 +46,8 @@ type TCustomElementPropsBun = {
   thumbnail: string;
   isLocked?: boolean;
   type?: 'top' | 'bottom';
-  item: TIngredient; // вот тут так и надо
+  item: TIngredient;
+  scrollVisible?: boolean;
 };
 
 export const CustomConstructorElementBun: FC<TCustomElementPropsBun> = ({
@@ -53,11 +57,12 @@ export const CustomConstructorElementBun: FC<TCustomElementPropsBun> = ({
   isLocked,
   type,
   item,
+  scrollVisible,
 }) => (
   <>
-    <div className={`${stuffings__item} mr-2`}>
-      <div className={`${constructor__item} mb-4`}>
-        <div style={{ boxSizing: 'border-box', width: '100%' }}>
+    <div className={`${stuffings__item}`}>
+      <div className={`${constructor__item_bun}`}>
+        <div className={elementBox}>
           <ConstructorElement
             type={type}
             isLocked={isLocked}
@@ -217,6 +222,14 @@ export const CustomConstructorElement: FC<TCustomElementProps> = ({
     top: `${initialY - rectangleTop}px`,
   };
 
+  const stuffingListDropped = useSelector(
+    (state) => state.dragAndDrop.droppedElements
+  );
+
+  const isLastElement =
+    stuffingListDropped[stuffingListDropped.length - 1].uniqueId ===
+    item.uniqueId;
+
   return (
     <>
       <div
@@ -224,7 +237,10 @@ export const CustomConstructorElement: FC<TCustomElementProps> = ({
         style={stuffingItemStyle}
         ref={isMobile ? null : draggedWithinConstructorRef}
       >
-        <div className={`${constructor__item} mb-4`} ref={itemContainerRef}>
+        <div
+          className={`${constructor__item} ${isLastElement ? nullMargin : ''}`}
+          ref={itemContainerRef}
+        >
           <div
             className={`${icon} mr-2`}
             ref={isMobile ? draggedWithinConstructorRef : null}

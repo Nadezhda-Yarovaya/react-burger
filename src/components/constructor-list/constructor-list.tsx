@@ -24,6 +24,8 @@ const {
   list_flex,
   stuffings__empty,
   empty,
+  bunShort,
+  bunLong,
 } = constructorListStyles;
 
 const ConstructorList: FC = () => {
@@ -93,8 +95,9 @@ const ConstructorList: FC = () => {
       ).current.getBoundingClientRect();
       const currentOffset = Math.floor((monitor as any).getClientOffset().y);
       const hoverBoundingRectTop = Math.floor(hoverBoundingRect.top);
+      let initialIngredOffsetFinal = initialIngredOffset || {};
 
-      const currentItemOffset = initialIngredOffset.y;
+      const currentItemOffset = initialIngredOffsetFinal.y;
 
       const initialDistToTop = currentItemOffset - hoverBoundingRectTop;
       const finalPixelsTtoTop = currentOffset - hoverBoundingRectTop;
@@ -148,6 +151,8 @@ const ConstructorList: FC = () => {
     }
   }, [isMobile, isMobileOrdered, stuffingListDropped]);
 
+  const scrollVisible = stuffingListDropped.length > 4;
+
   return (
     <ul className={`${list} ${isMobile ? '' : list_flex}`}>
       {isLoading ? (
@@ -157,9 +162,12 @@ const ConstructorList: FC = () => {
       ) : (
         <>
           <li
-            className={`${item} ${item_type_bun}`}
+            className={`${item} ${item_type_bun} ${
+              scrollVisible ? bunShort : bunLong
+            } mb-4`}
             ref={dropContainerBunTop}
             style={bunTopStyle}
+            data-testid='drop_cont-buns'
           >
             <CustomConstructorElementBun
               type='top'
@@ -170,13 +178,16 @@ const ConstructorList: FC = () => {
               price={currentBun.price}
               thumbnail={currentBun.image}
               item={currentBun}
+              scrollVisible={scrollVisible}
             />
           </li>
-          <li className={`${item_type_stuffing}`} ref={thisRef}>
+          <li
+            className={`${item_type_stuffing}`}
+            ref={thisRef}
+            data-testid='drop_cont-stuffings'
+          >
             <div
-              className={`${stuffings} ${
-                stuffingListDropped.length > 5 ? '' : `${empty} pr-2`
-              }`}
+              className={`${stuffings} ${scrollVisible ? '' : `${empty} pr-2`}`}
               style={stuffingsStyles}
               ref={dropContainerRef}
             >
@@ -197,7 +208,9 @@ const ConstructorList: FC = () => {
             </div>
           </li>
           <li
-            className={`${item} ${item_type_bun} mt-4`}
+            className={`${item} ${item_type_bun} ${
+              scrollVisible ? bunShort : bunLong
+            } mt-4`}
             ref={dropContainerBunBottom}
             style={bunBottomStyle}
           >

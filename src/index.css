@@ -8,7 +8,7 @@
   --text-color: #f2f2f3;
   --secondary-text: #8585ad;
   --accent: #4c4cff;
-  --accent-order: #00CCCC;
+  --accent-order: #00cccc;
 }
 
 .constructor-element__action {
@@ -17,17 +17,17 @@
 
 .constructor-element__row {
   width: 100% !important;
-  justify-content: space-between!important;
-  max-width: 650px!important;
+  justify-content: space-between !important;
+  max-width: 650px !important;
 }
-
 
 .constructor-element {
   width: 100% !important;
-  max-width: 650px!important;
+  max-width: 650px !important;
   display: flex !important;
   justify-content: space-between !important;
   box-sizing: border-box !important;
+  margin: 0 !important;
 }
 
 @media screen and (max-width: 1250px) {
@@ -44,7 +44,6 @@
   }*/
 
   .constructor-element {
-    max-width: 450px !important;
     font-size: 13px !important;
     line-height: 18px !important;
     /*padding: 16px 0 !important;*/
@@ -60,13 +59,11 @@
   }
 
   .constructor-element__row {
-    max-width: 530px!important;
+    max-width: 530px !important;
   }
-  
- 
 
   .constructor-element {
-    max-width:530px !important;
+    max-width: 530px !important;
     font-size: 13px !important;
     line-height: 18px !important;
   }
@@ -82,15 +79,9 @@
     padding: 16px 4px !important;
   }*/
 
-  .constructor-element_pos_top {
-    margin: 0 0 20px 0 !important;
+  .text_type_digits-medium {
+    font-size: 38px !important;
   }
-
-  .text_type_digits-medium{
-    font-size: 38px!important;
-  }
-
-  
 }
 
 @media screen and (max-width: 790px) {
@@ -108,11 +99,9 @@
 
   .constructor-element__row {
     width: 100% !important;
-    justify-content: space-between!important;
-    max-width: 700px!important;
+    justify-content: space-between !important;
+    max-width: 700px !important;
   }
-  
-
 
   .constructor-element__image {
     margin-right: 0 !important;
@@ -126,9 +115,8 @@
     display: none !important;
   }
 
- 
   .box {
-    margin-right: 0!important;
+    margin-right: 0 !important;
   }
 
   .constructor-element__price {
@@ -143,15 +131,13 @@
   }
 */
   .button_button__gss3G {
-    padding: 10px 32px!important;
+    padding: 10px 32px !important;
   }
-
 }
-
 
 @media screen and (max-width: 460px) {
-.constructor-element__image {
-  width: 43px !important;
-  height: 25px !important;
-}
+  .constructor-element__image {
+    width: 43px !important;
+    height: 25px !important;
+  }
 }

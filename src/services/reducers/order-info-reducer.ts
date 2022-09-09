@@ -1,8 +1,8 @@
 import { TOrderWithIngredients } from '../../utils/types';
 import { TOrderInfoActions } from '../action-types/order-info-action-types';
 import {
-  GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_REQUEST,
+  GET_ORDERDATA_SUCCESS,
   GET_ORDERDATA_FAILURE,
   SET_TOTALSUM,
   CLEAR_ORDERDATA,
@@ -16,7 +16,7 @@ export type TOrderState = {
   orderFullList?: Array<TOrderWithIngredients>;
 };
 
-const initialState = {
+export const initialOrderState = {
   createdOrder: { number: 0, positions: [''] },
   isOrderLoading: false,
   isPerformed: false,
@@ -24,7 +24,7 @@ const initialState = {
 };
 
 export function orderInfoReducer(
-  state: TOrderState = initialState,
+  state: TOrderState = initialOrderState,
   action: TOrderInfoActions
 ): TOrderState {
   switch (action.type) {
@@ -48,7 +48,7 @@ export function orderInfoReducer(
       return {
         ...state,
         isPerformed: false,
-        createdOrder: initialState.createdOrder,
+        createdOrder: initialOrderState.createdOrder,
       };
     case GET_ORDERDATA_FAILURE:
       return {
@@ -60,12 +60,6 @@ export function orderInfoReducer(
         ...state,
         totalSum: action.totalSum,
       };
-    /*
-    case SET_POSITIONSDATA:
-      return {
-        ...state,
-        orderFullList: action.payload,
-      }; */
     default:
       return state;
   }

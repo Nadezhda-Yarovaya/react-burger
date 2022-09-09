@@ -6,6 +6,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
 } from '../services/actions/feed-ws-actions';
+import style from './feed-id.module.css';
 
 const FeedId: FC = () => {
   const wsFeedConnecting = useSelector((state) => state.feedWs.isConnecting);
@@ -25,7 +26,7 @@ const FeedId: FC = () => {
   }, [dispatch]);
 
   return (
-    <div style={{ margin: '120px 0 0 0' }}>
+    <div className={style.order}>
       {wsFeedConnecting ? <PreloaderBurger /> : <IndividualOrder />}
     </div>
   );
