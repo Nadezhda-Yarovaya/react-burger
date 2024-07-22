@@ -20,12 +20,15 @@ import {
   logout,
   setCookie,
   getCookie,
+  getDBactoken,
+  eraseCookie,
 } from '../../utils/auth';
 
 import { AppDispatch } from '../..';
 import { AppThunk, TLocation } from '../../utils/types';
 import { History, LocationState } from 'history';
 import { registerSuccessMessage } from '../../utils/utils';
+import { SET_ACTOKEN } from '../actions/auth-actions';
 
 type TPropsRegister = {
   name: string;
@@ -75,6 +78,26 @@ export const performRegister =
       });
   };
 
+  export const performGetDBToken = (): AppThunk => (dispatch: AppDispatch) => {
+   // dispatch(fetchRegisterRequest());
+
+    return getDBactoken()
+      .then((res) => {
+        // if (res.success) {
+        //dispatch(fetchRegisterSuccess());        
+        console.log('what we get: ', res);
+        dispatch({
+            type: SET_ACTOKEN,
+            payload: res,
+        });
+      })
+
+      .catch((err) => {
+        dispatch(fetchRegisterFailure(err));
+      });
+  };
+
+
 export const performLogin =
   (
     email: string,
@@ -86,23 +109,30 @@ export const performLogin =
     const cameFrom = location?.state?.from || '/';
     login(email, pass)
       .then((res) => {
-        if (res && res.accessToken) {
-          let authToken = res.accessToken.split('Bearer ')[1];
-          if (authToken) {
-            setCookie('token', authToken, { expires: 1 }); // expires in minutes
-          }
-          localStorage.setItem('refreshToken', res.refreshToken);
-        }
+        console.log('res: ', res);
+        // receive 2 tokens from back
+        // accesstoken should be written in the user DB
+        // refreshtoken i set for cookie 
         if (res && res.success) {
           dispatch({
             type: SHOW_APIMESSAGE,
-            payload: { message: 'Успешный вход в систему', success: true },
+            payload: { message: 'Успешный вход в систему.', success: true },
           });
 
           setTimeout(() => {
             dispatch({
               type: SET_LOGGED,
             });
+            console.log('login res: ', res);
+            setCookie('accesstemp', res.accessToken.split(' ')[1], { expires: 1 }); //2 minutes live
+            setCookie('token', res.refreshToken, { expires: 60*24 }); // set cookie in front for 1 day
+            if (res && res.token) {
+              let authToken = res.token.split('Bearer ')[1];
+              dispatch({
+                type: SET_ACTOKEN,
+                payload: authToken,
+              });
+            }
             dispatch({
               type: CLEAR_APIMESSAGE,
             });
@@ -196,18 +226,6 @@ export function handleApiMessageError(dispatch: AppDispatch, message: string) {
 }
 
 /* functions that require RefreshToken */
-export const loadUser = (): AppThunk => (dispatch) => {
-  const accessToken = getCookie('token');
-  if (accessToken) {
-    return dispatch(handleGetUser(accessToken));
-  } else {
-    const refreshSaved = localStorage.getItem('refreshToken');
-    if (refreshSaved) {
-      return dispatch(handleRefreshTokenForGetUser());
-    }
-  }
-};
-
 export const patchUser =
   (email: string, name: string, pass: string): AppThunk =>
   (dispatch) => {
@@ -238,24 +256,37 @@ export const handleRefreshTokenForPatchUser =
   };
 
 export const handleRefreshTokenForGetUser = (): AppThunk => (dispatch) => {
-  const refreshSaved = localStorage.getItem('refreshToken');
+  const refreshSaved = getCookie('token');
+  console.log('refrsaved', refreshSaved);
   if (refreshSaved) {
     refreshToken(refreshSaved)
       .then((res) => {
-        let authToken = handleUpdateTokens(res.refreshToken, res.accessToken);
-        return dispatch(handleGetUser(authToken));
+        console.log('res in refresh front', res);
+        setCookie('accesstemp', res.accessToken.split(' ')[1], { expires: 1 }); 
+        dispatch({
+          type: SET_ACTOKEN,
+          payload: res.accessToken,
+      });
+        eraseCookie('token');
+        setCookie('token', res.refreshToken, { expires: 60*24 });
       })
       .catch((err) => console.log(err));
   }
 };
 
+
 /* handle functions */
-const handleGetUser =
-  (accessToken: string): AppThunk =>
+export const handleGetUser =
+  (accessToken: string | undefined): AppThunk =>
   (dispatch) => {
+    if(accessToken) {
     getUser(accessToken).then((res) => {
-      dispatch({ type: GET_USER, payload: res.user });
+      dispatch({ type: GET_USER, payload: res });
     });
+  } else {
+    console.log('further to refresh: ');
+    dispatch(handleRefreshTokenForGetUser());
+  }
   };
 
 export const handleUpdateUser =

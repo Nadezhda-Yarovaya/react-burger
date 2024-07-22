@@ -40,6 +40,9 @@ import { useDispatch, useSelector } from '../../hooks/hooks';
 import { firstIngred } from '../../utils/utils';
 import FeedId from '../../pages/feed-id';
 import IndividualOrder from '../individul-order/individual-order';
+import { getCookie } from '../../utils/auth';
+import { SET_ACTOKEN } from '../../services/actions/auth-actions';
+import { performGetDBToken } from '../../services/action-creators/auth-action-creators';
 const { page } = appStyles;
 
 const App: FunctionComponent = () => {
@@ -49,9 +52,12 @@ const App: FunctionComponent = () => {
   const history = useHistory();
   const isPerformed = useSelector((state) => state.order.isPerformed);
   const location = useLocation<TLocation>();
-  const isMobileMenuOpened = useSelector(
-    (state) => state.mobile.isMobileMenuOpened
-  );
+
+  const {isLogged, actoken, isMobileMenuOpened} = useSelector((state: any) => ({
+    isLogged: state.auth.isLogged,
+    actoken: state.auth.actoken,
+    isMobileMenuOpened: state.mobile.isMobileMenuOpened
+}));
 
   useEffect(() => {
     handleSetMobile();
@@ -59,11 +65,11 @@ const App: FunctionComponent = () => {
   }, [width, height]);
 
   useEffect(() => {
-    const tokenExists = localStorage.getItem('refreshToken');
-    if (tokenExists) {
-      dispatch({
+    const longtimeToken = getCookie('token');
+    if (longtimeToken) {
+     dispatch({
         type: SET_LOGGED,
-      });
+      }); 
     }
   }, []);
 

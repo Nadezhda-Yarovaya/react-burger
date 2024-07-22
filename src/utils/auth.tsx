@@ -16,6 +16,14 @@ const resetPassword = (newPass: string, token: string) => {
   }).then(getResponse);
 };
 
+const getDBactoken = () => {
+  return fetch(`${config.BASE_URL}/user/gettoken`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: config.headers,
+  }).then(getResponse);
+};
+
 const register = (email: string, password: string, name: string) => {
   return fetch(`${config.BASE_URL}/auth/register`, {
     method: 'POST',
@@ -32,7 +40,7 @@ const login = (email: string, password: string) => {
   }).then(getResponse);
 };
 
-const getUser = (accessToken: string) => {
+const getUser = (accessToken: string | undefined) => {
   return fetch(`${config.BASE_URL}/auth/user`, {
     method: 'GET',
     headers: {
@@ -126,6 +134,10 @@ const getCookie = (name: string) => {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
+function eraseCookie(name:string) {   
+  document.cookie = name+'=; Max-Age=-99999999;';  
+}
+
 export {
   requestResetPassword,
   resetPassword,
@@ -137,4 +149,6 @@ export {
   logout,
   setCookie,
   getCookie,
+  eraseCookie,
+  getDBactoken
 };
