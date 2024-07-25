@@ -1,11 +1,15 @@
 # React-Burger
-Приложение в рамках курса Я.Практикума React- разработчик
+sПриложение в рамках курса Я.Практикума React- разработчик
 
 ## Технологии
 HTML, CSS, React, Redux, TypeScript
 
-## Текущий этап: STEP-6
-Покрытие тестами 
+## Ссылка: 
+https://burger.ynstudios.ru/
 
-## Ссылка на проект: 
-https://seriozz.nomoredomains.sbs/
+## Api:
+1 - norma.nomoreparties - API от Яндекс.Практикум для загрузки ингредиентов и ленты заказов 
+2 - apiburger.ynstudios.ru - персональный back для регистрации, авторизации
+реализован в двух вариантах: 
+2.1 - https://github.com/Nadezhda-Yarovaya/expressapi-burger - на Express.js 
+2.2 - https://github.com/Nadezhda-Yarovaya/phpapi-burger - на PHP

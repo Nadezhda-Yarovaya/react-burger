@@ -63,9 +63,11 @@ const updateUser = (
   accessToken: string
 ) => {
   let bodySent: TUser = { email, name };
+  
   if (password.length > 0) {
     bodySent = { email, name, password };
   }
+
   return fetch(`${config.BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {
