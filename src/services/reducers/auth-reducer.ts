@@ -12,6 +12,7 @@ import {
 } from '../actions';
 
 import type { TAuthActions } from '../action-types/auth-action-types';
+import { SET_ACTOKEN } from '../actions/auth-actions';
 
 export type TAuthType = {
   user: {
@@ -24,6 +25,7 @@ export type TAuthType = {
   isRegisterSuccess: boolean;
   isRequestingRegister: boolean;
   err: any;
+  actoken: string;
 };
 
 export const initialAuthState: TAuthType = {
@@ -34,6 +36,7 @@ export const initialAuthState: TAuthType = {
   isRegisterSuccess: false,
   isRequestingRegister: false,
   err: {},
+  actoken: '',
 };
 
 export function authReducer(
@@ -44,13 +47,14 @@ export function authReducer(
     case REGISTER_REQUEST:
       return { ...state, isRequestingRegister: true };
     case LOGIN_SUCCESS:
-    case REGISTER_SUCCESS:
+    case REGISTER_SUCCESS: {
+      console.log('success: ', action);
       return {
         ...state,
         isRegisterSuccess: true,
         isRequestingRegister: false,
       };
-
+    }
     case REGISTER_FAILURE:
       return {
         ...state,
@@ -62,16 +66,25 @@ export function authReducer(
     case GET_USER_REQUEST:
       return { ...state, isUserLoding: true };
     case GET_USER:
+      { console.log('paylod: ', action.payload);
       return {
         ...state,
         user: action.payload,
       };
+    }
 
     case SET_LOGGED:
       return {
         ...state,
         isLogged: true,
       };
+    case SET_ACTOKEN: {
+      console.log('token in reducer: ', action);
+        return {
+          ...state,
+          actoken: action.payload,
+        };
+      }
     case SET_LOGGEDOUT:
       return {
         ...state,

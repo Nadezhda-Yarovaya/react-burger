@@ -6,8 +6,6 @@ import { TPropsFormatDate } from '../../../utils/types';
 import { useDispatch, useSelector } from '../../../hooks/hooks';
 import { loadOrders } from '../../../services/action-creators/order-action-creators';
 import { WS_CONNECTION_ORD_CLOSED } from '../../../services/actions/orders-ws-actions';
-import { loadUser } from '../../../services/action-creators/auth-action-creators';
-
 const Orders: FC = () => {
   const dispatch = useDispatch();
   const isMobile = useSelector((state) => state.mobile.isMobile);

@@ -52,7 +52,7 @@ const Register: FC = () => {
         dispatch({
           type: CLEAR_APIMESSAGE,
         });
-        history.push('/');
+        history.push('/login');
       }, 2000);
     }
   }, [isRegisterSuccess, history]);

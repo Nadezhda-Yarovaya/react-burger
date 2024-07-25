@@ -10,15 +10,7 @@ const ProtectedRouteLogged: FC<RouteProps> = ({ children, ...rest }) => {
   const dispatch = useDispatch();
   const location = useLocation<TLocation>();
 
-  useEffect(() => {
-    if (localStorage.getItem('refreshToken')) {
-      dispatch({
-        type: SET_LOGGED,
-      });
-    }
-  }, []);
-
-  const isLogged = useSelector((state) => state.auth.isLogged);
+const isLogged = useSelector((state) => state.auth.isLogged);
 
   return (
     <Route {...rest}>

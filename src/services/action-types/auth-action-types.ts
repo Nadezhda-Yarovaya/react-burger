@@ -9,6 +9,7 @@ import {
   GET_USER_REQUEST,
   REGISTER_REQUEST,
   REGISTER_FAILURE,
+  SET_ACTOKEN,
 } from '../actions/auth-actions';
 
 type TUser = {
@@ -60,6 +61,11 @@ export interface IRegisterFailure {
   readonly err: any;
 }
 
+export interface ISetToken {
+  readonly type: typeof SET_ACTOKEN;
+  readonly payload: string;
+}
+
 export type TAuthActions =
   | IRegisterRequest
   | IRegisterSuccess
@@ -70,4 +76,5 @@ export type TAuthActions =
   | ISetLoggedOut
   | IShowApiMessage
   | IClearApiMessage
-  | IRegisterFailure;
+  | IRegisterFailure
+| ISetToken;

@@ -10,7 +10,7 @@ import formStyles from '../../components/form/form.module.css';
 import PersonalMenu from '../../components/personal-menu/personal-menu';
 
 import {
-  loadUser,
+  handleGetUser,
   patchUser,
 } from '../../services/action-creators/auth-action-creators';
 
@@ -18,6 +18,7 @@ import { SHOW_APIMESSAGE, CLEAR_APIMESSAGE } from '../../services/actions';
 
 import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../hooks/hooks';
+import { getCookie } from '../../utils/auth';
 
 const { form__input, form__element, form__icon, validationError } = formStyles;
 
@@ -28,7 +29,10 @@ const Profile: FC = () => {
 
   const currentUser = useSelector((state) => state.auth.user);
 
-  const isLogged = useSelector((state) => state.auth.isLogged);
+  const {isLogged, actoken} = useSelector((state: any) => ({
+    isLogged: state.auth.isLogged,
+    actoken: state.auth.actoken
+}));
 
   const [pass, setPass] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -45,10 +49,11 @@ const Profile: FC = () => {
   const [isPassShown, setIsPassShown] = useState<boolean>(false);
 
   useEffect(() => {
+    const actokennew = getCookie('accesstemp');
     if (isLogged) {
-      dispatch(loadUser());
+      dispatch(handleGetUser(actokennew));
     }
-  }, [isLogged]);
+  }, [isLogged, actoken]);
 
   useEffect(() => {
     setName(currentUser.name);

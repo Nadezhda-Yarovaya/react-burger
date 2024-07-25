@@ -99,11 +99,20 @@ export const firstorder: TOrderWithIngredients = {
 };
 
 export const config = {
+  // BASE_URL: 'https://norma.nomoreparties.space/api',
+  BASE_URL: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
+export const configIng = {
   BASE_URL: 'https://norma.nomoreparties.space/api',
   headers: {
     'Content-Type': 'application/json',
   },
 };
+
 
 export const getResponse = (res: Response) => {
   if (res.ok) {
